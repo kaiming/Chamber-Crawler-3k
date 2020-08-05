@@ -29,7 +29,7 @@ double Character::getDef() const {
 }
 
 // mutators are currently implemented to take an updated value
-// NOTE: WE CAN UPDATE THIS IF WE WANT TO CHANGE THAT
+// NOTE: WE CAN UPDATE THIS IF WE WANT TO CHANGE
 void Character::setHP(const double HP) {
     this->HP = HP;
 }

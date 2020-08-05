@@ -8,7 +8,7 @@ class Character {
   public:
     // constructor
     Character(double HP, double atk, double def);
-    // destructor (does nothing)
+    // destructor
     virtual ~Character() = 0;
 
     // accessors and mutators
