@@ -9,10 +9,6 @@ Tile::Tile(char Type, int x, int y) :
 {}
 
 
-// destructor
-Tile::~Tile() {}
-
-
 // accessors
 char Tile::getType() const {
     return type;

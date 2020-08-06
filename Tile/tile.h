@@ -9,8 +9,6 @@ class Tile {
   public:
     // constructor
     Tile(char type, int x, int y);
-    // destructor (does nothing)
-    virtual ~Tile() = 0;
 
     // accessors
     char getType() const;
