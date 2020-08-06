@@ -1,16 +1,16 @@
-#ifndef __HUMAN_H__
-#define __HUMAN_H__
+#ifndef __DWARF_H__
+#define __DWARF_H__
 
 #include "enemy.h"
 
-// SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
+// SPECIAL EFFECT: Vampires lose 5 hp instead of gaining when attacking Dwarves
 
-class Human : public Enemy {
+class Dwarf : public Enemy {
     private:
 
     public:
         // Constructor
-        Human();
+        Dwarf();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

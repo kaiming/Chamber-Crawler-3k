@@ -1,16 +1,16 @@
-#ifndef __HUMAN_H__
-#define __HUMAN_H__
+#ifndef __ORC_H__
+#define __ORC_H__
 
 #include "enemy.h"
 
-// SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
+// SPECIAL EFFECT: Does 50% more damage to Goblins
 
-class Human : public Enemy {
+class Orc : public Enemy {
     private:
 
     public:
         // Constructor
-        Human();
+        Orc();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

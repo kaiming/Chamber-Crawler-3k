@@ -1,16 +1,16 @@
-#ifndef __HUMAN_H__
-#define __HUMAN_H__
+#ifndef __HALFLING_H__
+#define __HALFLING_H__
 
 #include "enemy.h"
 
-// SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
+// SPECIAL EFFECT: Causes Player to have 50% attack miss
 
-class Human : public Enemy {
+class Halfling : public Enemy {
     private:
 
     public:
         // Constructor
-        Human();
+        Halfling();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

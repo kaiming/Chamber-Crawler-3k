@@ -1,16 +1,16 @@
-#ifndef __HUMAN_H__
-#define __HUMAN_H__
+#ifndef __MERCHANT_H__
+#define __MERCHANT_H__
 
 #include "enemy.h"
 
-// SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
+// SPECIAL EFFECT: None
 
-class Human : public Enemy {
+class Merchant : public Enemy {
     private:
 
     public:
         // Constructor
-        Human();
+        Merchant();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

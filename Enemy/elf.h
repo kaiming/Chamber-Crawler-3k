@@ -1,16 +1,16 @@
-#ifndef __HUMAN_H__
-#define __HUMAN_H__
+#ifndef __ELF_H__
+#define __ElF_H__
 
 #include "enemy.h"
 
-// SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
+// SPECIAL EFFECT: Gets two attacks against every race except drow
 
-class Human : public Enemy {
+class Elf : public Enemy {
     private:
 
     public:
         // Constructor
-        Human();
+        Elf();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

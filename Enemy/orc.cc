@@ -1,17 +1,17 @@
-#include "human.h"
+#include "orc.h"
 #include <cmath>
 #include <cstdlib>
 
-Human::Human() : Character{140, 20, 20} {
+Orc::Orc() : Character{180, 30, 25} {
 
 }
 
-bool Human::getAttacked(Player & p) {
+bool Orc::getAttacked(Player & p) {
     return p.attack(*this);
 }
 
-// Human attacking Shade
-bool Human::attack(Shade & s) {
+// Orc attacking Shade
+bool Orc::attack(Shade & s) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -34,8 +34,8 @@ bool Human::attack(Shade & s) {
 
 }
 
-// Human attacking Drow
-bool Human::attack(Drow & d) {
+// Orc attacking Drow
+bool Orc::attack(Drow & d) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -57,8 +57,8 @@ bool Human::attack(Drow & d) {
     return false;
 }
 
-// Human attacking Vampire
-bool Human::attack(Vampire & v) {
+// Orc attacking Vampire
+bool Orc::attack(Vampire & v) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -80,8 +80,8 @@ bool Human::attack(Vampire & v) {
     return false;
 }
 
-// Human attacking Troll
-bool Human::attack(Troll & t) {
+// Orc attacking Troll
+bool Orc::attack(Troll & t) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -103,8 +103,9 @@ bool Human::attack(Troll & t) {
     return false;
 }
 
-// Human attacking Goblin
-bool Human::attack(Goblin & g) {
+// Orc attacking Goblin
+bool Orc::attack(Goblin & g) {
+    // SPECIAL EFFECT: does 50% more damage
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -112,7 +113,7 @@ bool Human::attack(Goblin & g) {
     } // Else, attack proceeds
     
     // Calculate damage dealt
-    double damage = std::ceil(100/(100 + g.getDef()) * this->getAtk());
+    double damage = std::ceil(100/(100 + g.getDef()) * this->getAtk()) * 1.5;
 
     // Set new defender HP
     g.setHP(g.getHP() - damage);

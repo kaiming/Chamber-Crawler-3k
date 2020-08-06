@@ -1,17 +1,17 @@
-#include "human.h"
+#include "dragon.h"
 #include <cmath>
 #include <cstdlib>
 
-Human::Human() : Character{140, 20, 20} {
+Dragon::Dragon() : Character{150, 20, 20} {
 
 }
 
-bool Human::getAttacked(Player & p) {
+bool Dragon::getAttacked(Player & p) {
     return p.attack(*this);
 }
 
-// Human attacking Shade
-bool Human::attack(Shade & s) {
+// Dragon attacking Shade
+bool Dragon::attack(Shade & s) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -34,8 +34,8 @@ bool Human::attack(Shade & s) {
 
 }
 
-// Human attacking Drow
-bool Human::attack(Drow & d) {
+// Dragon attacking Drow
+bool Dragon::attack(Drow & d) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -57,8 +57,8 @@ bool Human::attack(Drow & d) {
     return false;
 }
 
-// Human attacking Vampire
-bool Human::attack(Vampire & v) {
+// Dragon attacking Vampire
+bool Dragon::attack(Vampire & v) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -80,8 +80,8 @@ bool Human::attack(Vampire & v) {
     return false;
 }
 
-// Human attacking Troll
-bool Human::attack(Troll & t) {
+// Dragon attacking Troll
+bool Dragon::attack(Troll & t) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
@@ -103,8 +103,8 @@ bool Human::attack(Troll & t) {
     return false;
 }
 
-// Human attacking Goblin
-bool Human::attack(Goblin & g) {
+// Dragon attacking Goblin
+bool Dragon::attack(Goblin & g) {
     // Determine attack success/fail
     if (std::rand() % 2 == 0) {
         // Attack failed
