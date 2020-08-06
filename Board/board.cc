@@ -643,7 +643,8 @@ void Board::generateFloor() {
     tile = std::rand() % chambers[chamber].size();
 
         // Insert exit stairs
-    chambers[chamber][tile].setExit();
+    chambers[chamber][tile].setExit(true);
+
 
 
     // Generate 10 Potions
