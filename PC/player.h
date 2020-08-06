@@ -20,7 +20,7 @@ class Player : public Character {
 
   public:
     // constructor
-    Player(double HP, double atk, double def, int gold);
+    Player(double HP, double atk, double def);
 
     // accessors and mutators
     int getGold() const;

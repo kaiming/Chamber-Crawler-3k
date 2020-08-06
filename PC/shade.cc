@@ -14,7 +14,7 @@
 
 // constructor
 Shade::Shade() :
-    Player {125, 25, 25, 0},
+    Player {125, 25, 25},
     maxHP {125}
 {}
 

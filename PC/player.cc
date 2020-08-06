@@ -4,9 +4,9 @@
 
 
 // constructor
-Player::Player(double HP, double atk, double def, int gold) :
+Player::Player(double HP, double atk, double def) :
     Character {HP, atk, def},
-    gold {gold}
+    gold {0}
 {}
 
 
