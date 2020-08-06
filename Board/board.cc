@@ -26,6 +26,12 @@
 #include "goblin.h"
 
 #include "potion.h"
+#include "rh.h"
+#include "ba.h"
+#include "bd.h"
+#include "pg.h"
+#include "wa.h"
+#include "wd.h"
 
 #include "gold.h"
 #include "dragonhoard.h"
