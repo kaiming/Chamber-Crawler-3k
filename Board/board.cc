@@ -299,7 +299,7 @@ void Board::attackEnemey(std::string direction) {
         }
 
         // Begin attack sequence and store resulting enemy state
-        bool EnemyKilled = target->getOccupant()->getAttacked(player->getOccupant());
+        bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant()));
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -388,6 +388,7 @@ bool Board::moveEnemies() {
                         // Occupied by gold, loop again
                         // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                         destination = nullptr;
+                        continue;
                     }
 
                     // Check for potions
@@ -395,19 +396,19 @@ bool Board::moveEnemies() {
                         // Occupied by potion, loop again
                         // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
                         destination = nullptr;
+                        continue;
                     }
 
                     // Check for exit
                     if (destination->isExit()) {
                         // Occupied by exit stairs, loop again
                         destination = nullptr; 
+                        continue;
                     }
                 }
 
                 // Swap Merchant pointers
-                destination->setOccupant((*it)->getOccupant);
-                (*it)->setOccupant(nullptr);
-                (*it) = destination; // is this legal LOL
+                (*it) = (*it).move(destination);
 
                 // End Merchant turn
                 continue;
@@ -424,7 +425,7 @@ bool Board::moveEnemies() {
 
         if (distance == 1) {
             // 1 tile away, attack player
-            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
 
             if (killed) {
                 // Player is dead, game is over
@@ -460,6 +461,7 @@ bool Board::moveEnemies() {
                     // Occupied by gold, loop again
                     // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                     destination = nullptr;
+                    continue;
                 }
 
                 // Check for potions
@@ -467,19 +469,20 @@ bool Board::moveEnemies() {
                     // Occupied by potion, loop again
                     // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
                     destination = nullptr;
+                    continue;
                 }
 
                 // Check for exit
                 if (destination->isExit()) {
                     // Occupied by exit stairs, loop again
                     destination = nullptr; 
+                    continue;
                 }
             }
 
             // Swap Enemy pointers
-            destination->setOccupant((*it)->getOccupant);
-            (*it)->setOccupant(nullptr);
-            (*it) = destination; // is this legal LOL
+            (*it) = (*it).move(destination);
+
 
         }
 
@@ -544,7 +547,7 @@ bool Board::moveEnemies() {
 
         if (distance == 1 || hoardDistance == 1) {
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
 
             if (killed) {
                 // Player is dead, game is over
