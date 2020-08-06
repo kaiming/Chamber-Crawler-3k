@@ -13,7 +13,7 @@ class DragonHoard: public Gold {
         std::shared_ptr<Dragon> dragon;
 
     public:
-        DragonGold();
+        DragonHoard();
         std::shared_ptr getDragon();
 }
 
