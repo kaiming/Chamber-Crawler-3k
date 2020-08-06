@@ -7,12 +7,27 @@
 #include <cmath>
 #include <cstdlib>
 
-Dragon::Dragon() : Character{150, 20, 20} {
+/*
+    bool isAlive;
+*/
+
+Dragon::Dragon() : Character{150, 20, 20}, isAlive{true} {
 
 }
 
+bool Dragon::getState() {
+    return isAlive;
+}
+
 bool Dragon::getAttacked(Player & p) {
-    return p.attack(*this);
+    bool Killed = p.attack(*this);
+
+    // Check if Dragon is dead
+    if (Killed) {
+        isAlive = false;
+    }
+
+    return Killed;
 }
 
 // Dragon attacking Shade
