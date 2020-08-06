@@ -42,7 +42,7 @@ class Board {
         bool merchantAgro;
 
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
-        void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
+        void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
 
     public:
         Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
@@ -52,7 +52,7 @@ class Board {
         std::vector<std::shared_ptr<WalkableTile>> dragons
 );
         
-        int getFloorNum();
+        int getFloorNum() const;
 
         int movePlayer(std::string direction);
         void attackEnemey(std::string direction);

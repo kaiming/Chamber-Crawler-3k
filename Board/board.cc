@@ -64,7 +64,7 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
 
 }
 
-int Board::getFloorNum() {
+int Board::getFloorNum() const {
     return floorNum;
 }
 
@@ -155,11 +155,11 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
+        if (current.first - 1 < 0> || current.second + 1 >= floors[floorNum-1].size()) {
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.first - 1][current.second + 1];
     } else {
         // Invalid direction
         return nullptr;
@@ -252,7 +252,7 @@ int Board::movePlayer(std::string direction) {
         std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
         
         // Loop over gold vector
-        for (auto it = gold.begin(); it != gold.end(); ++i) {
+        for (auto it = gold.begin(); it != gold.end(); ++it) {
             // Check if Dragon Hoard
             if (std::dynamic_pointer_cast<DragonHoard>((*it)) {
                 // Check if dragon is dead
