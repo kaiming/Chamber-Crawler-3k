@@ -1,13 +1,6 @@
 #ifndef __HALFLING_H__
 #define __HALFLING_H__
 
-class Player;
-class Shade;
-class Drow;
-class Vampire;
-class Troll;
-class Goblin;
-
 #include "enemy.h"
 
 // SPECIAL EFFECT: Causes Player to have 50% attack miss

@@ -1,13 +1,6 @@
 #ifndef __DRAGON_H__
 #define __DRAGON_H__
 
-class Player;
-class Shade;
-class Drow;
-class Vampire;
-class Troll;
-class Goblin;
-
 #include "enemy.h"
 
 // SPECIAL EFFECT: Guards Dragon Hoards
