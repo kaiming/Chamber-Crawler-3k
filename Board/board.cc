@@ -155,7 +155,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first - 1 < 0> || current.second + 1 >= floors[floorNum-1].size()) {
+        if (current.first - 1 < 0 || current.second + 1 >= floors[floorNum-1].size()) {
             return nullptr;
         }
 
@@ -299,7 +299,7 @@ void Board::attackEnemey(std::string direction) {
         }
 
         // Begin attack sequence and store resulting enemy state
-        bool EnemyKilled = target->getOccupant()->getAttacked(*this);
+        bool EnemyKilled = target->getOccupant()->getAttacked(player->getOccupant());
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -320,7 +320,8 @@ void Board::attackEnemey(std::string direction) {
                 // Check if target is human or merchant
                 if (std::dynamic_pointer_cast<Human>(target->getOccupant())) {
                     // Human type, drop 2 Normal Piles
-                    target->setGold(std::make_shared<Gold>("Normal Pile", 4));
+                    target->setGold(std::make_shared<Gold>("Normal Pile", 2)):
+                    target->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
                 } else if (std::dynamic_pointer_cast<Merchant>(target->getOccupant())) {
                     // Merchant Type, drop Merchant Hoard
