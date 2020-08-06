@@ -1,13 +1,6 @@
 #ifndef __HUMAN_H__
 #define __HUMAN_H__
 
-class Player;
-class Shade;
-class Drow;
-class Vampire;
-class Troll;
-class Goblin;
-
 #include "enemy.h"
 
 // SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death

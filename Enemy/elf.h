@@ -1,13 +1,6 @@
 #ifndef __ELF_H__
 #define __ElF_H__
 
-class Player;
-class Shade;
-class Drow;
-class Vampire;
-class Troll;
-class Goblin;
-
 #include "enemy.h"
 
 // SPECIAL EFFECT: Gets two attacks against every race except drow

@@ -1,13 +1,6 @@
 #ifndef __MERCHANT_H__
 #define __MERCHANT_H__
 
-class Player;
-class Shade;
-class Drow;
-class Vampire;
-class Troll;
-class Goblin;
-
 #include "enemy.h"
 
 // SPECIAL EFFECT: None
