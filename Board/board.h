@@ -42,7 +42,7 @@ class Board {
         bool merchantAgro;
 
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
-        void generateItem(); // need to fill in inputs
+        void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
 
     public:
         Board(std::vector<std::vector<std::shared_ptr<Tile>>> floor, bool filled);

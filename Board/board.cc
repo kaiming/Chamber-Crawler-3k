@@ -41,8 +41,6 @@
     std::vector<std::string> potionsUsed;
     int floorNum;
     bool merchantAgro;
-
-    void generateItem(); // need to fill in inputs
 */
 
 Board::Board(std::vector<std::vector<std::shared_ptr<Tile>>> floor, bool filled) : floor{floor} {
@@ -171,7 +169,40 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
 
     return nullptr;
 
+}
 
+void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
+    
+    // Store current tile
+    floor[coords.first][coords.second].setRoom(floorNum);
+    chamber.emplace_back(floor[coords.first][coords.second]); 
+
+
+    // Check all directions around for matching unidentified chamber floor tiles
+
+    // Check to the right
+    std::shared_ptr<WalkableTile> right = floor[coords.first+1][coords.second];
+    if (std::dynamic_pointer_cast<WalkableTile>(right) && (right)->getType() == '.' && (right)->getRoom() < 0) {
+        tileDFS(right->getCoord(), floorNum, chamber);
+    }
+
+    // Check below
+    std::shared_ptr<WalkableTile> down = floor[coords.first][coords.second+1];
+    if (std::dynamic_pointer_cast<WalkableTile>(down) && (down)->getType() == '.' && (down)->getRoom() < 0) {
+        tileDFS(down->getCoord(), floorNum, chamber);
+    }
+
+    // Check to the left
+    std::shared_ptr<WalkableTile> left = floor[coords.first-1][coords.second];
+    if (std::dynamic_pointer_cast<WalkableTile>(left) && (left)->getType() == '.' && (left)->getRoom() < 0) {
+        tileDFS(left->getCoord(), floorNum, chamber);
+    }
+
+    // Check above
+    std::shared_ptr<WalkableTile> above = floor[coords.first+1][coords.second];
+    if (std::dynamic_pointer_cast<WalkableTile>(above) && (above)->getType() == '.' && (above)->getRoom() < 0) {
+        tileDFS(above->getCoord(), floorNum, chamber);
+    }
 }
 
 //--------------------------------------------------------------------------------
@@ -182,6 +213,11 @@ void Board::movePlayer(std::string direction) {
     // Check if valid destination
     if (destination == nullptr) {
         return;
+    }
+
+    // Check if destination is exit
+    if (destination->isStairs()) {
+        // EXIT REACHED, FIND A WAY TO TRIGGER NEW FLOOR GENERATION
     }
 
     // Check if destination is occupied by an enemy
@@ -482,4 +518,142 @@ void Board::usePotion(std::string direction) {
 }
 
 
-void Board::generateFloor();
+void Board::generateFloor() {
+    // First need to identify which tiles are a part of which chamber
+
+    // Iterate through floor
+    for (auto it_y = floor.begin(); it_y != floor.end(); ++it_y) {
+        for (auto it_x = it_y->begin(); it_x != it_y->end(); ++it_x) {
+            // Check if walkable tile and unidentified chamber floor
+            if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && (*it_x)->getRoom() < 0) {
+                // Begin depth first search algorithm, call helper function
+                // Determine current chamber
+                int floorNum = chambers.size();
+                std::vector<std::shared_ptr<WalkableTile>> chamber; 
+                
+                // Enter recursive function
+                tileDFS((*it_x)->getCoord(), floorNum, chamber);
+                
+                // Store current chamber
+                chambers.emplace_back(chamber);
+            } 
+
+        }
+    } // Finished identifying tiles to their chambers
+
+
+    // Begin RNG piece generation
+
+
+    // Generate player
+    int pChamber = std::rand() % chambers.size();
+    int tile = std::rand() % chambers[pChamber].size();
+
+        // Insert Player
+    chambers[pChamber][tile].setOccupant(); // NEED A WAY TO DETERMINE WHICH PLAYER TYPE TO PLACE INSIDE
+    player = chambers[pChamber][tile];
+
+
+    // Generate exit stairs
+    int chamber = pChamber;
+
+    // Ensure exit stairs are not in the same chamber as the player
+    while (chamber == pChamber) {
+        chamber = std::rand() % chambers.size();
+    }
+
+    tile = std::rand() % chambers[chamber].size();
+
+        // Insert exit stairs
+    chambers[chamber][tile].setExit();
+
+
+    // Generate 10 Potions
+    for (int i = 0; i < 10; i++) {
+        // Generate type
+        int type = std::rand() % 6;
+        std::shared_ptr<Potion> temp;
+
+        if (type == 0) {
+            temp = std::make_shared<RH>();
+        } else if (type == 1) {
+            temp = std::make_shared<BA>();
+        } else if (type == 2) {
+            temp = std::make_shared<BD>();
+        } else if (type == 3) {
+            temp = std::make_shared<PH>();
+        } else if (type == 4) {
+            temp = std::make_shared<WA>();
+        } else if (type == 5) {
+            temp = std::make_shared<WD>();
+        }
+
+        // Generate location (make sure not occupied)
+        do {
+            chamber = std::rand() % chambers.size();
+            tile = std::rand() % chambers[chamber].size();
+        } while (chambers[chamber][tile].getPotion());
+
+        // Place type at location
+        chambers[chamber][tile].setPotion(temp);
+    }
+
+
+    // Generate 10 Gold
+    for (int i = 0; i < 10; i++) {
+        // Generate type
+        int type = std::rand() % 8;
+        std::shared_ptr<Gold> temp;
+
+        if (type >= 0 && type <= 4) {
+            temp = std::make_shared<Gold>("Normal", 2);
+        } else if (type == 5 || type == 6) {
+            temp = std::make_shared<Gold>("Small", 1);
+        } else if (type == 7) {
+            temp = std::make_shared<DragonHoard>();
+            dragons.emplace_back(temp->getDragon()); 
+        }
+
+        // Generate location (make sure not occupied)
+        do {
+            chamber = std::rand() % chambers.size();
+            tile = std::rand() % chambers[chamber].size();
+        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold());
+
+        // Place type at location
+        chambers[chamber][tile].setGold(temp);
+    }
+
+
+    // Generate 20 Enemies
+    for (int i = 0; i < 20; i++) {
+        // Generate type
+        int type = std::rand() % 18;
+        std::shared_ptr<Enemy> temp;
+
+        if (type >= 0 && type <= 3) {
+            temp = std::make_shared<Human>();
+        } else if (type >= 4 && type <= 6) {
+            temp = std::make_shared<Dwarf>();
+        } else if (type >= 7 && type <= 11) {
+            temp = std::make_shared<Halfling>();
+        } else if (type >= 12 && type <= 13) {
+            temp = std::make_shared<Elf>();
+        } else if (type >= 14 && type <= 15) {
+            temp = std::make_shared<Orc>();
+        } else if (type >= 16 && type <= 17) {
+            temp = std::make_shared<Merchant>();
+        }
+
+        // Generate location (make sure not occupied)
+        do {
+            chamber = std::rand() % chambers.size();
+            tile = std::rand() % chambers[chamber].size();
+        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold() || chambers[chamber][tile].getOccupant());
+
+        // Place type at location
+        chambers[chamber][tile].setOccupant(temp);
+
+    }
+}
+
