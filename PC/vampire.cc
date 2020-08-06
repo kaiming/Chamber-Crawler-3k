@@ -14,8 +14,7 @@
 
 // constructor
 Vampire::Vampire() :
-    Player {50, 25, 25},
-    maxHP {-1}
+    Player {50, -1, 25, 25}
 {}
 
 

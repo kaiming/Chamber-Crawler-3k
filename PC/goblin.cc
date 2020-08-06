@@ -14,8 +14,7 @@
 
 // constructor
 Goblin::Goblin() :
-    Player {110, 15, 20},
-    maxHP {110}
+    Player {110, 110, 15, 20}
 {}
 
 

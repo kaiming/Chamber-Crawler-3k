@@ -17,14 +17,16 @@ class Potion;
 class Player : public Character {
   protected:
     int gold;
+    const double maxHP;
 
   public:
     // constructor
-    Player(double HP, double atk, double def);
+    Player(double HP, double maxHP, double atk, double def);
 
     // accessors and mutators
     int getGold() const;
     void setGold(int gold);
+    double getMaxHP() const;
 
     // visitor (attack and getting attacked mechanisms)
     virtual bool getAttacked(Enemy& e) = 0;

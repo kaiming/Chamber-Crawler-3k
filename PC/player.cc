@@ -4,9 +4,10 @@
 
 
 // constructor
-Player::Player(double HP, double atk, double def) :
+Player::Player(double HP, double maxHP, double atk, double def) :
     Character {HP, atk, def},
-    gold {0}
+    gold {0},
+    maxHP {maxHP}
 {}
 
 
@@ -18,6 +19,11 @@ int Player::getGold() const {
 
 void Player::setGold(int gold) {
     if (gold >= 0) this->gold = gold;
+}
+
+
+double Player::getMaxHP() const {
+    return maxHP;
 }
 
 

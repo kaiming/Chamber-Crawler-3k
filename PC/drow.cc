@@ -14,8 +14,7 @@
 
 // constructor
 Drow::Drow() :
-    Player {150, 25, 15},
-    maxHP {160}
+    Player {150, 150, 25, 15}
 {}
 
 

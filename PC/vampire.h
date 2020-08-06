@@ -3,8 +3,6 @@
 #include "player.h"
 
 class Vampire : public Player {
-    double maxHP;
-
   public:
     // constructor
     Vampire();
