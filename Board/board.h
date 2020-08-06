@@ -8,6 +8,27 @@
 class Tile;
 class WalkableTile;
 
+class Enemy;
+class Human;
+class Dwarf;
+class Elf;
+class Orc;
+class Merchant;
+class Dragon;
+class Halfling;
+class Potion;
+
+class Player;
+class Shade;
+class Drow;
+class Vampire;
+class Troll;
+class Goblin;
+
+class Potion;
+class Gold;
+class DragonHoard;
+
 class Board {
     private:
         std::vector<std::vector<std::shared_ptr<Tile>>> floor;
@@ -19,6 +40,7 @@ class Board {
         int floorNum;
         bool merchantAgro;
 
+        std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
         void generateItem(); // need to fill in inputs
 
     public:

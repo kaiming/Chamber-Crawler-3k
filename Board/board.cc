@@ -1,7 +1,33 @@
 #include "board.h"
+
 #include <utility>
+#include <memory>
+#include <vector>
+#include <string>
+#include <cstdlib>
+
 #include "tile.h"
 #include "walkabletile.h"
+
+#include "human.h"
+#include "dwarf.h"
+#include "elf.h"
+#include "orc.h"
+#include "merchant.h"
+#include "dragon.h"
+#include "halfling.h"
+
+#include "dwarf.h"
+#include "shade.h"
+#include "drow.h"
+#include "vampire.h"
+#include "troll.h"
+#include "goblin.h"
+
+#include "potion.h"
+
+#include "gold.h"
+#include "dragonhoard.h"
 
 // Include all player and enemy races
 
@@ -265,7 +291,41 @@ void attackEnemey(std::string direction) {
 
 }
 
-
 void moveEnemies();
-void usePotion(std::string direction);
+
+
+void usePotion(std::string direction) {
+    std:shared_ptr<WalkableTile> target = validDest(player, direction);
+
+    // Check if valid destination
+    if (target == nullptr) {
+        return;
+    }
+
+    // Check if destination is occupied by a potion
+    if (destination->getPotion() != nullptr) {
+        // Use potion
+        player->getOccupant()->usePotion(target->getPotion());
+
+        // Add potion to memory, if new
+        bool usedBefore = false;
+
+        for (auto it = potions.begin(); it != potions.end(); ++it) {
+            if (it->getType() == target->getPotion()->getType()) {
+                usedBefore = true;
+                break;
+            }
+        }
+
+        if (!usedBefore) {
+            potions.emplace_back(target->getPotion()->getType());
+        }
+
+        // Remove potion from board
+        target->setPotion(nullptr);
+    }
+
+}
+
+
 void generateFloor();
