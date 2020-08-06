@@ -36,6 +36,7 @@ class Board {
         std::shared_ptr<WalkableTile> player;
         std::vector<std::shared_ptr<WalkableTile>> enemies;
         std::vector<std::shared_ptr<WalkableTile>> dragons;
+
         std::vector<std::string> potionsUsed;
         int floorNum;
         bool merchantAgro;

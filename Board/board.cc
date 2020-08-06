@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <cmath>
 
 #include "tile.h"
 #include "walkabletile.h"
@@ -56,17 +57,17 @@ int Board::getFloorNum() {
     return floorNum;
 }
 
-void setFloorNum(int num) : floorNum{num} {
+void Board::setFloorNum(int num) : floorNum{num} {
 
 }
 
-void setFloor (std::vector<std::vector<std::shared_ptr<Tile>>> floor) : floor{floor} {
+void Board::setFloor(std::vector<std::vector<std::shared_ptr<Tile>>> floor) : floor{floor} {
 
 }
 
 //--------------------------------------------------------------------------------
 
-std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction) {
+std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> package, std::string direction) {
     
     // Set up variable to hold destination
     std::shared_ptr<Tile> destination;
@@ -175,7 +176,7 @@ std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, s
 
 //--------------------------------------------------------------------------------
 
-void movePlayer(std::string direction) {
+void Board::movePlayer(std::string direction) {
     std:shared_ptr<WalkableTile> destination = validDest(player, direction);
 
     // Check if valid destination
@@ -224,7 +225,7 @@ void movePlayer(std::string direction) {
 
 }
 
-void attackEnemey(std::string direction) {
+void Board::attackEnemey(std::string direction) {
     std:shared_ptr<WalkableTile> target = validDest(player, direction);
 
     // Check if valid destination
@@ -291,10 +292,163 @@ void attackEnemey(std::string direction) {
 
 }
 
-void moveEnemies();
+void Board::moveEnemies() {
+    // Iterate through enemies and dragons to execute their turn
+    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+
+        // Check if merchant
+        if (std::dynamic_pointer_cast<Merchant>(it->getOccupant())) {
+            
+            // Check if merchants are hostile
+            if (!merchantAgro) {
+                // Not hostile, just move
+                std:shared_ptr<WalkableTile> destination;
+
+                while (destination == nullptr) {
+                    int rng = std::rand() % 8;
+
+                    if (rng == 0) {
+                        destination = validDest(*it, "no");
+                    } else if (rng == 1) {
+                        destination = validDest(*it, "so");
+                    } else if (rng == 2) {
+                        destination = validDest(*it, "ea");
+                    } else if (rng == 3) {
+                        destination = validDest(*it, "we");
+                    } else if (rng == 4) {
+                        destination = validDest(*it, "ne");
+                    } else if (rng == 5) {
+                        destination = validDest(*it, "nw");
+                    } else if (rng == 6) {
+                        destination = validDest(*it, "se");
+                    } else if (rng == 7) {
+                        destination = validDest(*it, "sw");
+                    }
+                }
+
+                // Swap Merchant pointers
+                destination->setOccupant((*it)->getOccupant);
+                (*it)->setOccupant(nullptr);
+                (*it) = destination; // is this legal LOL
+
+                // End Merchant turn
+                continue;
+            } // If agro, then check for attack
+        }// Not a merchant
+
+        // Check distance from player
+        std::pair<int, int> p_coord = player->getCoord();
+        std::pair<int, int> e_coord = (*it)->getCoord();
+
+        double distance = std::floor(std::sqrt(std::pow((p_coord.first - e_coord.first), 2) + std::pow((p_coord.second - e_coord.second), 2)));
+
+        // DLC EXTENSION HERE: add else if (distance < radius) -> move towards player
+
+        if (distance == 1) {
+            // 1 tile away, attack player
+            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+
+            if (killed) {
+                // Player is dead, game is over
+                // DO SOMETHING HERE
+            }
+        } else {
+            // Too far away to attack, do a random move
+            std:shared_ptr<WalkableTile> destination;
+
+            while (destination == nullptr) {
+                int rng = std::rand() % 8;
+
+                if (rng == 0) {
+                    destination = validDest(*it, "no");
+                } else if (rng == 1) {
+                    destination = validDest(*it, "so");
+                } else if (rng == 2) {
+                    destination = validDest(*it, "ea");
+                } else if (rng == 3) {
+                    destination = validDest(*it, "we");
+                } else if (rng == 4) {
+                    destination = validDest(*it, "ne");
+                } else if (rng == 5) {
+                    destination = validDest(*it, "nw");
+                } else if (rng == 6) {
+                    destination = validDest(*it, "se");
+                } else if (rng == 7) {
+                    destination = validDest(*it, "sw");
+                }
+            }
+
+            // Swap Enemy pointers
+            destination->setOccupant((*it)->getOccupant);
+            (*it)->setOccupant(nullptr);
+            (*it) = destination; // is this legal LOL
+
+        }
+
+        // Print to Text Display here
+
+    } // end of Enemies loop
+
+    // Iterate through dragons to see if they attack the player
+    for (auto it = dragons.begin(); it != dragons.end(); ++it) {
+        // Check dragon distance from player
+        std::pair<int, int> pCoord = player->getCoord();
+        std::pair<int, int> eCoord = (*it)->getCoord();
+
+        double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2)));
+
+        // Check dragon hoard distance from player
+        // Find the dragon hoard 
+        std:shared_ptr<WalkableTile> dragonHoard;
+
+        for (int i = 0; i < 8; i++) {
+            if (i == 0) {
+                dragonHoard = validDest(*it, "no");
+            } else if (i == 1) {
+                dragonHoard = validDest(*it, "so");
+            } else if (i == 2) {
+                dragonHoard = validDest(*it, "ea");
+            } else if (i == 3) {
+                dragonHoard = validDest(*it, "we");
+            } else if (i == 4) {
+                dragonHoard = validDest(*it, "ne");
+            } else if (i == 5) {
+                dragonHoard = validDest(*it, "nw");
+            } else if (i == 6) {
+                dragonHoard = validDest(*it, "se");
+            } else if (i == 7) {
+                dragonHoard = validDest(*it, "sw");
+            }
+
+            // Check if direction has the hoard
+            if (dragonHoard && std::dynamic_pointer_cast<DragonHoard>(dragonHoard->getGold())) {
+                break;
+            }
+        } 
+
+        std::pair<int, int> hoardCoord = dragonHoard->getCoord();
+        double hoardDistance = std::floor(std::sqrt(std::pow((hoardCoord.first - eCoord.first), 2) + std::pow((hoardCoord.second - eCoord.second), 2)));
 
 
-void usePotion(std::string direction) {
+        if (distance == 1 || hoardDistance == 1) {
+            // 1 tile away from either the dragon or the dragon hoard, attack player
+            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+
+            if (killed) {
+                // Player is dead, game is over
+                // DO SOMETHING HERE
+            }
+        }
+
+        // DLC EXTENSION HERE: Make dragons roam around the hoard
+        
+        // Print to Text Display here
+    } // end of Dragons loop
+
+}
+
+
+void Board::usePotion(std::string direction) {
     std:shared_ptr<WalkableTile> target = validDest(player, direction);
 
     // Check if valid destination
@@ -328,4 +482,4 @@ void usePotion(std::string direction) {
 }
 
 
-void generateFloor();
+void Board::generateFloor();
