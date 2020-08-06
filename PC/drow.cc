@@ -27,7 +27,7 @@ bool Drow::getAttacked(Enemy& e) {
 
 bool Drow::attack(Human& h) {    
     // Calculate damage dealt
-    double damage = std::ceil(100 / (100 + h.getDef()) * this->atk);
+    double damage = std::ceil(100 / (100 + h.getDef()) * this->getAtk());
 
     // Set new defender HP
     h.setHP(h.getHP() - damage);
