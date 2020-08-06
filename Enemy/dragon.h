@@ -7,10 +7,12 @@
 
 class Dragon : public Enemy {
     private:
-
+        bool isAlive;
     public:
         // Constructor
         Dragon();
+
+        bool getState();
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
