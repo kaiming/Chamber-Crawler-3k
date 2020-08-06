@@ -39,19 +39,26 @@
 // Include all player and enemy races
 
 /*
-    std::vector<std::vector<std::shared_ptr<Tile>>> floor;
+    std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
+    std::vector<bool> filled; 
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
     std::shared_ptr<WalkableTile> player;
     std::vector<std::shared_ptr<WalkableTile>> enemies;
     std::vector<std::shared_ptr<WalkableTile>> dragons;
     std::vector<std::string> potionsUsed;
+
     int floorNum;
     bool merchantAgro;
 */
 
-Board::Board(std::vector<std::vector<std::shared_ptr<Tile>>> floor, bool filled) : floor{floor} {
+Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
+        std::vector<bool> filled, 
+        std::shared_ptr<WalkableTile> player,
+        std::vector<std::shared_ptr<WalkableTile>> enemies;
+        std::vector<std::shared_ptr<WalkableTile>> dragons;
+) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragons{dragons}, floorNum{1} {
     
-    if (!filled) {
+    if (!filled[floorNum]) {
         generateFloor();
     }
 
@@ -59,14 +66,6 @@ Board::Board(std::vector<std::vector<std::shared_ptr<Tile>>> floor, bool filled)
 
 int Board::getFloorNum() {
     return floorNum;
-}
-
-void Board::setFloorNum(int num) : floorNum{num} {
-
-}
-
-void Board::setFloor(std::vector<std::vector<std::shared_ptr<Tile>>> floor) : floor{floor} {
-
 }
 
 //--------------------------------------------------------------------------------
@@ -90,27 +89,27 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floor[current.first][current.second - 1];
+        destination = floors[floorNum-1][current.first][current.second - 1];
     } else if (direction == "so") {
         // so = South/Down
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.second + 1 >= floor[0].size()) {
+        if (current.second + 1 >= floors[floorNum-1][0].size()) {
             return nullptr;
         }
 
-        destination = floor[current.first][current.second + 1];
+        destination = floors[floorNum-1][current.first][current.second + 1];
     } else if (direction == "ea") {
         // ea = East/Right
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.second + 1 >= floor.size()) {
+        if (current.second + 1 >= floors[floorNum-1].size()) {
             return nullptr;
         }
 
-        destination = floor[current.first + 1][current.second];
+        destination = floors[floorNum-1][current.first + 1][current.second];
     } else if (direction == "we") {
         // we = West/Left
         std::pair current = package.getCoord();
@@ -120,17 +119,17 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floor[current.first - 1][current.second];
+        destination = floors[floorNum-1][current.first - 1][current.second];
     } else if (direction == "ne") { // ----------------------------------------------------------------------
         // ne = North East/Right and Up
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floor[0].size() || current.second - 1 < 0) {
+        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
             return nullptr;
         }
 
-        destination = floor[current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.first + 1][current.second - 1];
     } else if (direction == "nw") {
         // nw = North West/Left and Up 
         std::pair current = package.getCoord();
@@ -140,27 +139,27 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floor[current.first - 1][current.second - 1];
+        destination = floors[floorNum-1][current.first - 1][current.second - 1];
     } else if (direction == "se") {
         // se = South East/Right and Down
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floor[0].size() || current.second + 1 >= floor.size()) {
+        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second + 1 >= floors[floorNum-1].size()) {
             return nullptr;
         }
 
-        destination = floor[current.first + 1][current.second + 1];
+        destination = floors[floorNum-1][current.first + 1][current.second + 1];
     } else if (direction == "sw") {
         // sw = South West/Left and Down
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floor[0].size() || current.second - 1 < 0) {
+        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
             return nullptr;
         }
 
-        destination = floor[current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.first + 1][current.second - 1];
     } else {
         // Invalid direction
         return nullptr;
@@ -180,32 +179,32 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
     
     // Store current tile
-    floor[coords.first][coords.second].setRoom(floorNum);
-    chamber.emplace_back(floor[coords.first][coords.second]); 
+    floors[floorNum-1][coords.first][coords.second].setRoom(floorNum);
+    chamber.emplace_back(floors[floorNum-1][coords.first][coords.second]); 
 
 
     // Check all directions around for matching unidentified chamber floor tiles
 
     // Check to the right
-    std::shared_ptr<WalkableTile> right = floor[coords.first+1][coords.second];
+    std::shared_ptr<WalkableTile> right = floors[floorNum-1][coords.first+1][coords.second];
     if (std::dynamic_pointer_cast<WalkableTile>(right) && (right)->getType() == '.' && (right)->getRoom() < 0) {
         tileDFS(right->getCoord(), floorNum, chamber);
     }
 
     // Check below
-    std::shared_ptr<WalkableTile> down = floor[coords.first][coords.second+1];
+    std::shared_ptr<WalkableTile> down = floors[floorNum-1][coords.first][coords.second+1];
     if (std::dynamic_pointer_cast<WalkableTile>(down) && (down)->getType() == '.' && (down)->getRoom() < 0) {
         tileDFS(down->getCoord(), floorNum, chamber);
     }
 
     // Check to the left
-    std::shared_ptr<WalkableTile> left = floor[coords.first-1][coords.second];
+    std::shared_ptr<WalkableTile> left = floors[floorNum-1][coords.first-1][coords.second];
     if (std::dynamic_pointer_cast<WalkableTile>(left) && (left)->getType() == '.' && (left)->getRoom() < 0) {
         tileDFS(left->getCoord(), floorNum, chamber);
     }
 
     // Check above
-    std::shared_ptr<WalkableTile> above = floor[coords.first+1][coords.second];
+    std::shared_ptr<WalkableTile> above = floors[floorNum-1][coords.first+1][coords.second];
     if (std::dynamic_pointer_cast<WalkableTile>(above) && (above)->getType() == '.' && (above)->getRoom() < 0) {
         tileDFS(above->getCoord(), floorNum, chamber);
     }
@@ -213,58 +212,74 @@ void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::s
 
 //--------------------------------------------------------------------------------
 
-void Board::movePlayer(std::string direction) {
+int Board::movePlayer(std::string direction) {
     std:shared_ptr<WalkableTile> destination = validDest(player, direction);
 
     // Check if valid destination
     if (destination == nullptr) {
-        return;
+        return 0;
     }
 
     // Check if destination is exit
     if (destination->isStairs()) {
         // EXIT REACHED, FIND A WAY TO TRIGGER NEW FLOOR GENERATION
+        if (floorNum == floorLimit) {
+            // Game completed
+            return 2;
+        } else {
+            // Proceed to next floor
+            floorNum += 1;
+            return 1;
+        }
+        
     }
 
     // Check if destination is occupied by an enemy
     if (destination->getOccupant() != nullptr) {
-        return;
+        return 0;
     }
 
     // Check if destination is occupied by a potion
     if (destination->getPotion() != nullptr) {
         // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-over to use
-        return;
+        return 0;
     }
 
     // Check if destination is occupied by gold
-    if (destination->getGold() != nullptr) {
-        // Check if Dragon Hoard
-        if (std::dynamic_pointer_cast<DragonHoard>(destination->getGold())) {
-            // Check if dragon is dead
-            if (!destination->getGold()->getDragon()->isAlive()) {
-                // Dragon is dead
+    if (destination->getGold().size() != 0) {
+        
+        // Get gold reference
+        std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
+        
+        // Loop over gold vector
+        for (auto it = gold.begin(); it != gold.end(); ++i) {
+            // Check if Dragon Hoard
+            if (std::dynamic_pointer_cast<DragonHoard>((*it)) {
+                // Check if dragon is dead
+                if ((*it)->getDragon()->isAlive()) {
+                    // Dragon is dead
+                    // Player picks up gold
+                    player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
+                    // Gold is consumed
+                    gold.erase(it); 
+                }
+
+                // Else do nothing
+
+            } else {
                 // Player picks up gold
-                player->occupant->setGold(player->occupant->getGold() + destination->gold->getSize());
+                player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
                 // Gold is consumed
-                destination->setGold(nullptr); 
+                gold.erase(it); 
             }
-
-            // Else do nothing
-
-        } else {
-            // Player picks up gold
-            player->occupant->setGold(player->occupant->getGold() + destination->gold->getSize());
-            // Gold is consumed
-            destination->setGold(nullptr); 
         }
     }
 
-    // Swap Player pointers
-    destination->setOccupant(player->getOccupant);
-    player->setOccupant(nullptr);
-    player = destination;
+    // Move the Player
+    player = player.move(destination);
 
+    // Exit not reached
+    return 0;
 }
 
 void Board::attackEnemey(std::string direction) {
@@ -322,7 +337,7 @@ void Board::attackEnemey(std::string direction) {
 
                 // Remove this enemy from enemies
                     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
-                        if (it->getCoord() == target->getCoord()) {
+                        if ((*it)->getCoord() == target->getCoord()) {
                             enemies.erase(it); 
                         }
                     }
@@ -334,17 +349,17 @@ void Board::attackEnemey(std::string direction) {
 
 }
 
-void Board::moveEnemies() {
+bool Board::moveEnemies() {
     // Iterate through enemies and dragons to execute their turn
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
 
         // Check if merchant
-        if (std::dynamic_pointer_cast<Merchant>(it->getOccupant())) {
+        if (std::dynamic_pointer_cast<Merchant>((*it)->getOccupant())) {
             
             // Check if merchants are hostile
             if (!merchantAgro) {
                 // Not hostile, just move
-                std:shared_ptr<WalkableTile> destination;
+                std:shared_ptr<WalkableTile> destination == nullptr;
 
                 while (destination == nullptr) {
                     int rng = std::rand() % 8;
@@ -365,6 +380,26 @@ void Board::moveEnemies() {
                         destination = validDest(*it, "se");
                     } else if (rng == 7) {
                         destination = validDest(*it, "sw");
+                    }
+
+                    // Check for gold
+                    if (destination->getGold().size() != 0) {
+                        // Occupied by gold, loop again
+                        // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
+                        destination = nullptr;
+                    }
+
+                    // Check for potions
+                    if (destination->getPotion() != nullptr) {
+                        // Occupied by potion, loop again
+                        // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
+                        destination = nullptr;
+                    }
+
+                    // Check for exit
+                    if (destination->isExit()) {
+                        // Occupied by exit stairs, loop again
+                        destination = nullptr; 
                     }
                 }
 
@@ -392,11 +427,11 @@ void Board::moveEnemies() {
 
             if (killed) {
                 // Player is dead, game is over
-                // DO SOMETHING HERE
+                return true;
             }
         } else {
             // Too far away to attack, do a random move
-            std:shared_ptr<WalkableTile> destination;
+            std:shared_ptr<WalkableTile> destination == nullptr;
 
             while (destination == nullptr) {
                 int rng = std::rand() % 8;
@@ -417,6 +452,26 @@ void Board::moveEnemies() {
                     destination = validDest(*it, "se");
                 } else if (rng == 7) {
                     destination = validDest(*it, "sw");
+                }
+
+                // Check for gold
+                if (destination->getGold().size() != 0) {
+                    // Occupied by gold, loop again
+                    // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
+                    destination = nullptr;
+                }
+
+                // Check for potions
+                if (destination->getPotion() != nullptr) {
+                    // Occupied by potion, loop again
+                    // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
+                    destination = nullptr;
+                }
+
+                // Check for exit
+                if (destination->isExit()) {
+                    // Occupied by exit stairs, loop again
+                    destination = nullptr; 
                 }
             }
 
@@ -463,8 +518,22 @@ void Board::moveEnemies() {
             }
 
             // Check if direction has the hoard
-            if (dragonHoard && std::dynamic_pointer_cast<DragonHoard>(dragonHoard->getGold())) {
-                break;
+            if (dragonHoard) {
+                // Get gold reference
+                std::vector<std::shared_ptr<Gold>>& gold = dragonHoard->getGold();
+                bool found = false;
+
+                // Iterate over gold to check for DragonHoard
+                for (auto it = gold.begin(); it != gold.end(); ++it) {
+                    if (std::dynamic_pointer_cast<DragonHoard>(*it)) { 
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    break;
+                }
             }
         } 
 
@@ -478,7 +547,7 @@ void Board::moveEnemies() {
 
             if (killed) {
                 // Player is dead, game is over
-                // DO SOMETHING HERE
+                return true;
             }
         }
 
@@ -487,6 +556,9 @@ void Board::moveEnemies() {
         // Print to Text Display here
     } // end of Dragons loop
 
+    // End of Enemies turn
+    // Player is still alive
+    return false;
 }
 
 
@@ -528,7 +600,7 @@ void Board::generateFloor() {
     // First need to identify which tiles are a part of which chamber
 
     // Iterate through floor
-    for (auto it_y = floor.begin(); it_y != floor.end(); ++it_y) {
+    for (auto it_y = floors[floorNum-1].begin(); it_y != floors[floorNum-1].end(); ++it_y) {
         for (auto it_x = it_y->begin(); it_x != it_y->end(); ++it_x) {
             // Check if walkable tile and unidentified chamber floor
             if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && (*it_x)->getRoom() < 0) {
@@ -624,7 +696,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold());
+        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
 
         // Place type at location
         chambers[chamber][tile].setGold(temp);
