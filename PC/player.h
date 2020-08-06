@@ -27,7 +27,7 @@ class Player : public Character {
     void setGold(int gold);
 
     // visitor (attack and getting attacked mechanisms)
-    virtual void getAttacked(Enemy& e) = 0;
+    virtual bool getAttacked(Enemy& e) = 0;
     virtual bool attack(Human& h) = 0;
     virtual bool attack(Dwarf& d) =  0;
     virtual bool attack(Elf& e) = 0;

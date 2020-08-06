@@ -20,8 +20,8 @@ Drow::Drow() :
 
 
 // visitor methods
-void Drow::getAttacked(Enemy& e) {
-    e.attack(*this);
+bool Drow::getAttacked(Enemy& e) {
+    return e.attack(*this);
 }
 
 

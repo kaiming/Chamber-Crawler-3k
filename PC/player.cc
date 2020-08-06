@@ -1,5 +1,6 @@
 #include "player.h"
-// add includes once Enemy and Potion classes are set up
+// add in relative paths later
+#include "potion.h"
 
 
 // constructor

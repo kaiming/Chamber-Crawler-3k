@@ -20,8 +20,8 @@ Goblin::Goblin() :
 
 
 // visitor methods
-void Goblin::getAttacked(Enemy& e) {
-    e.attack(*this);
+bool Goblin::getAttacked(Enemy& e) {
+    return e.attack(*this);
 }
 
 

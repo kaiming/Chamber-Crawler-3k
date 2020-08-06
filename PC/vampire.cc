@@ -20,8 +20,8 @@ Vampire::Vampire() :
 
 
 // visitor methods
-void Vampire::getAttacked(Enemy& e) {
-    e.attack(*this);
+bool Vampire::getAttacked(Enemy& e) {
+    return e.attack(*this);
 }
 
 

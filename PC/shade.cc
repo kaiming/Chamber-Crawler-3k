@@ -20,8 +20,8 @@ Shade::Shade() :
 
 
 // visitor methods
-void Shade::getAttacked(Enemy& e) {
-    e.attack(*this);
+bool Shade::getAttacked(Enemy& e) {
+    return e.attack(*this);
 }
 
 

@@ -20,8 +20,8 @@ Troll::Troll() :
 
 
 // visitor methods
-void Troll::getAttacked(Enemy& e) {
-    e.attack(*this);
+bool Troll::getAttacked(Enemy& e) {
+    return e.attack(*this);
 }
 
 

@@ -10,7 +10,7 @@ class Troll : public Player {
     Troll();
 
     // override visitor methods
-    void getAttacked(Enemy& e) override;
+    bool getAttacked(Enemy& e) override;
     bool attack(Human& h) override;
     bool attack(Dwarf& d) override;
     bool attack(Elf& e) override;
