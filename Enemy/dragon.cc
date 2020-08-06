@@ -20,14 +20,14 @@ bool Dragon::getState() {
 }
 
 bool Dragon::getAttacked(Player & p) {
-    bool stillAlive = p.attack(*this);
+    bool Killed = p.attack(*this);
 
     // Check if Dragon is dead
-    if (!stillAlive) {
+    if (Killed) {
         isAlive = false;
     }
 
-    return stillAlive;
+    return Killed;
 }
 
 // Dragon attacking Shade
