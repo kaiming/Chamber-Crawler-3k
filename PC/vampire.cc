@@ -1,7 +1,15 @@
 #include <cmath>
 #include <cstdlib>
 #include "vampire.h"
-// add includes for each enemy type
+// add in relative paths later
+#include "human.h"
+#include "dwarf.h"
+#include "elf.h"
+#include "orc.h"
+#include "merchant.h"
+#include "dragon.h"
+#include "halfling.h"
+#include "potion.h"
 
 
 // constructor
