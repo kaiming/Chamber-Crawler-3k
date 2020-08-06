@@ -4,8 +4,6 @@
 
 
 class Shade : public Player {
-    double maxHP;
-
   public:
     // constructor
     Shade();

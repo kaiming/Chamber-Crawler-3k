@@ -3,8 +3,6 @@
 #include "player.h"
 
 class Troll : public Player {
-    double maxHP;
-
   public:
     // constructor
     Troll();

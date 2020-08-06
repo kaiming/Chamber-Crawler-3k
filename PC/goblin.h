@@ -3,8 +3,6 @@
 #include "player.h"
 
 class Goblin : public Player {
-    double maxHP;
-
   public:
     // constructor
     Goblin();

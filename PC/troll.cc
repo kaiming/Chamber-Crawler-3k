@@ -14,8 +14,7 @@
 
 // constructor
 Troll::Troll() :
-    Player {120, 25, 15},
-    maxHP {120}
+    Player {120, 120, 25, 15}
 {}
 
 

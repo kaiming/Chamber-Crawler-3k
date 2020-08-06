@@ -4,8 +4,6 @@
 #include "player.h"
 
 class Drow : public Player {
-    double maxHP;
-
   public:
     // constructor
     Drow();
