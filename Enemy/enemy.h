@@ -1,6 +1,13 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
+class Player;
+class Shade;
+class Drow;
+class Vampire;
+class Troll;
+class Goblin;
+
 #include "character.h"
 
 class Enemy : public Character {

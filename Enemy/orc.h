@@ -1,6 +1,13 @@
 #ifndef __ORC_H__
 #define __ORC_H__
 
+class Player;
+class Shade;
+class Drow;
+class Vampire;
+class Troll;
+class Goblin;
+
 #include "enemy.h"
 
 // SPECIAL EFFECT: Does 50% more damage to Goblins

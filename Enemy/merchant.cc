@@ -1,4 +1,9 @@
 #include "merchant.h"
+#include "shade.h"
+#include "drow.h"
+#include "vampire.h"
+#include "troll.h"
+#include "goblin.h"
 #include <cmath>
 #include <cstdlib>
 
