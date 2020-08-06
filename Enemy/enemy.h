@@ -8,11 +8,11 @@ class Enemy : public Character {
 
     public:
         virtual bool getAttacked(Player & p) = 0;
-        virtual void attack(Shade & s) = 0;
-        virtual void attack(Drow & d) = 0;
-        virtual void attack(Vampire & v) = 0;
-        virtual void attack(Troll & t) = 0;
-        virtual void attack(Goblin & g = 0;
+        virtual bool attack(Shade & s) = 0;
+        virtual bool attack(Drow & d) = 0;
+        virtual bool attack(Vampire & v) = 0;
+        virtual bool attack(Troll & t) = 0;
+        virtual bool attack(Goblin & g = 0;
 
 
 }
