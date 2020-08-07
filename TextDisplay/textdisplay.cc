@@ -51,27 +51,27 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
                     }
 
                     // Determine enemy type 
-                    std::shared_ptr<Enemy> enemy = (*it_j)->getOccupant();
+                    std::string enemy = (*it_j)->getOccupant()->getRace();
 
-                    if (std::dynamic_pointer_cast<Human>(enemy)) {
+                    if (enemy == "Human") {
                         // Print "H" for Human
                         out << "H";
-                    } else if (std::dynamic_pointer_cast<Dwarf>(enemy)) {
+                    } else if (enemy == "Dwarf") {
                         // Print "W" for Dwarf
                         out << "W";
-                    } else if (std::dynamic_pointer_cast<Elf>(enemy)) {
+                    } else if (enemy == "Elf") {
                         // Print "E" for Elf
                         out << "E";
-                    } else if (std::dynamic_pointer_cast<Orc>(enemy)) {
+                    } else if (enemy == "Orc") {
                         // Print "O" for Orc
                         out << "O";
-                    } else if (std::dynamic_pointer_cast<Merchant>(enemy)) {
+                    } else if (enemy == "Merchant") {
                         // Print "M" for Merchant
                         out << "M";
-                    } else if (std::dynamic_pointer_cast<Dragon>(enemy)) {
+                    } else if (enemy == "Dragon") {
                         // Print "D" for Dragon
                         out << "D";
-                    } else if (std::dynamic_pointer_cast<Halfling>(enemy)) {
+                    } else if (enemy == "Halfling") {
                         // Print "L" for Halfling
                         out << "L";
                     }
@@ -79,7 +79,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
 
             } else {
                 // Regular Tile, print type
-                out << i(*it_j)->getType;
+                out << i(*it_j)->getType();
             }
 
         } // End of inner loop
@@ -99,23 +99,9 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
     // Def: XXX
     // Action:
 
-    // Convert Player race to full name
-    std::string fullRace;
-    if (board.race == "s") {
-        fullRace = "Shade";
-    } else if (board.race == "d") {
-        fullRace = "Drow";
-    } else if (board.race == "v") {
-        fullRace = "Vampire";
-    } else if (board.race == "g") {
-        fullRace = "Goblin";
-    } else if (board.race == "t") {
-        fullRace = "Troll";
-    }
-
     // Race: XXXXX  Gold: XXX             Floor: XX
     // 24 chars Race + Gold & 9 Chars for Floor: XX
-    out << "Race: " << std::setw(7) << fullRace << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[floorNum -1][0].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
+    out << "Race: " << std::setw(7) << board.playerPtr.getRace() << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[floorNum -1][0].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
     // HP: XXX
     out << "HP: " << playerPtr->getHP() << std::endl;
     // Atk: XXX
