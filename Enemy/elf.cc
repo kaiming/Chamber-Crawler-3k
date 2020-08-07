@@ -11,6 +11,10 @@ Elf::Elf() : Character{140, 30, 10} {
 
 }
 
+std::string Elf::getRace() const {
+    return "Elf";
+}
+
 bool Elf::getAttacked(Player & p) {
     return p.attack(*this);
 }

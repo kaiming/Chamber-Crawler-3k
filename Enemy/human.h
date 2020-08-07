@@ -2,6 +2,7 @@
 #define __HUMAN_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Drop 2 Normal Piles of Gold on Death
 
@@ -11,6 +12,7 @@ class Human : public Enemy {
     public:
         // Constructor
         Human();
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +22,6 @@ class Human : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

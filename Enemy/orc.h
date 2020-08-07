@@ -2,6 +2,7 @@
 #define __ORC_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Does 50% more damage to Goblins
 
@@ -11,6 +12,7 @@ class Orc : public Enemy {
     public:
         // Constructor
         Orc();
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +22,6 @@ class Orc : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

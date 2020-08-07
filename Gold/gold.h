@@ -12,6 +12,6 @@ class Gold {
         Gold(std::string type, int size);
         int getSize();
         std::string getType();
-}
+};
 
 #endif

@@ -47,6 +47,7 @@
     std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
     std::vector<std::string> potionsUsed;
 
+    std::shared_ptr<Player> playerPtr;
     int floorNum;
     bool merchantAgro;
 */
@@ -54,16 +55,34 @@
 Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
         std::shared_ptr<WalkableTile> player,
-        std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+        std::vector<std::shared_ptr<WalkableTile>> enemies,
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
+        std::shared_ptr<Player> playerPtr,
+        std::string race
 ) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
     
+    // Generate Player by given Race
+    if (race == "s") {
+        playerPtr = std::make_shared<Shade>();
+    } else if (race == "d") {
+        playerPtr = std::make_shared<Drow>();
+    } else if (race == "v") {
+        playerPtr = std::make_shared<Vampire>();
+    } else if (race == "g") {
+        playerPtr = std::make_shared<Goblin>();
+    } else if (race == "t") {
+        playerPtr = std::make_shared<Troll>();
+    }
+
     // First need to identify which tiles are a part of which chamber
     assignChambers();
     
     // If not filled, generate floor pieces
-    if (!filled[floorNum]) {
+    if (!filled[floorNum - 1]) {
         generateFloor();
+    } else {
+        // If generated, store player into given tile
+        player.setOccupant(playerPtr);
     }
 
 }
@@ -93,19 +112,9 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first];
     } else if (direction == "so") {
         // so = South/Down
-        std::pair current = package.getCoord();
-
-        // Check if in bounds
-        if (current.second + 1 >= floors[floorNum-1][0].size()) {
-            return nullptr;
-        }
-
-        destination = floors[floorNum-1][current.first][current.second + 1];
-    } else if (direction == "ea") {
-        // ea = East/Right
         std::pair current = package.getCoord();
 
         // Check if in bounds
@@ -113,7 +122,17 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second];
+        destination = floors[floorNum-1][current.second + 1][current.first];
+    } else if (direction == "ea") {
+        // ea = East/Right
+        std::pair current = package.getCoord();
+
+        // Check if in bounds
+        if (current.first + 1 >= floors[floorNum-1][0].size()) {
+            return nullptr;
+        }
+
+        destination = floors[floorNum-1][current.second][current.first + 1];
     } else if (direction == "we") {
         // we = West/Left
         std::pair current = package.getCoord();
@@ -123,7 +142,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second];
+        destination = floors[floorNum-1][current.second][current.first - 1];
     } else if (direction == "ne") { // ----------------------------------------------------------------------
         // ne = North East/Right and Up
         std::pair current = package.getCoord();
@@ -133,7 +152,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first + 1];
     } else if (direction == "nw") {
         // nw = North West/Left and Up 
         std::pair current = package.getCoord();
@@ -143,7 +162,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first - 1];
     } else if (direction == "se") {
         // se = South East/Right and Down
         std::pair current = package.getCoord();
@@ -153,7 +172,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second + 1];
+        destination = floors[floorNum-1][current.second + 1][current.first + 1];
     } else if (direction == "sw") {
         // sw = South West/Left and Down
         std::pair current = package.getCoord();
@@ -163,7 +182,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second + 1];
+        destination = floors[floorNum-1][current.second + 1][current.first - 1];
     } else {
         // Invalid direction
         return nullptr;
@@ -603,24 +622,23 @@ void Board::generateFloor() {
     int pChamber = std::rand() % chambers.size();
     int tile = std::rand() % chambers[pChamber].size();
 
-        // Insert Player
-    chambers[pChamber][tile].setOccupant(); // NEED A WAY TO DETERMINE WHICH PLAYER TYPE TO PLACE INSIDE
+    // Insert Player
+    chambers[pChamber][tile].setOccupant(playerPtr);
     player = chambers[pChamber][tile];
 
 
     // Generate exit stairs
-    int chamber = pChamber;
+    int chamber;
 
     // Ensure exit stairs are not in the same chamber as the player
-    while (chamber == pChamber) {
+    do {
         chamber = std::rand() % chambers.size();
-    }
+    } while (chamber == pChamber);
 
     tile = std::rand() % chambers[chamber].size();
 
         // Insert exit stairs
     chambers[chamber][tile].setExit(true);
-
 
 
     // Generate 10 Potions

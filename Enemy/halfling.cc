@@ -11,6 +11,10 @@ Halfling::Halfling() : Character{100, 15, 20} {
 
 }
 
+std::string Halfling::getRace() const {
+    return "Halfling";
+}
+
 bool Halfling::getAttacked(Player & p) {
     return p.attack(*this);
 }

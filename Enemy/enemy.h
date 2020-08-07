@@ -22,6 +22,6 @@ class Enemy : public Character {
         virtual bool attack(Goblin & g = 0;
 
 
-}
+};
 
 #endif

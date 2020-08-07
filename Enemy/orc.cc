@@ -11,6 +11,10 @@ Orc::Orc() : Character{180, 30, 25} {
 
 }
 
+std::string Orc::getRace() const {
+    return "Orc";
+}
+
 bool Orc::getAttacked(Player & p) {
     return p.attack(*this);
 }

@@ -2,6 +2,7 @@
 #define __DWARF_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Vampires lose 5 hp instead of gaining when attacking Dwarves
 
@@ -11,6 +12,8 @@ class Dwarf : public Enemy {
     public:
         // Constructor
         Dwarf();
+        virtual std::string getRace() const override;
+
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +23,6 @@ class Dwarf : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

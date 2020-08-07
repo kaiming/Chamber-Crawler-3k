@@ -22,6 +22,6 @@ class DragonHoard: public Gold {
         void setDragonTile(std::shared_ptr<WalkableTile> tile);
 
 
-}
+};
 
 #endif
