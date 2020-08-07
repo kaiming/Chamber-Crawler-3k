@@ -38,6 +38,8 @@ class Board {
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
         std::vector<std::string> potionsUsed;
 
+        std::shared_ptr<Player> playerPtr;
+        std::string race;
         int floorNum;
         bool merchantAgro;
 
@@ -50,7 +52,8 @@ class Board {
         bool filled, 
         std::shared_ptr<WalkableTile> player,
         std::vector<std::shared_ptr<WalkableTile>> enemies,
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
+        std::string race
 );
         
         int getFloorNum() const;

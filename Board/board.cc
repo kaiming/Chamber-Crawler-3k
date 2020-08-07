@@ -47,6 +47,8 @@
     std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
     std::vector<std::string> potionsUsed;
 
+    std::shared_ptr<Player> playerPtr;
+    std::string race;
     int floorNum;
     bool merchantAgro;
 */
@@ -54,10 +56,24 @@
 Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
         std::shared_ptr<WalkableTile> player,
-        std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
-) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
+        std::vector<std::shared_ptr<WalkableTile>> enemies,
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
+        std::string race
+) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, race{race}, floorNum{1} {
     
+    // Generate Player by given Race
+    if (race == "s") {
+        playerPtr = std::make_shared<Shade>();
+    } else if (race == "d") {
+        playerPtr = std::make_shared<Drow>();
+    } else if (race == "v") {
+        playerPtr = std::make_shared<Vampire>();
+    } else if (race == "g") {
+        playerPtr = std::make_shared<Goblin>();
+    } else if (race == "t") {
+        playerPtr = std::make_shared<Troll>();
+    }
+
     // First need to identify which tiles are a part of which chamber
     assignChambers();
     
@@ -603,24 +619,23 @@ void Board::generateFloor() {
     int pChamber = std::rand() % chambers.size();
     int tile = std::rand() % chambers[pChamber].size();
 
-        // Insert Player
-    chambers[pChamber][tile].setOccupant(); // NEED A WAY TO DETERMINE WHICH PLAYER TYPE TO PLACE INSIDE
+    // Insert Player
+    chambers[pChamber][tile].setOccupant(playerPtr);
     player = chambers[pChamber][tile];
 
 
     // Generate exit stairs
-    int chamber = pChamber;
+    int chamber;
 
     // Ensure exit stairs are not in the same chamber as the player
-    while (chamber == pChamber) {
+    do {
         chamber = std::rand() % chambers.size();
-    }
+    } while (chamber == pChamber);
 
     tile = std::rand() % chambers[chamber].size();
 
         // Insert exit stairs
     chambers[chamber][tile].setExit(true);
-
 
 
     // Generate 10 Potions
