@@ -13,6 +13,7 @@ class Dragon : public Enemy {
         Dragon();
 
         const bool getState();
+        void setState(bool state);
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;

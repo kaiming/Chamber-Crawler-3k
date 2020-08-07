@@ -44,7 +44,7 @@
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
     std::shared_ptr<WalkableTile> player;
     std::vector<std::shared_ptr<WalkableTile>> enemies;
-    std::vector<std::shared_ptr<WalkableTile>> dragons;
+    std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
     std::vector<std::string> potionsUsed;
 
     int floorNum;
@@ -55,8 +55,8 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
         std::vector<bool> filled, 
         std::shared_ptr<WalkableTile> player,
         std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragons;
-) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragons{dragons}, floorNum{1} {
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
     
     if (!filled[floorNum]) {
         generateFloor();
@@ -64,7 +64,7 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
 
 }
 
-int Board::getFloorNum() {
+int Board::getFloorNum() const {
     return floorNum;
 }
 
@@ -155,11 +155,11 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair current = package.getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
+        if (current.first - 1 < 0 || current.second + 1 >= floors[floorNum-1].size()) {
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.first - 1][current.second + 1];
     } else {
         // Invalid direction
         return nullptr;
@@ -252,7 +252,7 @@ int Board::movePlayer(std::string direction) {
         std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
         
         // Loop over gold vector
-        for (auto it = gold.begin(); it != gold.end(); ++i) {
+        for (auto it = gold.begin(); it != gold.end(); ++it) {
             // Check if Dragon Hoard
             if (std::dynamic_pointer_cast<DragonHoard>((*it)) {
                 // Check if dragon is dead
@@ -299,7 +299,7 @@ void Board::attackEnemey(std::string direction) {
         }
 
         // Begin attack sequence and store resulting enemy state
-        bool EnemyKilled = target->getOccupant()->getAttacked(*this);
+        bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant()));
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -309,9 +309,9 @@ void Board::attackEnemey(std::string direction) {
                 // Dragon Type, drop nothing
                 
                 // Remove this dragon from dragons
-                for (auto it = dragons.begin(); it != dragons.end(); ++it) {
-                    if (it->getCoord() == target->getCoord()) {
-                        dragons.erase(it); 
+                for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
+                    if ((*it)->getDragon() == target->getOccupant()) {
+                        (*it)->getDragon()->setState(false);
                     }
                 }
 
@@ -320,7 +320,8 @@ void Board::attackEnemey(std::string direction) {
                 // Check if target is human or merchant
                 if (std::dynamic_pointer_cast<Human>(target->getOccupant())) {
                     // Human type, drop 2 Normal Piles
-                    target->setGold(std::make_shared<Gold>("Normal Pile", 4));
+                    target->setGold(std::make_shared<Gold>("Normal Pile", 2)):
+                    target->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
                 } else if (std::dynamic_pointer_cast<Merchant>(target->getOccupant())) {
                     // Merchant Type, drop Merchant Hoard
@@ -387,6 +388,7 @@ bool Board::moveEnemies() {
                         // Occupied by gold, loop again
                         // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                         destination = nullptr;
+                        continue;
                     }
 
                     // Check for potions
@@ -394,19 +396,19 @@ bool Board::moveEnemies() {
                         // Occupied by potion, loop again
                         // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
                         destination = nullptr;
+                        continue;
                     }
 
                     // Check for exit
                     if (destination->isExit()) {
                         // Occupied by exit stairs, loop again
                         destination = nullptr; 
+                        continue;
                     }
                 }
 
                 // Swap Merchant pointers
-                destination->setOccupant((*it)->getOccupant);
-                (*it)->setOccupant(nullptr);
-                (*it) = destination; // is this legal LOL
+                (*it) = (*it).move(destination);
 
                 // End Merchant turn
                 continue;
@@ -423,7 +425,7 @@ bool Board::moveEnemies() {
 
         if (distance == 1) {
             // 1 tile away, attack player
-            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
 
             if (killed) {
                 // Player is dead, game is over
@@ -459,6 +461,7 @@ bool Board::moveEnemies() {
                     // Occupied by gold, loop again
                     // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                     destination = nullptr;
+                    continue;
                 }
 
                 // Check for potions
@@ -466,19 +469,20 @@ bool Board::moveEnemies() {
                     // Occupied by potion, loop again
                     // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
                     destination = nullptr;
+                    continue;
                 }
 
                 // Check for exit
                 if (destination->isExit()) {
                     // Occupied by exit stairs, loop again
                     destination = nullptr; 
+                    continue;
                 }
             }
 
             // Swap Enemy pointers
-            destination->setOccupant((*it)->getOccupant);
-            (*it)->setOccupant(nullptr);
-            (*it) = destination; // is this legal LOL
+            (*it) = (*it).move(destination);
+
 
         }
 
@@ -487,63 +491,20 @@ bool Board::moveEnemies() {
     } // end of Enemies loop
 
     // Iterate through dragons to see if they attack the player
-    for (auto it = dragons.begin(); it != dragons.end(); ++it) {
+    for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = (*it)->getCoord();
+        std::pair<int, int> eCoord = (*it)->getDragonTile->getCoord();
 
-        double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2)));
+        double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
-        // Check dragon hoard distance from player
-        // Find the dragon hoard 
-        std:shared_ptr<WalkableTile> dragonHoard;
-
-        for (int i = 0; i < 8; i++) {
-            if (i == 0) {
-                dragonHoard = validDest(*it, "no");
-            } else if (i == 1) {
-                dragonHoard = validDest(*it, "so");
-            } else if (i == 2) {
-                dragonHoard = validDest(*it, "ea");
-            } else if (i == 3) {
-                dragonHoard = validDest(*it, "we");
-            } else if (i == 4) {
-                dragonHoard = validDest(*it, "ne");
-            } else if (i == 5) {
-                dragonHoard = validDest(*it, "nw");
-            } else if (i == 6) {
-                dragonHoard = validDest(*it, "se");
-            } else if (i == 7) {
-                dragonHoard = validDest(*it, "sw");
-            }
-
-            // Check if direction has the hoard
-            if (dragonHoard) {
-                // Get gold reference
-                std::vector<std::shared_ptr<Gold>>& gold = dragonHoard->getGold();
-                bool found = false;
-
-                // Iterate over gold to check for DragonHoard
-                for (auto it = gold.begin(); it != gold.end(); ++it) {
-                    if (std::dynamic_pointer_cast<DragonHoard>(*it)) { 
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    break;
-                }
-            }
-        } 
-
-        std::pair<int, int> hoardCoord = dragonHoard->getCoord();
+        std::pair<int, int> hoardCoord = (*it)->getCoord();
         double hoardDistance = std::floor(std::sqrt(std::pow((hoardCoord.first - eCoord.first), 2) + std::pow((hoardCoord.second - eCoord.second), 2)));
 
 
         if (distance == 1 || hoardDistance == 1) {
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = player->getOccupant()->getAttacked((*it)->getOccupant());
+            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
 
             if (killed) {
                 // Player is dead, game is over
@@ -646,6 +607,7 @@ void Board::generateFloor() {
     chambers[chamber][tile].setExit(true);
 
 
+
     // Generate 10 Potions
     for (int i = 0; i < 10; i++) {
         // Generate type
@@ -689,7 +651,7 @@ void Board::generateFloor() {
             temp = std::make_shared<Gold>("Small", 1);
         } else if (type == 7) {
             temp = std::make_shared<DragonHoard>();
-            dragons.emplace_back(temp->getDragon()); 
+            dragonHoards.emplace_back(temp); 
         }
 
         // Generate location (make sure not occupied)
@@ -697,9 +659,43 @@ void Board::generateFloor() {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
         } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        
 
         // Place type at location
         chambers[chamber][tile].setGold(temp);
+
+        // If dragonHoard type, place Dragon around it
+        if (type == 7) {
+            // Allocate dragon spawn destination
+            std:shared_ptr<WalkableTile> destination == nullptr;
+
+            // Generate direction around DragonHoard
+            do {
+                int rng = std::rand() % 8;
+
+                if (rng == 0) {
+                    destination = validDest(chambers[chamber][tile], "no");
+                } else if (rng == 1) {
+                    destination = validDest(chambers[chamber][tile]), "so");
+                } else if (rng == 2) {
+                    destination = validDest(chambers[chamber][tile], "ea");
+                } else if (rng == 3) {
+                    destination = validDest(chambers[chamber][tile], "we");
+                } else if (rng == 4) {
+                    destination = validDest(chambers[chamber][tile], "ne");
+                } else if (rng == 5) {
+                    destination = validDest(chambers[chamber][tile], "nw");
+                } else if (rng == 6) {
+                    destination = validDest(chambers[chamber][tile], "se");
+                } else if (rng == 7) {
+                    destination = validDest(chambers[chamber][tile], "sw");
+                }
+            } while (destination == nullptr);
+
+            // Place dragon at location and store in DragonHoard
+            destination.setOccupant(temp->getDragon());
+            temp.setDragonTile(destination);
+        }
     }
 
 

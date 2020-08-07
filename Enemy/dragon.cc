@@ -19,6 +19,10 @@ bool Dragon::getState() {
     return isAlive;
 }
 
+void Dragon::setState(bool state) {
+    isAlive = state;
+}
+
 bool Dragon::getAttacked(Player & p) {
     bool Killed = p.attack(*this);
 
