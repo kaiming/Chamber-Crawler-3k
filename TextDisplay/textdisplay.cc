@@ -18,7 +18,7 @@
 #include "potion.h"
 
 
-void TextDisplay::drawFloor(std::ostream& out, Board& board) {
+void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action) {
     // Print out floor diagram
 
     // Iterate through the current floor
@@ -123,5 +123,5 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board) {
     // Def: XXX
     out << "Def: " << playerPtr->getDef() << std::endl;
     // Action:
-
+    out << "Action: " << action << std::endl;
 } 

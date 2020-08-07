@@ -9,7 +9,7 @@ class TextDisplay {
 
     public:
 
-    void drawFloor(std::ostream& out, Board& board); 
+    void drawFloor(std::ostream& out, Board& board, std::string action); 
 
 }; 
 
