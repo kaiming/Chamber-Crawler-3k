@@ -112,19 +112,9 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first];
     } else if (direction == "so") {
         // so = South/Down
-        std::pair current = package.getCoord();
-
-        // Check if in bounds
-        if (current.second + 1 >= floors[floorNum-1][0].size()) {
-            return nullptr;
-        }
-
-        destination = floors[floorNum-1][current.first][current.second + 1];
-    } else if (direction == "ea") {
-        // ea = East/Right
         std::pair current = package.getCoord();
 
         // Check if in bounds
@@ -132,7 +122,17 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second];
+        destination = floors[floorNum-1][current.second + 1][current.first];
+    } else if (direction == "ea") {
+        // ea = East/Right
+        std::pair current = package.getCoord();
+
+        // Check if in bounds
+        if (current.first + 1 >= floors[floorNum-1][0].size()) {
+            return nullptr;
+        }
+
+        destination = floors[floorNum-1][current.second][current.first + 1];
     } else if (direction == "we") {
         // we = West/Left
         std::pair current = package.getCoord();
@@ -142,7 +142,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second];
+        destination = floors[floorNum-1][current.second][current.first - 1];
     } else if (direction == "ne") { // ----------------------------------------------------------------------
         // ne = North East/Right and Up
         std::pair current = package.getCoord();
@@ -152,7 +152,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first + 1];
     } else if (direction == "nw") {
         // nw = North West/Left and Up 
         std::pair current = package.getCoord();
@@ -162,7 +162,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second - 1];
+        destination = floors[floorNum-1][current.second - 1][current.first - 1];
     } else if (direction == "se") {
         // se = South East/Right and Down
         std::pair current = package.getCoord();
@@ -172,7 +172,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first + 1][current.second + 1];
+        destination = floors[floorNum-1][current.second + 1][current.first + 1];
     } else if (direction == "sw") {
         // sw = South West/Left and Down
         std::pair current = package.getCoord();
@@ -182,7 +182,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
             return nullptr;
         }
 
-        destination = floors[floorNum-1][current.first - 1][current.second + 1];
+        destination = floors[floorNum-1][current.second + 1][current.first - 1];
     } else {
         // Invalid direction
         return nullptr;
