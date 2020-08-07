@@ -47,19 +47,20 @@
     std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
     std::vector<std::string> potionsUsed;
 
+    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
     std::shared_ptr<Player> playerPtr;
     int floorNum;
     bool merchantAgro;
 */
 
-Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
+Board(
+        std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
-        std::shared_ptr<WalkableTile> player,
+        std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
         std::vector<std::shared_ptr<WalkableTile>> enemies,
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
-        std::shared_ptr<Player> playerPtr,
         std::string race
-) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
+) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, player{playerSpawns[0]}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
     
     // Generate Player by given Race
     if (race == "s") {
@@ -268,6 +269,21 @@ void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::s
     
 }
 
+void Board::changeFloor() {
+    // Change Floor, floorNum has already been updated
+
+    // Check if floors[floorNum-1] is populated
+    if (filled[floorNum-1]) {
+        // Floor has been pre-generated
+        player = playerSpawns[floorNum-1];
+        player.setOccupant(playerPtr);
+    } else {
+        // Floor has not been pre-generated
+        generateFloor();
+    }
+
+}
+
 //--------------------------------------------------------------------------------
 
 int Board::movePlayer(std::string direction) {
@@ -287,6 +303,7 @@ int Board::movePlayer(std::string direction) {
         } else {
             // Proceed to next floor
             floorNum += 1;
+            changeFloor();
             return 1;
         }
         

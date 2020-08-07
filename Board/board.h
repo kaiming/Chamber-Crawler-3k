@@ -31,6 +31,7 @@ class DragonHoard;
 
 class Board {
     private:
+        std::vector<bool> filled;
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
         std::shared_ptr<WalkableTile> player;
@@ -38,6 +39,7 @@ class Board {
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
         std::vector<std::string> potionsUsed;
 
+        std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
         std::shared_ptr<Player> playerPtr;
         int floorNum;
         bool merchantAgro;
@@ -45,13 +47,15 @@ class Board {
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
         void assignChambers();
         void tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
+        void changeFloor();
 
     public:
-        Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
-            bool filled, 
-            std::shared_ptr<WalkableTile> player,
+        Board(
+            std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
+            std::vector<bool> filled;
+            std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
             std::vector<std::shared_ptr<WalkableTile>> enemies,
-            std::vector<std::shared_ptr<WalkableTile>> dragonHoards
+            std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
             std::string race
         );
         
