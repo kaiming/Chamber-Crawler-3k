@@ -153,3 +153,9 @@ bool Drow::attack(Halfling& half) {
 void Drow::usePotion(std::shared_ptr<Potion> p) {
     p->applyEffets(*this, 1.5);
 }
+
+
+// Drow::getRace() returns Drow as a string
+std::string Drow::getRace() const {
+    return "Drow";
+}

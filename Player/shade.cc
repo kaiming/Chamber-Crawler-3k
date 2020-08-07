@@ -147,3 +147,9 @@ bool Shade::attack(Halfling& half) {
     // Defender alive otherwise
     return false;
 }
+
+
+// Shade::getRace() returns Drow as a string
+std::string Shade::getRace() const {
+    return "Shade";
+}

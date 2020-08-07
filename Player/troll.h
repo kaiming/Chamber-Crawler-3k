@@ -16,6 +16,9 @@ class Troll : public Player {
     bool attack(Merchant& m) override;
     bool attack(Dragon& drag) override;
     bool attack(Halfling& half) override;
+
+    // returns the race of the character as a string
+    std::string getRace() const override;
 };
 
 #endif

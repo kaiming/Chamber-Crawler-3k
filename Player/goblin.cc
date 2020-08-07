@@ -161,3 +161,9 @@ bool Goblin::attack(Halfling& half) {
     // Defender alive otherwise
     return false;
 }
+
+
+// Goblin::getRace() returns Drow as a string
+std::string Goblin::getRace() const {
+    return "Goblin";
+}

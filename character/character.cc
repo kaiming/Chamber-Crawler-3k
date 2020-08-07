@@ -9,10 +9,6 @@ Character::Character(double HP, double atk, double def) :
 {}
 
 
-// destructor (does nothing)
-Character::~Character() {}
-
-
 // accessors and mutators
 double Character::getHP() const {
     return HP;
