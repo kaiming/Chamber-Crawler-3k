@@ -224,35 +224,48 @@ void Board::assignChambers() {
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
     
     // Store current tile
-    floors[floorNum-1][coords.first][coords.second].setRoom(floorNum);
-    chamber.emplace_back(floors[floorNum-1][coords.first][coords.second]); 
+    floors[floorNum-1][coords.second][coords.first].setRoom(floorNum);
+    chamber.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
 
 
     // Check all directions around for matching unidentified chamber floor tiles
 
     // Check to the right
-    std::shared_ptr<WalkableTile> right = floors[floorNum-1][coords.first+1][coords.second];
-    if (std::dynamic_pointer_cast<WalkableTile>(right) && (right)->getType() == '.' && (right)->getRoom() < 0) {
-        tileDFS(right->getCoord(), floorNum, chamber);
+    if (coords.first + 1 < floors[floorNum-1][coords.second].size()) {
+        std::shared_ptr<WalkableTile> right = floors[floorNum-1][coords.second][coords.first+1];
+        
+        if (std::dynamic_pointer_cast<WalkableTile>(right) && (right)->getType() == '.' && (right)->getRoom() < 0) {
+            tileDFS(right->getCoord(), floorNum, chamber);
+        }
     }
 
     // Check below
-    std::shared_ptr<WalkableTile> down = floors[floorNum-1][coords.first][coords.second+1];
-    if (std::dynamic_pointer_cast<WalkableTile>(down) && (down)->getType() == '.' && (down)->getRoom() < 0) {
-        tileDFS(down->getCoord(), floorNum, chamber);
+    if (coords.second + 1 < floors[floorNum-1].size()) {
+        std::shared_ptr<WalkableTile> down = floors[floorNum-1][coords.second+1][coords.first];
+        
+        if (std::dynamic_pointer_cast<WalkableTile>(down) && (down)->getType() == '.' && (down)->getRoom() < 0) {
+            tileDFS(down->getCoord(), floorNum, chamber);
+        }
     }
-
+    
     // Check to the left
-    std::shared_ptr<WalkableTile> left = floors[floorNum-1][coords.first-1][coords.second];
-    if (std::dynamic_pointer_cast<WalkableTile>(left) && (left)->getType() == '.' && (left)->getRoom() < 0) {
-        tileDFS(left->getCoord(), floorNum, chamber);
+    if (coords.first - 1 >= 0) {
+        std::shared_ptr<WalkableTile> left = floors[floorNum-1][coords.second][coords.first-1];
+    
+        if (std::dynamic_pointer_cast<WalkableTile>(left) && (left)->getType() == '.' && (left)->getRoom() < 0) {
+            tileDFS(left->getCoord(), floorNum, chamber);
+        }
     }
 
     // Check above
-    std::shared_ptr<WalkableTile> above = floors[floorNum-1][coords.first+1][coords.second];
-    if (std::dynamic_pointer_cast<WalkableTile>(above) && (above)->getType() == '.' && (above)->getRoom() < 0) {
-        tileDFS(above->getCoord(), floorNum, chamber);
+    if (coords.second -1 >= 0) {
+        std::shared_ptr<WalkableTile> above = floors[floorNum-1][coords.second - 1][coords.first];
+     
+        if (std::dynamic_pointer_cast<WalkableTile>(above) && (above)->getType() == '.' && (above)->getRoom() < 0) {
+            tileDFS(above->getCoord(), floorNum, chamber);
+        }
     }
+    
 }
 
 //--------------------------------------------------------------------------------
