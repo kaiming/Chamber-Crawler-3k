@@ -147,3 +147,9 @@ bool Troll::attack(Halfling& half) {
     // Defender alive otherwise
     return false;
 }
+
+
+// Troll::getRace() returns Drow as a string
+std::string Troll::getRace() const {
+    return "Troll";
+}

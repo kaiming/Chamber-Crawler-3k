@@ -20,6 +20,9 @@ class Drow : public Player {
 
     // override usePotion method to apply 1.5 multiplier
     void usePotion(std::shared_ptr<Potion> p) override;
+
+    // returns the race of the character as a string
+    std::string getRace() const override;
 };
 
 #endif

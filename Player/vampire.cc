@@ -165,3 +165,9 @@ bool Vampire::attack(Halfling& half) {
     // Defender alive otherwise
     return false;
 }
+
+
+// Vampire::getRace() returns Drow as a string
+std::string Vampire::getRace() const {
+    return "Vampire";
+}
