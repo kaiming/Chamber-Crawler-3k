@@ -2,6 +2,7 @@
 #define __MERCHANT_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: None
 
@@ -11,6 +12,7 @@ class Merchant : public Enemy {
     public:
         // Constructor
         Merchant();
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +22,6 @@ class Merchant : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

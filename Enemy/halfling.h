@@ -2,6 +2,7 @@
 #define __HALFLING_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Causes Player to have 50% attack miss
 
@@ -11,6 +12,7 @@ class Halfling : public Enemy {
     public:
         // Constructor
         Halfling();
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +22,6 @@ class Halfling : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

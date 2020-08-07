@@ -11,6 +11,10 @@ Merchant::Merchant() : Character{30, 70, 5} {
 
 }
 
+std::string Merchant::getRace() const {
+    return "Merchant";
+}
+
 bool Merchant::getAttacked(Player & p) {
     return p.attack(*this);
 }

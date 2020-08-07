@@ -2,6 +2,7 @@
 #define __DRAGON_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Guards Dragon Hoards
 
@@ -14,6 +15,7 @@ class Dragon : public Enemy {
 
         const bool getState();
         void setState(bool state);
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -23,6 +25,6 @@ class Dragon : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

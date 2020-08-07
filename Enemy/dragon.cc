@@ -23,6 +23,10 @@ void Dragon::setState(bool state) {
     isAlive = state;
 }
 
+std::string Dragon::getRace() const {
+    return "Dragon";
+}
+
 bool Dragon::getAttacked(Player & p) {
     bool Killed = p.attack(*this);
 

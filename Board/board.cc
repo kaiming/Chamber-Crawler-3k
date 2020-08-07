@@ -48,7 +48,6 @@
     std::vector<std::string> potionsUsed;
 
     std::shared_ptr<Player> playerPtr;
-    std::string race;
     int floorNum;
     bool merchantAgro;
 */
@@ -58,8 +57,9 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
         std::shared_ptr<WalkableTile> player,
         std::vector<std::shared_ptr<WalkableTile>> enemies,
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
+        std::shared_ptr<Player> playerPtr,
         std::string race
-) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, race{race}, floorNum{1} {
+) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
     
     // Generate Player by given Race
     if (race == "s") {
@@ -78,8 +78,11 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
     assignChambers();
     
     // If not filled, generate floor pieces
-    if (!filled[floorNum]) {
+    if (!filled[floorNum - 1]) {
         generateFloor();
+    } else {
+        // If generated, store player into given tile
+        player.setOccupant(playerPtr);
     }
 
 }

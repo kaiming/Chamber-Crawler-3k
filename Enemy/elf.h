@@ -2,6 +2,7 @@
 #define __ElF_H__
 
 #include "enemy.h"
+#include <string>
 
 // SPECIAL EFFECT: Gets two attacks against every race except drow
 
@@ -11,6 +12,7 @@ class Elf : public Enemy {
     public:
         // Constructor
         Elf();
+        virtual std::string getRace() const override;
 
         virtual bool getAttacked(Player & p) override;
         virtual bool attack(Shade & s) override;
@@ -20,6 +22,6 @@ class Elf : public Enemy {
         virtual bool attack(Goblin & g) override;
 
 
-}
+};
 
 #endif

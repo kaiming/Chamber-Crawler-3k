@@ -11,6 +11,10 @@ Dwarf::Dwarf() : Character{100, 20, 30} {
 
 }
 
+std::string Dwarf::getRace() const {
+    return "Dwarf";
+}
+
 bool Dwarf::getAttacked(Player & p) {
     return p.attack(*this);
 }

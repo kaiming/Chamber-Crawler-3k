@@ -11,6 +11,10 @@ Human::Human() : Character{140, 20, 20} {
 
 }
 
+std::string Human::getRace() const {
+    return "Human";
+}
+
 bool Human::getAttacked(Player & p) {
     return p.attack(*this);
 }
