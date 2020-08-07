@@ -16,9 +16,10 @@
 void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<bool>& filled) {
     std::shared_ptr<Factory> tileType;
     std::string line;
-    int floorNum {0}, rowNum {0};
+    int floorNum {-1}, rowNum {0};
     // count of the number of borders, '|' chars, and '-' chars respectively
     int borderCount {0}, vert {0}, horiz {0};
+    bool isStart {false};
 
     while (true) {
         std::getline(in, line);
@@ -33,22 +34,55 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
         }
 
         // case of the start of a new floor
-        if (borderCount == 2) {
-            ++floorNum;
+        if (!isStart) {
+            bool valid {true};
             borderCount = 0;
             
-            // keep discarding spaces between floor layouts
-            while (line == "") {
-                std::getline(in, line);
+            // check if next line is a valid start of a floor
+            for (int counter {0}; counter < static_cast<int>(line.size()); ++counter) {
+                // MIN REQUIREMENT OF A FLOOR DIMENSION IS WIDTH THREE?
+                if (static_cast<int>(line.size()) < 3) {
+                    valid = false;
+                    break;
+                }
+
+                // if the first and last chars are not '|'
+                if ((counter == 0 || counter == static_cast<int>(line.size()) - 1) && line[counter] != '|') {
+                    valid = false;
+                    break;
+                } 
+
+                // if the chars inbetween first and last are not '-'
+                if ((counter > 0 || counter < static_cast<int>(line.size()) - 1) && line[counter] != '-') {
+                    valid = false;
+                    break;
+                }
+            }
+
+            // if line is a valid start to a floor then continueously read each line till the end of next floor
+            if (valid) {
+                isStart = true;
+
+                // push in a new floor grid
+                std::vector<std::vector<std::shared_ptr<Tile>>> grid;
+                floors.push_back(grid);
+                ++floorNum;
+            } else {
+                // if not a valid line then ignore and continue reading the next line
+                continue;
             }
         }
 
         std::istringstream ssl {line};
+        char type;
         int colNum {0};
+
+        // push in a new row
+        std::vector<std::shared_ptr<Tile>> row;
+        floors[floorNum].push_back(row);
 
         // grab each character and create the appropriate Tile
         while (true) {
-            char type;
             ssl >> type;
 
             // break clause
@@ -59,6 +93,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         ++borderCount;
                         vert = 0;
                         horiz = 0;
+                        if (borderCount == 2) isStart = false;
                         break;
                     }
                 }
@@ -68,6 +103,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
             }
 
             // x is colNum and y is rowNum
+            // if char is of type nonwalkable tile
             if (type == '|' || type == '-' || type == ' ') {
                 switch (type) {
                     case ('|'):
@@ -76,27 +112,42 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         tileType = temp;
 
                         ++vert;
+                        break;
                     }
 
                     case ('-'):
                     {
-                        auto temp {std::make_shared<NonWalkableFactory>('-', colNum, rowNum)};
+                        auto temp {std::make_shared<NonWalkableFactory>()};
                         tileType = temp;
 
                         ++horiz;
+                        break;
                     }
 
                     case (' '):
                     {
-                        auto temp {std::make_shared<NonWalkableFactory>(' ', colNum, rowNum)};
+                        auto temp {std::make_shared<NonWalkableFactory>()};
                         tileType = temp;
+                        break;
                     }
 
                     default:
-                        ++colNum;
+                        break;
                 }   
 
+                // make tile
+                auto tempTile {tileType->makeTile(type, colNum, rowNum)};
+                // add to floor
+                floors[floorNum][rowNum].push_back(tempTile);
+            } else { // else char is a walkable tile and need to check for pregeneration
+                switch (type) {
+
+                }
+
+        
             }
+
+            ++colNum;
         }
     }
 }
