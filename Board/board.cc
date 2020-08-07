@@ -58,6 +58,10 @@ Board(std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors,
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
 ) : floors{floors}, filled{filled}, player{player}, enemies{enemies}, dragonHoards{dragonHoards}, floorNum{1} {
     
+    // First need to identify which tiles are a part of which chamber
+    assignChambers();
+    
+    // If not filled, generate floor pieces
     if (!filled[floorNum]) {
         generateFloor();
     }
@@ -174,6 +178,28 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
 
     return nullptr;
 
+}
+
+void Board::assignChambers() {
+    // Iterate through floor
+    for (auto it_y = floors[floorNum-1].begin(); it_y != floors[floorNum-1].end(); ++it_y) {
+        for (auto it_x = it_y->begin(); it_x != it_y->end(); ++it_x) {
+            // Check if walkable tile and unidentified chamber floor
+            if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && (*it_x)->getRoom() < 0) {
+                // Begin depth first search algorithm, call helper function
+                // Determine current chamber
+                int floorNum = chambers.size();
+                std::vector<std::shared_ptr<WalkableTile>> chamber; 
+                
+                // Enter recursive function
+                tileDFS((*it_x)->getCoord(), floorNum, chamber);
+                
+                // Store current chamber
+                chambers.emplace_back(chamber);
+            } 
+
+        }
+    } // Finished identifying tiles to their chambers
 }
 
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
@@ -383,6 +409,12 @@ bool Board::moveEnemies() {
                         destination = validDest(*it, "sw");
                     }
 
+                    // Check in chamber (not a doorway or hallway)
+                    if (destination.getRoom() < 0) {
+                        destination = nullptr;
+                        continue;
+                    }
+
                     // Check for gold
                     if (destination->getGold().size() != 0) {
                         // Occupied by gold, loop again
@@ -454,6 +486,12 @@ bool Board::moveEnemies() {
                     destination = validDest(*it, "se");
                 } else if (rng == 7) {
                     destination = validDest(*it, "sw");
+                }
+
+                // Check in chamber (not a doorway or hallway)
+                if (destination.getRoom() < 0) {
+                    destination = nullptr;
+                    continue;
                 }
 
                 // Check for gold
@@ -558,29 +596,6 @@ void Board::usePotion(std::string direction) {
 
 
 void Board::generateFloor() {
-    // First need to identify which tiles are a part of which chamber
-
-    // Iterate through floor
-    for (auto it_y = floors[floorNum-1].begin(); it_y != floors[floorNum-1].end(); ++it_y) {
-        for (auto it_x = it_y->begin(); it_x != it_y->end(); ++it_x) {
-            // Check if walkable tile and unidentified chamber floor
-            if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && (*it_x)->getRoom() < 0) {
-                // Begin depth first search algorithm, call helper function
-                // Determine current chamber
-                int floorNum = chambers.size();
-                std::vector<std::shared_ptr<WalkableTile>> chamber; 
-                
-                // Enter recursive function
-                tileDFS((*it_x)->getCoord(), floorNum, chamber);
-                
-                // Store current chamber
-                chambers.emplace_back(chamber);
-            } 
-
-        }
-    } // Finished identifying tiles to their chambers
-
-
     // Begin RNG piece generation
 
 
