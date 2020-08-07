@@ -38,12 +38,12 @@ bool isWalkable(char type) {
 
 
 // readFloorPlan helper (PUT IN A SEPARATE FILE LATER) 
-void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<bool>& filled) {
+void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<std::shared_ptr<WalkableTile>>& playerSpawns, std::vector<std::shared_ptr<WalkableTile>>& enemies, std::vector<std::shared_ptr<WalkableTile>>& dragonHoards, std::vector<bool>& filled) {
     std::shared_ptr<Factory> tileType;
     std::shared_ptr<WalkableFactory> walkable;
     std::shared_ptr<NonWalkableFactory> nonWalkable;
     // keep track of the generated dragonhoard to add dragon after
-    std::vector<std::pair<std::pair<int, int>, std::shared_ptr<DragonHoard>>> dragonHoards;
+    std::vector<std::pair<std::pair<int, int>, std::shared_ptr<DragonHoard>>> hoards;
     std::string line;
     int floorNum {-1}, rowNum {0};
     // count of the number of borders, '|' chars, and '-' chars respectively
@@ -262,11 +262,14 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
 
                     case ('9'):
                     {
-                        // dragon hoardj
+                        // dragon hoard
                         auto tempGold {std::make_shared<DragonHoard>()};
-                        dragonHoards.push_back(std::pair {std::pair {colNum, rowNum}, tempGold});
+                        hoards.push_back(std::pair {std::pair {colNum, rowNum}, tempGold});
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, tempPotion, {tempGold}, false)};
+
+                        dragonHoards.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -280,7 +283,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempDrag)};
                         dCoord = std::pair<int, int> {colNum, rowNum};
 
-                        for (auto& n : dragonHoards) {
+                        for (auto& n : hoards) {
                             gCoord = n.first;
 
                             // calc distance from drag 
@@ -297,6 +300,8 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                             break;
                         }
 
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -307,6 +312,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Human
                         auto tempHuman {std::make_shared<Human>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);                        
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -317,6 +325,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Dwarf
                         auto tempHuman {std::make_shared<Dwarf>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -327,6 +338,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Elf
                         auto tempHuman {std::make_shared<Elf>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -337,6 +351,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Orc
                         auto tempHuman {std::make_shared<Orc>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -347,6 +364,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Merchant
                         auto tempHuman {std::make_shared<Merchant>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
@@ -357,9 +377,30 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         // Halfling
                         auto tempHuman {std::make_shared<Halfling>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
+
+                        enemies.push_back(tempTile);
+
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
                         break;
+                    }
+
+                    case ('@'):
+                    {
+                        // player spawn
+                        auto tempPlayer {std::make_shared<Player>()}; // NOTE: GAVE PLAYER A DEFAULT CONSTRUCTOR INITIALIZES FIELDS TO 0 SINCE THE BOARD CONSTRUCTOR WILL REASSIGN THE OCCUPANT FIELD FOR PLAYER
+                        auto tempTile {tileType->makeTile(type, colNum, rowNum, tempPlayer)};
+                        
+                        // if the current floor has more than 1 @ symbol or none at all ------------------------------
+                        if (floorNum != static_cast<int>(playerSpawns.size())) {
+                            std::cerr << "Invalid number of players being spawned! Despawning ..." << std::endl;
+                            return; //NOTE: RETURN OR BREAK?
+                        }
+
+                        playerSpawns.push_back(tempTile);
+
+                        floors[floorNum][rowNum].push_back(tempTile);
+                        if (!filled[floorNum]) filled[floorNum] = true;
                     }
 
                     case ('\\'):
