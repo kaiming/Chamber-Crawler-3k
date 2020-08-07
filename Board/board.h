@@ -51,12 +51,12 @@ class Board {
 
     public:
         Board(
-            std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
-            std::vector<bool> filled;
-            std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
-            std::vector<std::shared_ptr<WalkableTile>> enemies,
-            std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
-            std::string race
+            std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors = {{{}}}, // NOTE: IDK IF THIS IS HOW TO GIVE A 3D VECTOR A DEFAULT VALUE
+            std::vector<bool> filled = {},
+            std::vector<std::shared_ptr<WalkableTile>> playerSpawns = {},
+            std::vector<std::shared_ptr<WalkableTile>> enemies = {},
+            std::vector<std::shared_ptr<WalkableTile>> dragonHoards = {},
+            std::string race = 0
         );
         
         int getFloorNum() const;

@@ -2,6 +2,8 @@
 #include "readPlan.h"
 #include "tile.h"
 #include "walkabletile.h"
+#include "board.h"
+#include "textdisplay.h"
 // add includes
 
 int main(int argc, char* argv[]) {
@@ -38,13 +40,56 @@ int main(int argc, char* argv[]) {
     // close file
     infile.close();
 
+    Board b;
+    TextDisplay td;
+
     // Ask player to enter one of the specified races or quit
-    std::string race {"s"};
+    std::string race;
 
     std::cout << "Welcome to ChamberCrawler3000, prepare to enter the unknown!" << std::endl;
-    std::cout << "Choose your character: Shade 's' (default), 
-    std::cout << "Choose your player: "
+    std::cout << "Choose your character: Shade 's' (default), Drow 'd', Vampire 'v', Goblin 'g', Troll 't'" << std::endl;
+    std::cout << "Enter here: ";
 
-    std::cin >> cmd;
+    std::cin >> race;
+    
+    while (race != "" || race != "s" || race != "d" || race != "v" || race != "g" || race != "t") {
+        std::cerr << "Invalid race" << std::endl;
+        std::cout << "Enter here: ";
+
+        if (std::cin.fail()) {
+            if (std::cin.eof()) return;
+
+            std::cin.clear();
+            std::cin.ignore();
+        }
+
+        std::cin >> race;
+    }
+
+    if (race == "q") {
+        return; // NOTE: MAYBE HAVEIT SO A NEW GAME STARTS??
+    } else if (race == "") { // default race
+        b = Board {floors, filled, playerSpawns, enemies, dragonHoards, "s"};
+    } else {
+        b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
+    }
+
+    td.drawFloor(std::cout, b, "The adventure begins");
+
+    std::string cmd;
+
+    while (true) {
+        std::cout << "Enter command: ";
+        std::cin >> cmd;
+
+        // break clause
+        if (std::cin.fail()) {
+            if (std::cin.eof()) return;
+
+            // NOTE: ELSE DO SMTH
+        }
+
+
+    }
 
 }
