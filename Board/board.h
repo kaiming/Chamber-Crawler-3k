@@ -35,7 +35,7 @@ class Board {
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
         std::shared_ptr<WalkableTile> player;
         std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragons;
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
         std::vector<std::string> potionsUsed;
 
         int floorNum;
@@ -49,7 +49,7 @@ class Board {
         bool filled, 
         std::shared_ptr<WalkableTile> player,
         std::vector<std::shared_ptr<WalkableTile>> enemies,
-        std::vector<std::shared_ptr<WalkableTile>> dragons
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards
 );
         
         int getFloorNum() const;
