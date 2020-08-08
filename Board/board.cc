@@ -7,34 +7,35 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "tile.h"
-#include "walkabletile.h"
+#include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
 
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
-#include "merchant.h"
-#include "dragon.h"
-#include "halfling.h"
+#include "../Enemy/enemy.h"
+#include "../Enemy/human.h"
+#include "../Enemy/dwarf.h"
+#include "../Enemy/elf.h"
+#include "../Enemy/orc.h"
+#include "../Enemy/merchant.h"
+#include "../Enemy/dragon.h"
+#include "../Enemy/halfling.h"
 
-#include "dwarf.h"
-#include "shade.h"
-#include "drow.h"
-#include "vampire.h"
-#include "troll.h"
-#include "goblin.h"
+#include "../Player/player.h"
+#include "../Player/shade.h"
+#include "../Player/drow.h"
+#include "../Player/vampire.h"
+#include "../Player/troll.h"
+#include "../Player/goblin.h"
 
-#include "potion.h"
-#include "rh.h"
-#include "ba.h"
-#include "bd.h"
-#include "ph.h"
-#include "wa.h"
-#include "wd.h"
+#include "../Potion/potion.h"
+#include "../Potion/rh.h"
+#include "../Potion/ba.h"
+#include "../Potion/bd.h"
+#include "../Potion/ph.h"
+#include "../Potion/wa.h"
+#include "../Potion/wd.h"
 
-#include "gold.h"
-#include "dragonhoard.h"
+#include "../Gold/gold.h"
+#include "../Gold/dragonhoard.h"
 
 // Include all player and enemy races
 
@@ -55,7 +56,7 @@
     bool enemiesFrozen;
 */
 
-Board(
+Board::Board(
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
@@ -77,7 +78,7 @@ Board(
         playerPtr = std::make_shared<Troll>();
     }
 
-    this.race = playerPtr->getRace(); 
+    this->race = playerPtr->getRace(); 
 
     // First need to identify which tiles are a part of which chamber
     assignChambers();
@@ -87,12 +88,12 @@ Board(
         generateFloor();
     } else {
         // If generated, store player into given tile
-        player.setOccupant(playerPtr);
+        player->setOccupant(playerPtr);
     }
 
 }
 
-std::string getRace() const {
+std::string Board::getRace() const {
     return race;
 }
 
@@ -119,7 +120,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
     // std::pair<int x, int y>
     if (direction == "no") {
         // no = North/Up
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.second - 1 < 0) {
@@ -129,7 +130,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first];
     } else if (direction == "so") {
         // so = South/Down
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.second + 1 >= floors[floorNum-1].size()) {
@@ -139,7 +140,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second + 1][current.first];
     } else if (direction == "ea") {
         // ea = East/Right
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= floors[floorNum-1][0].size()) {
@@ -149,7 +150,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second][current.first + 1];
     } else if (direction == "we") {
         // we = West/Left
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0) {
@@ -159,7 +160,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second][current.first - 1];
     } else if (direction == "ne") { // ----------------------------------------------------------------------
         // ne = North East/Right and Up
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
@@ -169,7 +170,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first + 1];
     } else if (direction == "nw") {
         // nw = North West/Left and Up 
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0 || current.second - 1 < 0) {
@@ -179,7 +180,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first - 1];
     } else if (direction == "se") {
         // se = South East/Right and Down
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= floors[floorNum-1][0].size() || current.second + 1 >= floors[floorNum-1].size()) {
@@ -189,7 +190,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second + 1][current.first + 1];
     } else if (direction == "sw") {
         // sw = South West/Left and Down
-        std::pair current = package.getCoord();
+        std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0 || current.second + 1 >= floors[floorNum-1].size()) {
@@ -289,7 +290,7 @@ void Board::changeFloor() {
     if (filled[floorNum-1]) {
         // Floor has been pre-generated
         player = playerSpawns[floorNum-1];
-        player.setOccupant(playerPtr);
+        player->setOccupant(playerPtr);
     } else {
         // Floor has not been pre-generated
         generateFloor();
@@ -365,15 +366,15 @@ std::string Board::movePlayer(std::string direction) {
     }
 
     // Move the Player
-    player = player.move(destination);
-    message = playerPtr.getRace() + " moved " + direction + ". " + message;
+    player = player->move(destination);
+    message = playerPtr->getRace() + " moved " + direction + ". " + message;
 
     // Exit not reached
     return message;
 }
 
 std::string Board::attackEnemy(std::string direction) {
-    std:shared_ptr<WalkableTile> target = validDest(player, direction);
+    std::shared_ptr<WalkableTile> target = validDest(player, direction);
     std::string message = "";
 
     // Check if valid destination
@@ -471,7 +472,7 @@ std::string Board::moveEnemies() {
             // Check if merchants are hostile
             if (!merchantAgro) {
                 // Not hostile, just move
-                std:shared_ptr<WalkableTile> destination == nullptr;
+                std::shared_ptr<WalkableTile> destination = nullptr;
 
                 while (destination == nullptr) {
                     int rng = std::rand() % 8;
@@ -495,7 +496,7 @@ std::string Board::moveEnemies() {
                     }
 
                     // Check in chamber (not a doorway or hallway)
-                    if (destination.getRoom() < 0) {
+                    if (destination->getRoom() < 0) {
                         destination = nullptr;
                         continue;
                     }
@@ -525,7 +526,7 @@ std::string Board::moveEnemies() {
                 }
 
                 // Swap Merchant pointers
-                (*it) = (*it).move(destination);
+                (*it) = (*it)->move(destination);
 
                 // End Merchant turn
                 continue;
@@ -553,7 +554,7 @@ std::string Board::moveEnemies() {
             }
         } else {
             // Too far away to attack, do a random move
-            std:shared_ptr<WalkableTile> destination == nullptr;
+            std::shared_ptr<WalkableTile> destination = nullptr;
 
             while (destination == nullptr) {
                 int rng = std::rand() % 8;
@@ -577,7 +578,7 @@ std::string Board::moveEnemies() {
                 }
 
                 // Check in chamber (not a doorway or hallway)
-                if (destination.getRoom() < 0) {
+                if (destination->getRoom() < 0) {
                     destination = nullptr;
                     continue;
                 }
@@ -607,7 +608,7 @@ std::string Board::moveEnemies() {
             }
 
             // Swap Enemy pointers
-            (*it) = (*it).move(destination);
+            (*it) = (*it)->move(destination);
 
 
         }
@@ -653,7 +654,7 @@ std::string Board::moveEnemies() {
 
 
 std::string Board::usePotion(std::string direction) {
-    std:shared_ptr<WalkableTile> target = validDest(player, direction);
+    std::shared_ptr<WalkableTile> target = validDest(player, direction);
     std::string message = "";
 
     // Check if valid destination
@@ -701,7 +702,7 @@ void Board::generateFloor() {
     int tile = std::rand() % chambers[pChamber].size();
 
     // Insert Player
-    chambers[pChamber][tile].setOccupant(playerPtr);
+    chambers[pChamber][tile]->setOccupant(playerPtr);
     player = chambers[pChamber][tile];
 
 
@@ -716,7 +717,7 @@ void Board::generateFloor() {
     tile = std::rand() % chambers[chamber].size();
 
         // Insert exit stairs
-    chambers[chamber][tile].setExit(true);
+    chambers[chamber][tile]->setExit(true);
 
 
     // Generate 10 Potions
@@ -743,10 +744,10 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile].getPotion());
+        } while (chambers[chamber][tile]->getPotion());
 
         // Place type at location
-        chambers[chamber][tile].setPotion(temp);
+        chambers[chamber][tile]->setPotion(temp);
     }
 
 
@@ -769,16 +770,16 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile].getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
         // Place type at location
-        chambers[chamber][tile].setGold(temp);
+        chambers[chamber][tile]->setGold(temp);
 
         // If dragonHoard type, place Dragon around it
         if (type == 7) {
             // Allocate dragon spawn destination
-            std:shared_ptr<WalkableTile> destination == nullptr;
+            std::shared_ptr<WalkableTile> destination = nullptr;
 
             // Generate direction around DragonHoard
             do {
@@ -787,7 +788,7 @@ void Board::generateFloor() {
                 if (rng == 0) {
                     destination = validDest(chambers[chamber][tile], "no");
                 } else if (rng == 1) {
-                    destination = validDest(chambers[chamber][tile]), "so");
+                    destination = validDest(chambers[chamber][tile], "so");
                 } else if (rng == 2) {
                     destination = validDest(chambers[chamber][tile], "ea");
                 } else if (rng == 3) {
@@ -804,8 +805,8 @@ void Board::generateFloor() {
             } while (destination == nullptr);
 
             // Place dragon at location and store in DragonHoard
-            destination.setOccupant(temp->getDragon());
-            temp.setDragonTile(destination);
+            destination->setOccupant(temp->getDragon());
+            temp->setDragonTile(destination);
         }
     }
 
@@ -834,10 +835,10 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile].getPotion() || chambers[chamber][tile].getGold() || chambers[chamber][tile].getOccupant());
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getOccupant());
 
         // Place type at location
-        chambers[chamber][tile].setOccupant(temp);
+        chambers[chamber][tile]->setOccupant(temp);
 
     }
 }

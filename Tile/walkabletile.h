@@ -21,7 +21,7 @@ class WalkableTile : public Tile {
 
     // accessors and mutators
     std::shared_ptr<Character> getOccupant() const;
-    void setOccupants(const std::shared_ptr<Character> character);
+    void setOccupant(const std::shared_ptr<Character> character);
     std::shared_ptr<Potion> getPotion() const;
     void setPotion(const std::shared_ptr<Potion> potion);
     std::vector<std::shared_ptr<Gold>> getGold() const;

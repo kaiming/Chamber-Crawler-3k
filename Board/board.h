@@ -71,6 +71,7 @@ class Board {
         std::string usePotion(std::string direction);
         void generateFloor();
 
+        friend class TextDisplay;
 };
 
 #endif

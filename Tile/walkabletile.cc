@@ -22,7 +22,7 @@ std::shared_ptr<Character> WalkableTile::getOccupant() const {
 }
 
 
-void WalkableTile::setOccupants(const std::shared_ptr<Character> character) {
+void WalkableTile::setOccupant(const std::shared_ptr<Character> character) {
     occupant = character;
 }
 
