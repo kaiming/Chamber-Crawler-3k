@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
         std::vector<bool> filled;
         bool restart = true;
-        bool winner = false;
+        int winner = -1; // code 0 for restart, code 1 for win, code 2 for loss
 
         // if no file is passed in command line
         if (argc == 0) {
@@ -105,8 +105,8 @@ int main(int argc, char* argv[]) {
 
                 if (message == "Dungeon cleared. You win!") {
                     // Game Won by Player
-                    restart = false;
-                    winner = true;
+                    winner = 1;
+
                     break;
                 } 
 
@@ -130,13 +130,13 @@ int main(int argc, char* argv[]) {
             } else if (cmd == "r") {
                 // Restart game
                 restart = true;
-                winner = false;
+                winner = 0;
 
                 break;
             } else if (cmd == "q") {
                 // Quit Game
                 std::cout << "You gave up! Better luck next time!";
-                
+
                 return;
             } else {
                 // Invalid Command
@@ -144,14 +144,30 @@ int main(int argc, char* argv[]) {
 
             }
 
+            // Move Enemies
+            message = b.moveEnemies();
+            td.drawFloor(std::cout, b, message);
+            
+            if (message[-10] == "Game Over!") {
+                // Player killed and lost
+                winner = 2;
+                break;
+            }
 
         } // End of Command Interpreter
 
-        if (winner) {
+        if (winner == 1) {
             // Print winner stuff
             
             std::cout << "Congratulations! You won!";
+        } else if (winner == 2) {
+            // Print loser stuff
+            
+            std::cout << "You have been defeated!";
 
+        }
+
+        if (winner != 0) {
             // Ask Player if they want to play again
             std::cout << "Play again? y or n";
             std::string replay;
@@ -160,9 +176,7 @@ int main(int argc, char* argv[]) {
             if (replay == "y") {
                 restart = true;
             }
-
         }
-
 
     } // End of restart loop
 

@@ -67,7 +67,7 @@ class Board {
 
         std::string movePlayer(std::string direction);
         std::string attackEnemy(std::string direction);
-        bool moveEnemies();
+        std::string moveEnemies();
         std::string usePotion(std::string direction);
         void generateFloor();
 

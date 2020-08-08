@@ -305,32 +305,32 @@ std::string Board::movePlayer(std::string direction) {
 
     // Check if valid destination
     if (destination == nullptr) {
-        return "Invalid Target.";
+        return "Invalid Move Target. ";
     }
 
     // Check if destination is exit
     if (destination->isStairs()) {
         if (floorNum == floorLimit) {
             // Game completed
-            return "Dungeon cleared. You win!";
+            return "Dungeon cleared. You win! ";
         } else {
             // Proceed to next floor
             floorNum += 1;
             changeFloor();
-            return "Floor " + floorNum - 1 + " cleard. Proceeding to next floor.";
+            return "Floor " + floorNum - 1 + " cleard. Proceeding to next floor. ";
         }
         
     }
 
     // Check if destination is occupied by an enemy
     if (destination->getOccupant() != nullptr) {
-        return "Target Tile occupied by Enemy";
+        return "Target Tile occupied by Enemy. ";
     }
 
     // Check if destination is occupied by a potion
     if (destination->getPotion() != nullptr) {
         // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-over to use
-        return "Target Tile occupied by Potion";
+        return "Target Tile occupied by Potion. ";
     }
 
     // Check if destination is occupied by gold
@@ -358,7 +358,7 @@ std::string Board::movePlayer(std::string direction) {
                 // Player picks up gold
                 player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
                 // Gold is consumed
-                message = " " + (*it)->getType() + ", value " + (*it)->getSize() + ", picked up.";
+                message = " " + (*it)->getType() + ", value " + (*it)->getSize() + ", picked up. ";
                 gold.erase(it); 
             }
         }
@@ -366,11 +366,7 @@ std::string Board::movePlayer(std::string direction) {
 
     // Move the Player
     player = player.move(destination);
-    message = playerPtr.getRace() + " moved " + direction + "." + message;
-
-    // Move enemies
-    bool playerDead = moveEnemies();
-    
+    message = playerPtr.getRace() + " moved " + direction + ". " + message;
 
     // Exit not reached
     return message;
@@ -382,7 +378,7 @@ std::string Board::attackEnemy(std::string direction) {
 
     // Check if valid destination
     if (target == nullptr) {
-        return "Invalid Target.";
+        return "Invalid Attack Target. ";
     }
 
     // Check if destination is occupied by an enemy
@@ -393,10 +389,11 @@ std::string Board::attackEnemy(std::string direction) {
         if (!merchantAgro && std::dynamic_pointer_cast<Merchant>(target->getOccupant())) {
             // Merchants are now hostile
             merchantAgro = true;
-            merchantStatus = " Merchants are now hostile.";
+            merchantStatus = "Merchants are now hostile. ";
         }
 
         // Begin attack sequence and store resulting enemy state
+        double enemyOgHP = target->getOccupant()->getHP();
         bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant()));
     
         if (EnemyKilled) {
@@ -413,7 +410,7 @@ std::string Board::attackEnemy(std::string direction) {
                     }
                 }
                 
-                message = "Dragon killed." + merchantStatus;
+                message = "Dragon killed. " + merchantStatus;
             } else {
                 
                 // Check if target is human or merchant
@@ -435,8 +432,8 @@ std::string Board::attackEnemy(std::string direction) {
                     }
                 }
 
-                std::string race = target->getOccupant()->getRace();
-                message = race + " killed."  + merchantStatus;
+                std::string eRace = target->getOccupant()->getRace();
+                message = eRace + " killed. "  + merchantStatus;
 
                 // Remove this enemy from enemies
                     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
@@ -447,24 +444,22 @@ std::string Board::attackEnemy(std::string direction) {
                 
             }
 
-
+        } else {
+            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHp - target->getOccupant()->getHP()) + "HP (" + target->getOccupant()->getHP() + "HP remaining). "  + merchantStatus;
         }
-
-        message = target->getOccupant()->getRace() + " attacked."  + merchantStatus;
     } else {
-        message = "No Enemy to Attack.";
+        message = "No Enemy to Attack. ";
     }
-
-    // Move enemies
-    bool playerDead = moveEnemies();
 
     return message;
 }
 
-bool Board::moveEnemies() {
+std::string Board::moveEnemies() {
+    std::string message = "";
+    
     // If enemies frozen, do nothing
     if (enemiesFrozen) {
-        return false;
+        return message;
     }
 
     // Iterate through enemies and dragons to execute their turn
@@ -546,12 +541,15 @@ bool Board::moveEnemies() {
         // DLC EXTENSION HERE: add else if (distance < radius) -> move towards player
 
         if (distance == 1) {
+            double ogHP = player->getOccupant()->getHP();
+
             // 1 tile away, attack player
             bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
-
+            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "  
+            
             if (killed) {
                 // Player is dead, game is over
-                return true;
+                return message += player->getOccupant()->getRace() + " was killed. Game Over!";
             }
         } else {
             // Too far away to attack, do a random move
@@ -631,12 +629,15 @@ bool Board::moveEnemies() {
 
 
         if (distance == 1 || hoardDistance == 1) {
+            double ogHP = player->getOccupant()->getHP();
+            
             // 1 tile away from either the dragon or the dragon hoard, attack player
             bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
+            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. " 
 
             if (killed) {
                 // Player is dead, game is over
-                return true;
+                return message += player->getOccupant()->getRace() + " was killed. Game Over!";
             }
         }
 
@@ -647,7 +648,7 @@ bool Board::moveEnemies() {
 
     // End of Enemies turn
     // Player is still alive
-    return false;
+    return message;
 }
 
 
@@ -657,7 +658,7 @@ std::string Board::usePotion(std::string direction) {
 
     // Check if valid destination
     if (target == nullptr) {
-        return "Invalid Target.";
+        return "Invalid Potion Target. ";
     }
 
     // Check if destination is occupied by a potion
@@ -682,14 +683,10 @@ std::string Board::usePotion(std::string direction) {
         // Remove potion from board
         target->setPotion(nullptr);
 
-        message = target->getPotion()->getType() + " was Used.";
+        message = target->getPotion()->getType() + " was Used. ";
     } else {
-        message = "No Potion to Use.";
+        message = "No Potion to Use. ";
     }
-
-    // Move enemies
-    bool playerDead = moveEnemies();
-    
     
     return message;
 }
