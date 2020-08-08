@@ -41,8 +41,10 @@ class Board {
 
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
         std::shared_ptr<Player> playerPtr;
+        std::string race;
         int floorNum;
-        bool merchantAgro;
+        bool merchantAgro = false;
+        bool enemiesFrozen = false;
 
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
         void assignChambers();
@@ -59,12 +61,14 @@ class Board {
             std::string race = 0
         );
         
+        std::string getRace() const;
         int getFloorNum() const;
+        bool toggleFreeze();
 
-        int movePlayer(std::string direction);
-        void attackEnemey(std::string direction);
+        std::string movePlayer(std::string direction);
+        std::string attackEnemy(std::string direction);
         bool moveEnemies();
-        void usePotion(std::string direction);
+        std::string usePotion(std::string direction);
         void generateFloor();
 
 };

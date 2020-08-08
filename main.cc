@@ -81,12 +81,62 @@ int main(int argc, char* argv[]) {
 
         // break clause
         if (std::cin.fail()) {
-            if (std::cin.eof()) return;
+            if (std::cin.eof()) {
+                return;
+            }
+        }
 
-            // NOTE: ELSE DO SMTH
+        // Process commands
+        std::string message;
+
+        if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
+            // Move player in given direction
+            message = b.movePlayer(cmd);
+
+            td.drawFloor(std::cout, b, message);
+
+            if (message == "Dungeon cleared. You win!") {
+                // Game Won by Player
+
+                // DO SOMETHING HERE
+            } 
+
+        } else if (cmd[0] == 'u') {
+            // Use potion in given direction
+            message = b.usePotion(cmd.substr(2));
+
+            td.drawFloor(std::cout, b, message);
+        } else if (cmd[0] == 'a') {
+            // Attack enemy in the given direction
+            message = b.attackEnemy(cmd.substr(2));
+
+            td.drawFloor(std::cout, b, message);
+        } else if (cmd == "f") {
+            // Freeze enemies
+            bool isFrozen = b.toggleFreeze;
+
+            message = "Enemies Frozen: " + (isFrozen? "True" : "False");
+
+            td.drawFloor(std::cout, b, message);
+        } else if (cmd == "r") {
+            // Restart game
+            
+            break;
+        } else if (cmd == "q") {
+            // Quit Game
+            std::cout << "You gave up! Better luck next time!";
+
+            break;
+        } else {
+            // Invalid Command
+            std::cout << "Invalid Command" << std::endl;
+
         }
 
 
-    }
+    } // End of Command Interpreter
+
+    
+
 
 }

@@ -49,8 +49,10 @@
 
     std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
     std::shared_ptr<Player> playerPtr;
+    std::string race;
     int floorNum;
     bool merchantAgro;
+    bool enemiesFrozen;
 */
 
 Board(
@@ -75,6 +77,8 @@ Board(
         playerPtr = std::make_shared<Troll>();
     }
 
+    this.race = playerPtr->getRace(); 
+
     // First need to identify which tiles are a part of which chamber
     assignChambers();
     
@@ -88,8 +92,17 @@ Board(
 
 }
 
+std::string getRace() const {
+    return race;
+}
+
 int Board::getFloorNum() const {
     return floorNum;
+}
+
+bool Board::toggleFreeze() {
+    enemiesFrozen = !enemiesFrozen;
+    return enemiesFrozen;
 }
 
 //--------------------------------------------------------------------------------
@@ -286,38 +299,38 @@ void Board::changeFloor() {
 
 //--------------------------------------------------------------------------------
 
-int Board::movePlayer(std::string direction) {
+std::string Board::movePlayer(std::string direction) {
     std:shared_ptr<WalkableTile> destination = validDest(player, direction);
+    std::string message = "";
 
     // Check if valid destination
     if (destination == nullptr) {
-        return 0;
+        return "Invalid Target.";
     }
 
     // Check if destination is exit
     if (destination->isStairs()) {
-        // EXIT REACHED, FIND A WAY TO TRIGGER NEW FLOOR GENERATION
         if (floorNum == floorLimit) {
             // Game completed
-            return 2;
+            return "Dungeon cleared. You win!";
         } else {
             // Proceed to next floor
             floorNum += 1;
             changeFloor();
-            return 1;
+            return "Floor " + floorNum - 1 + " cleard. Proceeding to next floor.";
         }
         
     }
 
     // Check if destination is occupied by an enemy
     if (destination->getOccupant() != nullptr) {
-        return 0;
+        return "Target Tile occupied by Enemy";
     }
 
     // Check if destination is occupied by a potion
     if (destination->getPotion() != nullptr) {
         // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-over to use
-        return 0;
+        return "Target Tile occupied by Potion";
     }
 
     // Check if destination is occupied by gold
@@ -345,6 +358,7 @@ int Board::movePlayer(std::string direction) {
                 // Player picks up gold
                 player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
                 // Gold is consumed
+                message = " " + (*it)->getType() + ", value " + (*it)->getSize() + ", picked up.";
                 gold.erase(it); 
             }
         }
@@ -352,25 +366,34 @@ int Board::movePlayer(std::string direction) {
 
     // Move the Player
     player = player.move(destination);
+    message = playerPtr.getRace() + " moved " + direction + "." + message;
+
+    // Move enemies
+    bool playerDead = moveEnemies();
+    
 
     // Exit not reached
-    return 0;
+    return message;
 }
 
-void Board::attackEnemey(std::string direction) {
+std::string Board::attackEnemy(std::string direction) {
     std:shared_ptr<WalkableTile> target = validDest(player, direction);
+    std::string message = "";
 
     // Check if valid destination
     if (target == nullptr) {
-        return;
+        return "Invalid Target.";
     }
 
     // Check if destination is occupied by an enemy
     if (target->getOccupant() != nullptr) {
+        std::string merchantStatus = "";
+
         // Check if target is merchant, if merchants are not hostile
         if (!merchantAgro && std::dynamic_pointer_cast<Merchant>(target->getOccupant())) {
             // Merchants are now hostile
             merchantAgro = true;
+            merchantStatus = " Merchants are now hostile.";
         }
 
         // Begin attack sequence and store resulting enemy state
@@ -380,7 +403,7 @@ void Board::attackEnemey(std::string direction) {
             // Enemy killed, determine Enemy type to generate gold dropped
 
             // Check if target is dragon
-            if (std::dynamic_pointer_cast<Dragon>(target->getOccupant())) {
+            if (target->getOccupant()->getRace() == "Dragon") {
                 // Dragon Type, drop nothing
                 
                 // Remove this dragon from dragons
@@ -389,19 +412,20 @@ void Board::attackEnemey(std::string direction) {
                         (*it)->getDragon()->setState(false);
                     }
                 }
-
+                
+                message = "Dragon killed." + merchantStatus;
             } else {
                 
                 // Check if target is human or merchant
-                if (std::dynamic_pointer_cast<Human>(target->getOccupant())) {
+                if (target->getOccupant()->getRace() == "Human") {
                     // Human type, drop 2 Normal Piles
                     target->setGold(std::make_shared<Gold>("Normal Pile", 2)):
                     target->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
-                } else if (std::dynamic_pointer_cast<Merchant>(target->getOccupant())) {
+                } else if (target->getOccupant()->getRace() == "Merchant") {
                     // Merchant Type, drop Merchant Hoard
                     target->setGold(std::make_shared<Gold>("Merchant Hoard", 4));
-
+                    
                 } else {
                     // Other type, RNG gold
                     if (std::rand() % 2 == 0) {
@@ -411,21 +435,38 @@ void Board::attackEnemey(std::string direction) {
                     }
                 }
 
+                std::string race = target->getOccupant()->getRace();
+                message = race + " killed."  + merchantStatus;
+
                 // Remove this enemy from enemies
                     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
                         if ((*it)->getCoord() == target->getCoord()) {
                             enemies.erase(it); 
                         }
                     }
+                
             }
 
 
         }
+
+        message = target->getOccupant()->getRace() + " attacked."  + merchantStatus;
+    } else {
+        message = "No Enemy to Attack.";
     }
 
+    // Move enemies
+    bool playerDead = moveEnemies();
+
+    return message;
 }
 
 bool Board::moveEnemies() {
+    // If enemies frozen, do nothing
+    if (enemiesFrozen) {
+        return false;
+    }
+
     // Iterate through enemies and dragons to execute their turn
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
 
@@ -610,12 +651,13 @@ bool Board::moveEnemies() {
 }
 
 
-void Board::usePotion(std::string direction) {
+std::string Board::usePotion(std::string direction) {
     std:shared_ptr<WalkableTile> target = validDest(player, direction);
+    std::string message = "";
 
     // Check if valid destination
     if (target == nullptr) {
-        return;
+        return "Invalid Target.";
     }
 
     // Check if destination is occupied by a potion
@@ -639,8 +681,17 @@ void Board::usePotion(std::string direction) {
 
         // Remove potion from board
         target->setPotion(nullptr);
+
+        message = target->getPotion()->getType() + " was Used.";
+    } else {
+        message = "No Potion to Use.";
     }
 
+    // Move enemies
+    bool playerDead = moveEnemies();
+    
+    
+    return message;
 }
 
 
