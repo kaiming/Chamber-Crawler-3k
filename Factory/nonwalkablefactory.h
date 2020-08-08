@@ -2,6 +2,8 @@
 #define __NONWALKABLEFACTORY_H__
 #include "factory.h"
 
+class Tile;
+
 class NonWalkableFactory : public Factory {
   public:
     // makeTile creates a tile that players and enemies are not able to walk on

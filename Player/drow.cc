@@ -1,15 +1,14 @@
 #include <cmath>
 #include <cstdlib>
 #include "drow.h"
-// add in relative paths later
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
-#include "merchant.h"
-#include "dragon.h"
-#include "halfling.h"
-#include "potion.h"
+#include "../Enemy/human.h"
+#include "../Enemy/dwarf.h"
+#include "../Enemy/elf.h"
+#include "../Enemy/orc.h"
+#include "../Enemy/merchant.h"
+#include "../Enemy/dragon.h"
+#include "../Enemy/halfling.h"
+#include "../Potion/potion.h"
 
 
 // constructor
@@ -151,7 +150,7 @@ bool Drow::attack(Halfling& half) {
 
 // Drow::usePotion(p) amplifies the effets of each potion to the Drow by 1.5 times
 void Drow::usePotion(std::shared_ptr<Potion> p) {
-    p->applyEffets(*this, 1.5);
+    p->applyEffects(*this, 1.5);
 }
 
 

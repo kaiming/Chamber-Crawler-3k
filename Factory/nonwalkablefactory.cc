@@ -1,5 +1,5 @@
 #include "nonwalkablefactory.h"
-#include "tile.h"
+#include "../Tile/tile.h"
 
 
 // makeTile creates a tile that players and enemies are not able to walk on

@@ -10,8 +10,8 @@ class Gold {
 
     public:
         Gold(std::string type, int size);
-        int getSize();
-        std::string getType();
+        int getSize() const;
+        std::string getType() const;
 };
 
 #endif

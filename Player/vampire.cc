@@ -1,15 +1,14 @@
 #include <cmath>
 #include <cstdlib>
 #include "vampire.h"
-// add in relative paths later
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
-#include "merchant.h"
-#include "dragon.h"
-#include "halfling.h"
-#include "potion.h"
+#include "../Enemy/human.h"
+#include "../Enemy/dwarf.h"
+#include "../Enemy/elf.h"
+#include "../Enemy/orc.h"
+#include "../Enemy/merchant.h"
+#include "../Enemy/dragon.h"
+#include "../Enemy/halfling.h"
+#include "../Potion/potion.h"
 
 
 // constructor

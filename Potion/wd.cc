@@ -1,5 +1,5 @@
 #include "wd.h"
-#include "player.h"
+#include "../Player/player.h"
 
 
 // constructor

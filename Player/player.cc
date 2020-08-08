@@ -1,6 +1,5 @@
 #include "player.h"
-// add in relative paths later
-#include "potion.h"
+#include "../Potion/potion.h"
 
 
 // constructor
