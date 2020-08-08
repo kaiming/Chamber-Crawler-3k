@@ -7,37 +7,37 @@
 // add includes
 
 int main(int argc, char* argv[]) {
-    std::ifstream infile;
-    infile.exceptions(std::ifstream::failbit);
-    std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
-    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-    std::vector<std::shared_ptr<WalkableTile>> enemies;
-    std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
-    std::vector<bool> filled;
-    bool restart = true;
-    bool winner = false;
+        std::ifstream infile;
+        infile.exceptions(std::ifstream::failbit);
+        std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
+        std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
+        std::vector<std::shared_ptr<WalkableTile>> enemies;
+        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+        std::vector<bool> filled;
+        bool restart = true;
+        bool winner = false;
 
-    // if no file is passed in command line
-    if (argc == 0) {
-        infile.open("default.txt");
-    } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
-        try {
-            // get file name
-            const std::string fileName {argv[0]};
+        // if no file is passed in command line
+        if (argc == 0) {
+            infile.open("default.txt");
+        } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
+            try {
+                // get file name
+                const std::string fileName {argv[0]};
 
-            std::ifstream infile {fileName};
-        } catch (std::ios_base::failure& fail) {
-            std::cerr << "Unable to open file" << std::endl;
-            infile.close();
-            return;
-        }
-    } 
+                std::ifstream infile {fileName};
+            } catch (std::ios_base::failure& fail) {
+                std::cerr << "Unable to open file" << std::endl;
+                infile.close();
+                return;
+            }
+        } 
 
-    // read in file for floor plan
-    readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
+        // read in file for floor plan
+        readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
 
-    // close file
-    infile.close();
+        // close file
+        infile.close();
 
     while (restart) {
         restart = false;
@@ -70,6 +70,9 @@ int main(int argc, char* argv[]) {
 
         if (race == "q") {
             return; // NOTE: MAYBE HAVEIT SO A NEW GAME STARTS??
+        } else if (race == "r") {
+            restart = true; // Sort of useless LOL
+            continue;
         } else if (race == "") { // default race
             b = Board {floors, filled, playerSpawns, enemies, dragonHoards, "s"};
         } else {
@@ -121,7 +124,7 @@ int main(int argc, char* argv[]) {
                 // Freeze enemies
                 bool isFrozen = b.toggleFreeze;
 
-                message = "Enemies Frozen: " + (isFrozen? "True" : "False");
+                message = "Enemies Frozen: " + (isFrozen? "Enabled" : "Disabled");
 
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "r") {
@@ -133,9 +136,8 @@ int main(int argc, char* argv[]) {
             } else if (cmd == "q") {
                 // Quit Game
                 std::cout << "You gave up! Better luck next time!";
-                restart = false;
-                winner = false;
-                break;
+                
+                return;
             } else {
                 // Invalid Command
                 std::cout << "Invalid Command" << std::endl;
@@ -165,5 +167,5 @@ int main(int argc, char* argv[]) {
     } // End of restart loop
 
     
-    
+
 }
