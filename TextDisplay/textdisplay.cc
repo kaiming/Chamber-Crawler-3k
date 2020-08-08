@@ -26,7 +26,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
     // Print out floor diagram
 
     // Iterate through the current floor
-    for(auto it_i = board.floors[board.getFloorNum - 1].begin(); it_i != board.floors[board.getFloorNum - 1].end(); ++ it_i) {
+    for(auto it_i = board.floors[board.getFloorNum() - 1].begin(); it_i != board.floors[board.getFloorNum() - 1].end(); ++ it_i) {
         for (auto it_j = it_i->begin(); it_j != it_i->end(); ++ it_j) {
             
             // Determine if Walkable Tile
@@ -36,7 +36,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
                 
                 // Check for Exit, Gold, Potion, or Character
                 
-                if ((*it_j)->getOccupant() != nullptr) {
+                if (std::static_pointer_cast<WalkableTile>(*it_j)->getOccupant() != nullptr) {
                     // Determine Player or Enemy
                     
                     // Check if player
@@ -47,7 +47,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
                     }
 
                     // Determine enemy type 
-                    std::string enemy = (*it_j)->getOccupant()->getRace();
+                    std::string enemy = std::static_pointer_cast<WalkableTile>(*it_j)->getOccupant()->getRace();
 
                     if (enemy == "Human") {
                         // Print "H" for Human
@@ -72,18 +72,18 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
                         out << "L";
                     }
 
-                } else if ((*it_j)->isExit()) {
+                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->isExit()) {
                     // Print "/" for stairs
                     out << "/";
-                } else if ((*it_j)->getPotion != nullptr) {
+                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getPotion != nullptr) {
                     // Print "P" for potion
                     out << "P";
-                } else if ((*it_j)->getGold != nullptr) {
+                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getGold != nullptr) {
                     // Print "G" for gold
                     out << "G";
                 } else {
                     // Not occupied, print type
-                    out << ((it_j)->getType());
+                    out << (std::static_pointer_cast<WalkableTile>(*it_j)->getType());
                 }
 
             } else {
