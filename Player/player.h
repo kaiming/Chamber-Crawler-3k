@@ -1,7 +1,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include <memory>
-#include "../character.h"
+#include "../Character/character.h"
 
 class Enemy;
 class Human;
