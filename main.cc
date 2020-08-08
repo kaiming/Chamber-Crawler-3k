@@ -18,24 +18,21 @@ int main(int argc, char* argv[]) {
     // if no file is passed in command line
     if (argc == 0) {
         infile.open("default.txt");
-
-        // reads in default file with an empty floor plan
-        readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
     } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
         try {
             // get file name
             const std::string fileName {argv[0]};
 
             std::ifstream infile {fileName};
-
-            // reads in file and creates the tiles (and maybe the items/characters, excluding player) of each floor
-            readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
         } catch (std::ios_base::failure& fail) {
             std::cerr << "Unable to open file" << std::endl;
             infile.close();
             return;
         }
     } 
+
+    // read in file for floor plan
+    readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
 
     // close file
     infile.close();
