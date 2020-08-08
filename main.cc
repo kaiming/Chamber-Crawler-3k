@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
                 return;
             } else {
                 // Invalid Command
-                std::cout << "Invalid Command" << std::endl;
+                std::cerr << "Invalid Command" << std::endl;
 
             }
 
@@ -170,8 +170,22 @@ int main(int argc, char* argv[]) {
         if (winner != 0) {
             // Ask Player if they want to play again
             std::cout << "Play again? y or n";
-            std::string replay;
-            std::cin >> replay;
+            std::string replay = "";
+            
+            while (replay != "y" && replay != "n") {
+                if (replay != "") {
+                    std::cerr << "Invalid Answer" << std::endl;
+                }
+                
+                std::cin >> replay;
+
+                if (std::cin.fail()) {
+                    if (std::cin.eof()) return;
+
+                    std::cin.clear();
+                    std::cin.ignore();
+                }
+            }
 
             if (replay == "y") {
                 restart = true;
