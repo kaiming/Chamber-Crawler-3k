@@ -1,8 +1,8 @@
 #include <utility>
 #include "walkabletile.h"
-#include "character.h"
-#include "potion.h"
-#include "gold.h"
+#include "../Character/character.h"
+#include "../Potion/potion.h"
+#include "../Gold/gold.h"
 
 
 // constructor
@@ -23,7 +23,7 @@ std::shared_ptr<Character> WalkableTile::getOccupant() const {
 
 
 void WalkableTile::setOccupants(const std::shared_ptr<Character> character) {
-    this->character = character;
+    occupant = character;
 }
 
 
@@ -42,9 +42,9 @@ std::vector<std::shared_ptr<Gold>> WalkableTile::getGold() const {
 }
 
 
-void WalkableTile::setGold(const td::shared_ptr<Gold> g) {
+void WalkableTile::setGold(const std::shared_ptr<Gold> g) {
     // push new gold to stash
-    this->goldStash.push_back(g);
+    goldStash.push_back(g);
 }
 
 
