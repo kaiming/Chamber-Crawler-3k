@@ -1,9 +1,9 @@
 #include "bd.h"
-#include "player.h"
+#include "../Player/player.h"
 
 
 // constructor
-BD::BD() : Potions {"BD"} {}
+BD::BD() : Potion {"BD"} {}
 
 
 // BD::applyEffects(player, multiplier) increases DEF by 5
