@@ -1,6 +1,6 @@
 #include "walkablefactory.h"
-#include "tile.h"
-#include "walkabletile.h"
+#include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
 
 
 // WalkableFactory::makeTile(...) makes a WalkableTile with either default fields or specified ones

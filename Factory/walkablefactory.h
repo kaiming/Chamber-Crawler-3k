@@ -2,6 +2,8 @@
 #define __WALKABLEFACTORY_H__
 #include "factory.h"
 
+class Tile;
+
 class WalkableFactory : public Factory {
   public:
     // makeTile creates a new walkable tile, whether it is populated or not depends on if there is a given generation or the default is used
