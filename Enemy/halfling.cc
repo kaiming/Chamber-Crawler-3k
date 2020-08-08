@@ -1,13 +1,13 @@
 #include "halfling.h"
-#include "shade.h"
-#include "drow.h"
-#include "vampire.h"
-#include "troll.h"
-#include "goblin.h"
+#include "../Player/shade.h"
+#include "../Player/drow.h"
+#include "../Player/vampire.h"
+#include "../Player/troll.h"
+#include "../Player/goblin.h"
 #include <cmath>
 #include <cstdlib>
 
-Halfling::Halfling() : Character{100, 15, 20} {
+Halfling::Halfling() : Enemy{100, 15, 20} {
 
 }
 

@@ -1,9 +1,9 @@
 #include "dragon.h"
-#include "shade.h"
-#include "drow.h"
-#include "vampire.h"
-#include "troll.h"
-#include "goblin.h"
+#include "../Player/shade.h"
+#include "../Player/drow.h"
+#include "../Player/vampire.h"
+#include "../Player/troll.h"
+#include "../Player/goblin.h"
 #include <cmath>
 #include <cstdlib>
 
@@ -11,11 +11,11 @@
     bool isAlive;
 */
 
-Dragon::Dragon() : Character{150, 20, 20}, isAlive{true} {
+Dragon::Dragon() : Enemy{150, 20, 20}, isAlive{true} {
 
 }
 
-bool Dragon::getState() {
+bool Dragon::getState() const {
     return isAlive;
 }
 

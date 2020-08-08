@@ -1,13 +1,13 @@
 #include "elf.h"
-#include "shade.h"
-#include "drow.h"
-#include "vampire.h"
-#include "troll.h"
-#include "goblin.h"
+#include "../Player/shade.h"
+#include "../Player/drow.h"
+#include "../Player/vampire.h"
+#include "../Player/troll.h"
+#include "../Player/goblin.h"
 #include <cmath>
 #include <cstdlib>
 
-Elf::Elf() : Character{140, 30, 10} {
+Elf::Elf() : Enemy{140, 30, 10} {
 
 }
 

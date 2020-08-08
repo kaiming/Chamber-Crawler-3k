@@ -13,7 +13,7 @@ class Dragon : public Enemy {
         // Constructor
         Dragon();
 
-        const bool getState();
+        bool getState() const;
         void setState(bool state);
         virtual std::string getRace() const override;
 
