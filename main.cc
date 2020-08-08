@@ -1,9 +1,9 @@
 #include <iostream>
 #include "readPlan.h"
-#include "tile.h"
-#include "walkabletile.h"
-#include "board.h"
-#include "textdisplay.h"
+#include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
+#include "../Board/board.h"
+#include "../TextDisplay/textdisplay.h"
 // add includes
 
 int main(int argc, char* argv[]) {

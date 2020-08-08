@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
 #include "../Factory/factory.h"
 #include "../Factory/walkablefactory.h"
 #include "../Factory/nonwalkablefactory.h"

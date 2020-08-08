@@ -2,20 +2,24 @@
 
 #include <memory>
 #include <string>
+#include <iomanip>
 
-#include "tile.h"
-#include "walkabletile.h"
+#include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
+#include "../Board/board.h"
 
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
-#include "merchant.h"
-#include "dragon.h"
-#include "halfling.h"
+#include "../Player/player.h"
 
-#include "gold.h"
-#include "potion.h"
+#include "../Enemy/human.h"
+#include "../Enemy/dwarf.h"
+#include "../Enemy/elf.h"
+#include "../Enemy/orc.h"
+#include "../Enemy/merchant.h"
+#include "../Enemy/dragon.h"
+#include "../Enemy/halfling.h"
+
+#include "../Gold/gold.h"
+#include "../Potion/potion.h"
 
 
 void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action) {
@@ -84,7 +88,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
 
             } else {
                 // Regular Tile, print type
-                out << i(*it_j)->getType();
+                out << (*it_j)->getType();
             }
 
         } // End of inner loop
@@ -106,13 +110,13 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
 
     // Race: XXXXX  Gold: XXX             Floor: XX
     // 24 chars Race + Gold & 9 Chars for Floor: XX
-    out << "Race: " << std::setw(7) << board.playerPtr.getRace() << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[floorNum -1][0].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
+    out << "Race: " << std::setw(7) << board.playerPtr->getRace() << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[board.floorNum -1][0].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
     // HP: XXX
-    out << "HP: " << playerPtr->getHP() << std::endl;
+    out << "HP: " << board.playerPtr->getHP() << std::endl;
     // Atk: XXX
-    out << "Atk: " << playerPtr->getAtk() << std::endl;
+    out << "Atk: " << board.playerPtr->getAtk() << std::endl;
     // Def: XXX
-    out << "Def: " << playerPtr->getDef() << std::endl;
+    out << "Def: " << board.playerPtr->getDef() << std::endl;
     // Action:
     out << "Action: " << action << std::endl;
 } 

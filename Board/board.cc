@@ -7,34 +7,35 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "tile.h"
-#include "walkabletile.h"
+#include "../Tile/tile.h"
+#include "../Tile/walkabletile.h"
 
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
-#include "merchant.h"
-#include "dragon.h"
-#include "halfling.h"
+#include "../Enemy/enemy.h"
+#include "../Enemy/human.h"
+#include "../Enemy/dwarf.h"
+#include "../Enemy/elf.h"
+#include "../Enemy/orc.h"
+#include "../Enemy/merchant.h"
+#include "../Enemy/dragon.h"
+#include "../Enemy/halfling.h"
 
-#include "dwarf.h"
-#include "shade.h"
-#include "drow.h"
-#include "vampire.h"
-#include "troll.h"
-#include "goblin.h"
+#include "../Player/player.h"
+#include "../Player/shade.h"
+#include "../Player/drow.h"
+#include "../Player/vampire.h"
+#include "../Player/troll.h"
+#include "../Player/goblin.h"
 
-#include "potion.h"
-#include "rh.h"
-#include "ba.h"
-#include "bd.h"
-#include "ph.h"
-#include "wa.h"
-#include "wd.h"
+#include "../Potion/potion.h"
+#include "../Potion/rh.h"
+#include "../Potion/ba.h"
+#include "../Potion/bd.h"
+#include "../Potion/ph.h"
+#include "../Potion/wa.h"
+#include "../Potion/wd.h"
 
-#include "gold.h"
-#include "dragonhoard.h"
+#include "../Gold/gold.h"
+#include "../Gold/dragonhoard.h"
 
 // Include all player and enemy races
 
@@ -55,7 +56,7 @@
     bool enemiesFrozen;
 */
 
-Board(
+Board::Board(
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
@@ -77,7 +78,7 @@ Board(
         playerPtr = std::make_shared<Troll>();
     }
 
-    this.race = playerPtr->getRace(); 
+    this->race = playerPtr->getRace(); 
 
     // First need to identify which tiles are a part of which chamber
     assignChambers();
@@ -92,7 +93,7 @@ Board(
 
 }
 
-std::string getRace() const {
+std::string Board::getRace() const {
     return race;
 }
 
