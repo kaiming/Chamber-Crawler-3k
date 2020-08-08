@@ -4,8 +4,9 @@
 #include <string>
 #include <memory>
 #include "gold.h"
-#include "walkabletile.h"
-#include "dragon.h"
+
+class WalkableTile;
+class Dragon;
 
 class Gold;
 
@@ -17,8 +18,8 @@ class DragonHoard: public Gold {
 
     public:
         DragonHoard();
-        std::shared_ptr<Dragon> getDragon();
-        std::shared_ptr<WalkableTile> getDragonTile();
+        std::shared_ptr<Dragon> getDragon() const;
+        std::shared_ptr<WalkableTile> getDragonTile() const;
         void setDragonTile(std::shared_ptr<WalkableTile> tile);
 
 
