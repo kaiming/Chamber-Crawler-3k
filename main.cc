@@ -14,6 +14,8 @@ int main(int argc, char* argv[]) {
     std::vector<std::shared_ptr<WalkableTile>> enemies;
     std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
     std::vector<bool> filled;
+    bool restart = true;
+    bool winner = false;
 
     // if no file is passed in command line
     if (argc == 0) {
@@ -37,106 +39,131 @@ int main(int argc, char* argv[]) {
     // close file
     infile.close();
 
-    Board b;
-    TextDisplay td;
+    while (restart) {
+        restart = false;
 
-    // Ask player to enter one of the specified races or quit
-    std::string race;
+        Board b;
+        TextDisplay td;
 
-    std::cout << "Welcome to ChamberCrawler3000, prepare to enter the unknown!" << std::endl;
-    std::cout << "Choose your character: Shade 's' (default), Drow 'd', Vampire 'v', Goblin 'g', Troll 't'" << std::endl;
-    std::cout << "Enter here: ";
+        // Ask player to enter one of the specified races or quit
+        std::string race;
 
-    std::cin >> race;
-    
-    while (race != "" || race != "s" || race != "d" || race != "v" || race != "g" || race != "t") {
-        std::cerr << "Invalid race" << std::endl;
+        std::cout << "Welcome to ChamberCrawler3000, prepare to enter the unknown!" << std::endl;
+        std::cout << "Choose your character: Shade 's' (default), Drow 'd', Vampire 'v', Goblin 'g', Troll 't'" << std::endl;
         std::cout << "Enter here: ";
 
-        if (std::cin.fail()) {
-            if (std::cin.eof()) return;
-
-            std::cin.clear();
-            std::cin.ignore();
-        }
-
         std::cin >> race;
-    }
 
-    if (race == "q") {
-        return; // NOTE: MAYBE HAVEIT SO A NEW GAME STARTS??
-    } else if (race == "") { // default race
-        b = Board {floors, filled, playerSpawns, enemies, dragonHoards, "s"};
-    } else {
-        b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
-    }
+        while (race != "" || race != "s" || race != "d" || race != "v" || race != "g" || race != "t") {
+            std::cerr << "Invalid race" << std::endl;
+            std::cout << "Enter here: ";
 
-    td.drawFloor(std::cout, b, "The adventure begins");
+            if (std::cin.fail()) {
+                if (std::cin.eof()) return;
 
-    std::string cmd;
-
-    while (true) {
-        std::cout << "Enter command: ";
-        std::cin >> cmd;
-
-        // break clause
-        if (std::cin.fail()) {
-            if (std::cin.eof()) {
-                return;
+                std::cin.clear();
+                std::cin.ignore();
             }
+
+            std::cin >> race;
         }
 
-        // Process commands
-        std::string message;
-
-        if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
-            // Move player in given direction
-            message = b.movePlayer(cmd);
-
-            td.drawFloor(std::cout, b, message);
-
-            if (message == "Dungeon cleared. You win!") {
-                // Game Won by Player
-
-                // DO SOMETHING HERE
-            } 
-
-        } else if (cmd[0] == 'u') {
-            // Use potion in given direction
-            message = b.usePotion(cmd.substr(2));
-
-            td.drawFloor(std::cout, b, message);
-        } else if (cmd[0] == 'a') {
-            // Attack enemy in the given direction
-            message = b.attackEnemy(cmd.substr(2));
-
-            td.drawFloor(std::cout, b, message);
-        } else if (cmd == "f") {
-            // Freeze enemies
-            bool isFrozen = b.toggleFreeze;
-
-            message = "Enemies Frozen: " + (isFrozen? "True" : "False");
-
-            td.drawFloor(std::cout, b, message);
-        } else if (cmd == "r") {
-            // Restart game
-            
-            break;
-        } else if (cmd == "q") {
-            // Quit Game
-            std::cout << "You gave up! Better luck next time!";
-
-            break;
+        if (race == "q") {
+            return; // NOTE: MAYBE HAVEIT SO A NEW GAME STARTS??
+        } else if (race == "") { // default race
+            b = Board {floors, filled, playerSpawns, enemies, dragonHoards, "s"};
         } else {
-            // Invalid Command
-            std::cout << "Invalid Command" << std::endl;
+            b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
+        }
+
+        td.drawFloor(std::cout, b, "The adventure begins");
+
+        std::string cmd;
+
+        while (true) {
+            std::cout << "Enter command: ";
+            std::cin >> cmd;
+
+            // break clause
+            if (std::cin.fail()) {
+                if (std::cin.eof()) {
+                    return;
+                }
+            }
+
+            // Process commands
+            std::string message;
+
+            if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
+                // Move player in given direction
+                message = b.movePlayer(cmd);
+
+                td.drawFloor(std::cout, b, message);
+
+                if (message == "Dungeon cleared. You win!") {
+                    // Game Won by Player
+                    restart = false;
+                    winner = true;
+                    break;
+                } 
+
+            } else if (cmd[0] == 'u') {
+                // Use potion in given direction
+                message = b.usePotion(cmd.substr(2));
+
+                td.drawFloor(std::cout, b, message);
+            } else if (cmd[0] == 'a') {
+                // Attack enemy in the given direction
+                message = b.attackEnemy(cmd.substr(2));
+
+                td.drawFloor(std::cout, b, message);
+            } else if (cmd == "f") {
+                // Freeze enemies
+                bool isFrozen = b.toggleFreeze;
+
+                message = "Enemies Frozen: " + (isFrozen? "True" : "False");
+
+                td.drawFloor(std::cout, b, message);
+            } else if (cmd == "r") {
+                // Restart game
+                restart = true;
+                winner = false;
+
+                break;
+            } else if (cmd == "q") {
+                // Quit Game
+                std::cout << "You gave up! Better luck next time!";
+                restart = false;
+                winner = false;
+                break;
+            } else {
+                // Invalid Command
+                std::cout << "Invalid Command" << std::endl;
+
+            }
+
+
+        } // End of Command Interpreter
+
+        if (winner) {
+            // Print winner stuff
+            
+            std::cout << "Congratulations! You won!";
+
+            // Ask Player if they want to play again
+            std::cout << "Play again? y or n";
+            std::string replay;
+            std::cin >> replay;
+
+            if (replay == "y") {
+                restart = true;
+            }
 
         }
 
 
-    } // End of Command Interpreter
+    } // End of restart loop
 
     
-
-
+    
 }
