@@ -31,17 +31,17 @@ class DragonHoard;
 
 class Board {
     private:
-        std::vector<bool> filled;
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
-        std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
-        std::shared_ptr<WalkableTile> player;
+        std::vector<bool> filled;
+        std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
         std::vector<std::shared_ptr<WalkableTile>> enemies;
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
-        std::vector<std::string> potionsUsed;
-
-        std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-        std::shared_ptr<Player> playerPtr;
         std::string race;
+
+        std::shared_ptr<WalkableTile> player;
+        std::vector<std::string> potionsUsed;
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
+        std::shared_ptr<Player> playerPtr;
         int floorNum;
         bool merchantAgro = false;
         bool enemiesFrozen = false;
