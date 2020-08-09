@@ -239,7 +239,7 @@ void Board::assignChambers() {
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
     
     // Store current tile
-    std::dynamic_pointer_cast<WalkableTile>([floorNum - 1][coords.second][coords.first])->setRoom(floorNum);
+    std::dynamic_pointer_cast<WalkableTile>(floors[floorNum - 1][coords.second][coords.first])->setRoom(floorNum);
     chamber.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
 
 
@@ -338,7 +338,7 @@ std::string Board::movePlayer(std::string direction) {
     if (destination->getGold().size() != 0) {
         
         // Get gold reference
-        std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
+        std::vector<std::shared_ptr<Gold>> gold = destination->getGold();
         
         // Loop over gold vector
         for (auto it = gold.begin(); it != gold.end(); ++it) {
