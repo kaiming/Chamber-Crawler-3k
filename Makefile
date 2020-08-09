@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -Werror -MMD # use -MMD to generate dependencies
 EXEC = cc3k
-MAIN_SOURCES = ${wildcard *.cc} # sources in root directory
+MAIN_SOURCES = ${wildcard ./Main/*.cc} # sources in root directory
 MAIN_OBJ = ${MAIN_SOURCES:.cc=.o}
 BOARD_SOURCES = ${wildcard ./Board/*.cc} # sources in Board subdirectory
 BOARD_OBJ = ${BOARD_SOURCES:.cc=.o}
