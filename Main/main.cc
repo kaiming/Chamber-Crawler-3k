@@ -19,10 +19,10 @@ int main(int argc, char* argv[]) {
 
         // if no file is passed in command line
         if (argc == 0) {
-            infile.open("default.txt");
+            infile.open("../default.txt");
         } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
             try {
-                // get file name
+                // get file name (MAKE SURE ITS FULL FILE PATH)
                 const std::string fileName {argv[0]};
 
                 std::ifstream infile {fileName};
