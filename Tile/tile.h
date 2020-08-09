@@ -10,6 +10,7 @@ class Tile {
   public:
     // constructor
     Tile(char type, int x, int y);
+    virtual ~Tile();
 
     // accessors
     char getType() const;

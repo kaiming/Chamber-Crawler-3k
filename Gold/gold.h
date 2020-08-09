@@ -10,6 +10,7 @@ class Gold {
 
     public:
         Gold(std::string type, int size);
+        virtual ~Gold();
         int getSize() const;
         std::string getType() const;
 };

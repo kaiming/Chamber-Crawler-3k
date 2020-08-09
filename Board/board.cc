@@ -206,7 +206,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
     // Check destination tile to see if it's a WalkableTile
     std::shared_ptr<WalkableTile> typeCheck = std::dynamic_pointer_cast<WalkableTile>(destination);
     if (typeCheck) {
-        // Destination is a 
+        // Destination is a valid, WalkableTile 
         return typeCheck;        
     }
 
@@ -240,7 +240,7 @@ void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::s
     
     // Store current tile
     std::dynamic_pointer_cast<WalkableTile>(floors[floorNum - 1][coords.second][coords.first])->setRoom(floorNum);
-    chamber.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
+    chambers.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
 
 
     // Check all directions around for matching unidentified chamber floor tiles
