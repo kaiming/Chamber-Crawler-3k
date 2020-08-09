@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[]) {
         std::ifstream infile;
-        infile.exceptions(std::ifstream::failbit);
+        //infile.exceptions(std::ifstream::failbit);
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
         std::vector<std::shared_ptr<WalkableTile>> enemies;
@@ -18,23 +18,23 @@ int main(int argc, char* argv[]) {
 
         // if no file is passed in command line
         if (argc == 0) {
-            try { // NOTE: TAKE THIS HANDLER OUT LATER ITS FOR TESTING PURPOSES
+            //try { // NOTE: TAKE THIS HANDLER OUT LATER ITS FOR TESTING PURPOSES
                 infile.open("../default.txt");
-            } catch (...) {
-                std::cout << "error" << std::endl;
-            }
+            //} catch (...) {
+               // std::cout << "error" << std::endl;
+            //}
             
         } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
-            try {
+            //try {
                 // get file name (MAKE SURE ITS FULL FILE PATH)
                 const std::string fileName {argv[0]};
 
                 std::ifstream infile {fileName};
-            } catch (std::ios_base::failure& fail) {
-                std::cerr << "Unable to open file" << std::endl;
-                infile.close();
-                return 0;
-            }
+            //} catch (std::ios_base::failure& fail) {
+                //std::cerr << "Unable to open file" << std::endl;
+                //infile.close();
+                //return 0;
+            //}
         } 
 
         // read in file for floor plan
