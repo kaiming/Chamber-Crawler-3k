@@ -673,7 +673,7 @@ std::string Board::usePotion(std::string direction) {
         bool usedBefore = false;
 
         for (auto it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
-            if (it->getType() == target->getPotion()->getType()) {
+            if ((*it)->getType() == target->getPotion()->getType()) {
                 usedBefore = true;
                 break;
             }
