@@ -8,6 +8,9 @@ Tile::Tile(char Type, int x, int y) :
     coord {std::pair<int, int> {x, y}}
 {}
 
+Tile::~Tile() {
+    
+}
 
 // accessors
 char Tile::getType() const {
