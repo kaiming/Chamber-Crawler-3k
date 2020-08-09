@@ -1,5 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <iomanip>
+#include <vector>
+#include <memory>
 #include "./ReadFile/readPlan.h"
 #include "./Tile/tile.h"
 #include "./Tile/walkabletile.h"
