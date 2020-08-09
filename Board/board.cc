@@ -133,7 +133,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.second + 1 >= floors[floorNum-1].size()) {
+        if (current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
             return nullptr;
         }
 
@@ -143,7 +143,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floors[floorNum-1][0].size()) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size())) {
             return nullptr;
         }
 
@@ -163,7 +163,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second - 1 < 0) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size()) || current.second - 1 < 0) {
             return nullptr;
         }
 
@@ -183,7 +183,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= floors[floorNum-1][0].size() || current.second + 1 >= floors[floorNum-1].size()) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size()) || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
             return nullptr;
         }
 
@@ -193,7 +193,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first - 1 < 0 || current.second + 1 >= floors[floorNum-1].size()) {
+        if (current.first - 1 < 0 || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
             return nullptr;
         }
 
@@ -219,7 +219,7 @@ void Board::assignChambers() {
     for (auto it_y = floors[floorNum-1].begin(); it_y != floors[floorNum-1].end(); ++it_y) {
         for (auto it_x = it_y->begin(); it_x != it_y->end(); ++it_x) {
             // Check if walkable tile and unidentified chamber floor
-            if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && (*it_x)->getRoom() < 0) {
+            if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && std::static_pointer_cast<WalkableTile>(*it_x)->getRoom() < 0) {
                 // Begin depth first search algorithm, call helper function
                 // Determine current chamber
                 int floorNum = chambers.size();
@@ -239,44 +239,44 @@ void Board::assignChambers() {
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
     
     // Store current tile
-    floors[floorNum-1][coords.second][coords.first].setRoom(floorNum);
+    floors[floorNum-1][coords.second][coords.first]->setRoom(floorNum);
     chamber.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
 
 
     // Check all directions around for matching unidentified chamber floor tiles
 
     // Check to the right
-    if (coords.first + 1 < floors[floorNum-1][coords.second].size()) {
-        std::shared_ptr<WalkableTile> right = floors[floorNum-1][coords.second][coords.first+1];
+    if (coords.first + 1 < static_cast<int>(floors[floorNum-1][coords.second].size())) {
+        std::shared_ptr<WalkableTile> right = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][coords.second][coords.first+1]);
         
-        if (std::dynamic_pointer_cast<WalkableTile>(right) && (right)->getType() == '.' && (right)->getRoom() < 0) {
+        if (right && (right)->getType() == '.' && (right)->getRoom() < 0) {
             tileDFS(right->getCoord(), floorNum, chamber);
         }
     }
 
     // Check below
-    if (coords.second + 1 < floors[floorNum-1].size()) {
-        std::shared_ptr<WalkableTile> down = floors[floorNum-1][coords.second+1][coords.first];
+    if (coords.second + 1 < static_cast<int>(floors[floorNum-1].size())) {
+        std::shared_ptr<WalkableTile> down = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][coords.second+1][coords.first]);
         
-        if (std::dynamic_pointer_cast<WalkableTile>(down) && (down)->getType() == '.' && (down)->getRoom() < 0) {
+        if (down && (down)->getType() == '.' && (down)->getRoom() < 0) {
             tileDFS(down->getCoord(), floorNum, chamber);
         }
     }
     
     // Check to the left
     if (coords.first - 1 >= 0) {
-        std::shared_ptr<WalkableTile> left = floors[floorNum-1][coords.second][coords.first-1];
+        std::shared_ptr<WalkableTile> left = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][coords.second][coords.first-1]);
     
-        if (std::dynamic_pointer_cast<WalkableTile>(left) && (left)->getType() == '.' && (left)->getRoom() < 0) {
+        if (left && (left)->getType() == '.' && (left)->getRoom() < 0) {
             tileDFS(left->getCoord(), floorNum, chamber);
         }
     }
 
     // Check above
     if (coords.second -1 >= 0) {
-        std::shared_ptr<WalkableTile> above = floors[floorNum-1][coords.second - 1][coords.first];
+        std::shared_ptr<WalkableTile> above = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][coords.second - 1][coords.first]);
      
-        if (std::dynamic_pointer_cast<WalkableTile>(above) && (above)->getType() == '.' && (above)->getRoom() < 0) {
+        if (above && (above)->getType() == '.' && (above)->getRoom() < 0) {
             tileDFS(above->getCoord(), floorNum, chamber);
         }
     }
@@ -301,7 +301,7 @@ void Board::changeFloor() {
 //--------------------------------------------------------------------------------
 
 std::string Board::movePlayer(std::string direction) {
-    std:shared_ptr<WalkableTile> destination = validDest(player, direction);
+    std::shared_ptr<WalkableTile> destination = validDest(player, direction);
     std::string message = "";
 
     // Check if valid destination
@@ -311,14 +311,14 @@ std::string Board::movePlayer(std::string direction) {
 
     // Check if destination is exit
     if (destination->isStairs()) {
-        if (floorNum == floorLimit) {
+        if (floorNum == static_cast<int>(floors.size())) {
             // Game completed
             return "Dungeon cleared. You win! ";
         } else {
             // Proceed to next floor
             floorNum += 1;
             changeFloor();
-            return "Floor " + floorNum - 1 + " cleard. Proceeding to next floor. ";
+            return "Floor " + std::to_string(floorNum - 1) + " cleared. Proceeding to next floor. ";
         }
         
     }
@@ -343,7 +343,7 @@ std::string Board::movePlayer(std::string direction) {
         // Loop over gold vector
         for (auto it = gold.begin(); it != gold.end(); ++it) {
             // Check if Dragon Hoard
-            if (std::dynamic_pointer_cast<DragonHoard>((*it)) {
+            if (std::dynamic_pointer_cast<DragonHoard>(*it)) {
                 // Check if dragon is dead
                 if ((*it)->getDragon()->isAlive()) {
                     // Dragon is dead
@@ -395,7 +395,7 @@ std::string Board::attackEnemy(std::string direction) {
 
         // Begin attack sequence and store resulting enemy state
         double enemyOgHP = target->getOccupant()->getHP();
-        bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant()));
+        bool EnemyKilled = std::dynamic_pointer_cast<Enemy>(target->getOccupant())->getAttacked(*(player->getOccupant()));
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
