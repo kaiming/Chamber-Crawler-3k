@@ -837,7 +837,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr);
+        } while (chambers[chamber][tile]->getPotion() != nullptr || static_cast<int>(chambers[chamber][tile]->getGold().size()) != 0 || chambers[chamber][tile]->getOccupant() != nullptr);
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
