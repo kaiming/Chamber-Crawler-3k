@@ -37,7 +37,7 @@ void WalkableTile::setPotion(const std::shared_ptr<Potion> potion) {
 }
 
 
-std::vector<std::shared_ptr<Gold>> WalkableTile::getGold() const {
+std::vector<std::shared_ptr<Gold>>& WalkableTile::getGold() const {
     return goldStash;
 }
 

@@ -24,7 +24,7 @@ class WalkableTile : public Tile {
     void setOccupant(const std::shared_ptr<Character> character);
     std::shared_ptr<Potion> getPotion() const;
     void setPotion(const std::shared_ptr<Potion> potion);
-    std::vector<std::shared_ptr<Gold>> getGold() const;
+    std::vector<std::shared_ptr<Gold>>& getGold() const;
     void setGold(const std::shared_ptr<Gold> g);
     bool isExit() const;
     void setExit(const bool exit);

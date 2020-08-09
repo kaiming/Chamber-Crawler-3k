@@ -345,10 +345,10 @@ std::string Board::movePlayer(std::string direction) {
             // Check if Dragon Hoard
             if (std::dynamic_pointer_cast<DragonHoard>(*it)) {
                 // Check if dragon is dead
-                if ((*it)->getDragon()->isAlive()) {
+                if (std::dynamic_pointer_cast<DragonHoard>(*it)->getDragon()->isAlive()) {
                     // Dragon is dead
                     // Player picks up gold
-                    player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
+                    player->getOccupant()->setGold(player->getOccupant()->getGold() + (*it)->getSize());
                     // Gold is consumed
                     gold.erase(it); 
                 }
@@ -357,9 +357,9 @@ std::string Board::movePlayer(std::string direction) {
 
             } else {
                 // Player picks up gold
-                player->occupant->setGold(player->occupant->getGold() + (*it)->getSize());
+                player->getOccupant()->setGold(player->getOccupant()->getGold() + (*it)->getSize());
                 // Gold is consumed
-                message = " " + (*it)->getType() + ", value " + (*it)->getSize() + ", picked up. ";
+                message = (*it)->getType() + ", value " + std::to_string((*it)->getSize()) + ", picked up. ";
                 gold.erase(it); 
             }
         }
@@ -396,7 +396,7 @@ std::string Board::attackEnemy(std::string direction) {
 
         // Begin attack sequence and store resulting enemy state
         double enemyOgHP = target->getOccupant()->getHP();
-        bool EnemyKilled = target->getOccupant())->getAttacked(*(player->getOccupant());
+        bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant());
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -407,8 +407,8 @@ std::string Board::attackEnemy(std::string direction) {
                 
                 // Remove this dragon from dragons
                 for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
-                    if ((*it)->getDragon() == target->getOccupant()) {
-                        (*it)->getDragon()->setState(false);
+                    if ((*it)->getGold()[0]->getDragon() == target->getOccupant()) {
+                        (*it)->getGold()[0]->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
                     }
                 }
                 
@@ -418,7 +418,8 @@ std::string Board::attackEnemy(std::string direction) {
                 // Check if target is human or merchant
                 if (target->getOccupant()->getRace() == "Human") {
                     // Human type, drop 2 Normal Piles
-                    target->setGold(std::make_shared<Gold>("Normal Pile", 2)):
+                    target->setGold(std::make_shared<Gold>("Normal Pile", 2));
+                    // Need to generate second pile somewhere else  ----------------- TO DO ------------------------------
                     target->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
                 } else if (target->getOccupant()->getRace() == "Merchant") {
@@ -447,7 +448,7 @@ std::string Board::attackEnemy(std::string direction) {
             }
 
         } else {
-            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHp - target->getOccupant()->getHP()) + "HP (" + target->getOccupant()->getHP() + "HP remaining). "  + merchantStatus;
+            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP()) + "HP (" + target->getOccupant()->getHP() + "HP remaining). "  + merchantStatus;
         }
     } else {
         message = "No Enemy to Attack. ";
@@ -547,7 +548,7 @@ std::string Board::moveEnemies() {
 
             // 1 tile away, attack player
             bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
-            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "  
+            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. ";  
             
             if (killed) {
                 // Player is dead, game is over
@@ -622,7 +623,7 @@ std::string Board::moveEnemies() {
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = (*it)->getDragonTile->getCoord();
+        std::pair<int, int> eCoord = (*it)->getGold()[0]->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
 
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
@@ -634,8 +635,8 @@ std::string Board::moveEnemies() {
             double ogHP = player->getOccupant()->getHP();
             
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
-            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. " 
+            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*((*it)->getOccupant()));
+            message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "; 
 
             if (killed) {
                 // Player is dead, game is over
