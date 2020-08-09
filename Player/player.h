@@ -14,14 +14,13 @@ class Halfling;
 class Potion;
 
 
-class Player : public Character {
-  protected:
+class Player : public Character { 
     int gold;
     const double maxHP;
 
   public:
     // constructor
-    Player(double HP = 0, double maxHP = 0, double atk = 0, double def = 0);
+    Player(double HP, double maxHP, double atk, double def);
 
     // accessors and mutators
     int getGold() const;

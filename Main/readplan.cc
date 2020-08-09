@@ -30,6 +30,8 @@
 #include "../Enemy/merchant.h"
 #include "../Enemy/dragon.h"
 #include "../Enemy/halfling.h"
+#include "../Player/player.h"
+#include "../Player/shade.h"
 
 // helper for readFloorPlan
 bool isWalkable(char type) {
@@ -389,12 +391,8 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     case ('@'):
                     {
                         // player spawn
-                        auto tempPlayer {std::make_shared<Player>()}; // NOTE: GAVE PLAYER A DEFAULT CONSTRUCTOR INITIALIZES FIELDS TO 0 SINCE THE BOARD CONSTRUCTOR WILL REASSIGN THE OCCUPANT FIELD FOR PLAYER
-                        //std::shared_ptr<Character> tempCharacter;
-                        //tempCharacter = tempPlayer;
-                        auto tempGold = std::vector<std::shared_ptr<Gold>> {};
-                        auto tempPotion = std::make_shared<Potion>(nullptr);
-                        auto tempTile {tileType->makeTile(type, colNum, rowNum, tempPlayer, tempPotion, tempGold, false)};
+                        std::shared_ptr<Shade> tempPlayer {std::make_shared<Shade>()}; // NOTE: GAVE PLAYER A DEFAULT CONSTRUCTOR INITIALIZES FIELDS TO 0 SINCE THE BOARD CONSTRUCTOR WILL REASSIGN THE OCCUPANT FIELD FOR PLAYER
+                        auto tempTile {tileType->makeTile(type, colNum, rowNum, tempPlayer)};
                         
                         // if the current floor has more than 1 @ symbol or none at all ------------------------------
                         if (floorNum != static_cast<int>(playerSpawns.size())) {
