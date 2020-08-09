@@ -2,7 +2,7 @@
 #define __TEXTDISPLAY_H__
 
 #include <iostream>
-#include "board.h"
+#include "../Board/board.h"
 
 class TextDisplay {
     private:
