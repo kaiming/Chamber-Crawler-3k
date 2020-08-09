@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
         // if no file is passed in command line
         if (argc == 0) {
-            try {
+            try { // NOTE: TAKE THIS HANDLER OUT LATER ITS FOR TESTING PURPOSES
                 infile.open("../default.txt");
             } catch (...) {
                 std::cout << "error" << std::endl;
