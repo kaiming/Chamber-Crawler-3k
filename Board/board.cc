@@ -240,7 +240,7 @@ void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::s
     
     // Store current tile
     std::dynamic_pointer_cast<WalkableTile>(floors[floorNum - 1][coords.second][coords.first])->setRoom(floorNum);
-    chambers.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
+    chambers.emplace_back(std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][coords.second][coords.first])); 
 
 
     // Check all directions around for matching unidentified chamber floor tiles
@@ -765,7 +765,7 @@ void Board::generateFloor() {
             temp = std::make_shared<Gold>("Small", 1);
         } else if (type == 7) {
             temp = std::make_shared<DragonHoard>();
-            dragonHoards.emplace_back(temp); 
+            dragonHoards.emplace_back(std::dynamic_pointer_cast<DragonHoard>(temp)); 
         }
 
         // Generate location (make sure not occupied)
