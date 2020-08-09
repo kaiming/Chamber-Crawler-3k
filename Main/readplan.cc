@@ -265,7 +265,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     {
                         // dragon hoard
                         auto tempGold {std::make_shared<DragonHoard>()};
-                        hoards.push_back(std::pair{std::pair{colNum, rowNum}, tempGold});
+                        hoards.push_back(std::pair<std::pair<int, int>, std::shared_ptr<DragonHoard>>{std::pair{colNum, rowNum}, tempGold});
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, nullptr, {tempGold}, false)};
 
