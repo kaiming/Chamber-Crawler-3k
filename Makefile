@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -Werror -MMD # use -MMD to generate dependencies
+CXXFLAGS = -std=c++14 -Wall -g -Werror -MMD # use -MMD to generate dependencies
 EXEC = cc3k
 MAIN_SOURCES = ${wildcard *.cc} # sources in root directory
 MAIN_OBJ = ${MAIN_SOURCES:.cc=.o}
