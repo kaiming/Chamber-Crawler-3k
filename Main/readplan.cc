@@ -390,7 +390,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     {
                         // player spawn
                         auto tempPlayer {std::make_shared<Player>()}; // NOTE: GAVE PLAYER A DEFAULT CONSTRUCTOR INITIALIZES FIELDS TO 0 SINCE THE BOARD CONSTRUCTOR WILL REASSIGN THE OCCUPANT FIELD FOR PLAYER
-                        auto tempTile {tileType->makeTile(type, colNum, rowNum, std::static_pointer_cast<Character>(tempPlayer))};
+                        auto tempTile {tileType->makeTile(type, colNum, rowNum, tempPlayer)};
                         
                         // if the current floor has more than 1 @ symbol or none at all ------------------------------
                         if (floorNum != static_cast<int>(playerSpawns.size())) {
