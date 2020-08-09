@@ -58,7 +58,7 @@ class Board {
             std::vector<std::shared_ptr<WalkableTile>> playerSpawns = {},
             std::vector<std::shared_ptr<WalkableTile>> enemies = {},
             std::vector<std::shared_ptr<WalkableTile>> dragonHoards = {},
-            std::string race = 0
+            std::string race = ""
         );
         
         std::string getRace() const;
