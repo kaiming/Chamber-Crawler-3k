@@ -396,7 +396,7 @@ std::string Board::attackEnemy(std::string direction) {
 
         // Begin attack sequence and store resulting enemy state
         double enemyOgHP = target->getOccupant()->getHP();
-        bool EnemyKilled = std::dynamic_pointer_cast<Enemy>(target->getOccupant())->getAttacked(*()std::dynamic_pointer_cast<Player>(player->getOccupant()));
+        bool EnemyKilled = std::dynamic_pointer_cast<Enemy>(target->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Player>(player->getOccupant())));
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -547,7 +547,7 @@ std::string Board::moveEnemies() {
             double ogHP = player->getOccupant()->getHP();
 
             // 1 tile away, attack player
-            bool killed = player->getOccupant()->getAttacked(*((*it)->getOccupant()));
+            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Enemy>((*it)->getOccupant())));
             message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. ";  
             
             if (killed) {
@@ -623,7 +623,7 @@ std::string Board::moveEnemies() {
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = (*it)->getGold()[0]->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
+        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
 
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
@@ -635,7 +635,7 @@ std::string Board::moveEnemies() {
             double ogHP = player->getOccupant()->getHP();
             
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*((*it)->getOccupant()));
+            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Enemy>((*it)->getOccupant())));
             message += player->getOccupant()->getRace() + " attacked for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "; 
 
             if (killed) {
@@ -665,14 +665,14 @@ std::string Board::usePotion(std::string direction) {
     }
 
     // Check if destination is occupied by a potion
-    if (destination->getPotion() != nullptr) {
+    if (target->getPotion() != nullptr) {
         // Use potion
-        player->getOccupant()->usePotion(target->getPotion());
+        std::dynamic_pointer_cast<Player>(player->getOccupant())->usePotion(target->getPotion());
 
         // Add potion to memory, if new
         bool usedBefore = false;
 
-        for (auto it = potions.begin(); it != potions.end(); ++it) {
+        for (auto it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
             if (it->getType() == target->getPotion()->getType()) {
                 usedBefore = true;
                 break;
@@ -680,7 +680,7 @@ std::string Board::usePotion(std::string direction) {
         }
 
         if (!usedBefore) {
-            potions.emplace_back(target->getPotion()->getType());
+            potionsUsed.emplace_back(target->getPotion()->getType());
         }
 
         // Remove potion from board
@@ -772,7 +772,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile].getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
         // Place type at location
@@ -807,8 +807,8 @@ void Board::generateFloor() {
             } while (destination == nullptr);
 
             // Place dragon at location and store in DragonHoard
-            destination->setOccupant(temp->getDragon());
-            temp->setDragonTile(destination);
+            destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
+            std::dynamic_pointer_cast<DragonHoard>(temp)->setDragonTile(destination);
         }
     }
 
@@ -837,7 +837,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % chambers.size();
             tile = std::rand() % chambers[chamber].size();
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getOccupant());
+        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr);
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
