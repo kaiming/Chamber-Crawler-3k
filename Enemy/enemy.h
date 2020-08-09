@@ -8,7 +8,7 @@ class Vampire;
 class Troll;
 class Goblin;
 
-#include "../Character/character.h"
+#include "../character/character.h"
 
 class Enemy : public Character {
     private:
