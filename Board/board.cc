@@ -239,7 +239,7 @@ void Board::assignChambers() {
 void Board::tileDFS(std::pair<int, int> coords, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber) {
     
     // Store current tile
-    floors[floorNum-1][coords.second][coords.first]->setRoom(floorNum);
+    std::dynamic_pointer_cast<WalkableTile>([floorNum-1][coords.second][coords.first])->setRoom(floorNum);
     chamber.emplace_back(floors[floorNum-1][coords.second][coords.first]); 
 
 
@@ -310,7 +310,7 @@ std::string Board::movePlayer(std::string direction) {
     }
 
     // Check if destination is exit
-    if (destination->isStairs()) {
+    if (destination->isExit()) {
         if (floorNum == static_cast<int>(floors.size())) {
             // Game completed
             return "Dungeon cleared. You win! ";
@@ -395,7 +395,7 @@ std::string Board::attackEnemy(std::string direction) {
 
         // Begin attack sequence and store resulting enemy state
         double enemyOgHP = target->getOccupant()->getHP();
-        bool EnemyKilled = std::dynamic_pointer_cast<Enemy>(target->getOccupant())->getAttacked(*(player->getOccupant()));
+        bool EnemyKilled = target->getOccupant())->getAttacked(*(player->getOccupant());
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
