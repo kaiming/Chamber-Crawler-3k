@@ -672,8 +672,8 @@ std::string Board::usePotion(std::string direction) {
         // Add potion to memory, if new
         bool usedBefore = false;
 
-        for (auto it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
-            if ((*it)->getType() == target->getPotion()->getType()) {
+        for (std::vector<std::string>::iterator it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
+            if ((*it) == target->getPotion()->getType()) {
                 usedBefore = true;
                 break;
             }
