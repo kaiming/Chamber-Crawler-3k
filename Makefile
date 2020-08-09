@@ -1,8 +1,10 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -Werror -MMD # use -MMD to generate dependencies
 EXEC = cc3k
-MAIN_SOURCES = ${wildcard ./Main/*.cc} # sources in root directory
+MAIN_SOURCES = ${wildcard *.cc} # sources in root directory
 MAIN_OBJ = ${MAIN_SOURCES:.cc=.o}
+READFILE_SOURCES = ${wildcard ./ReadFile/*.cc} # sources in ReadFile subdirectory
+READFILE_OBJ = ${READFILE_SOURCES:.cc=.o}
 BOARD_SOURCES = ${wildcard ./Board/*.cc} # sources in Board subdirectory
 BOARD_OBJ = ${BOARD_SOURCES:.cc=.o}
 CHARACTER_SOURCES = ${wildcard ./Character/*.cc} # sources in Character subdirectory
@@ -21,7 +23,7 @@ TD_SOURCES = ${wildcard ./TextDisplay/*.cc} # sources in TextDisplay subdirector
 TD_OBJ = ${TD_SOURCES:.cc=.o}
 TILE_SOURCES = ${wildcard ./Tile/*.cc} # sources in Tile subdirectory
 TILE_OBJ = ${TILE_SOURCES:.cc=.o}
-OBJECTS = ${MAIN_OBJ} ${BOARD_OBJ} ${CHARACTER_OBJ} ${ENEMY_OBJ} ${FACTORY_OBJ} ${GOLD_OBJ} ${PLAYER_OBJ} ${POTION_OBJ} ${TD_OBJ} ${TILE_OBJ}
+OBJECTS = ${MAIN_OBJ} ${READFILE_OBJ} ${BOARD_OBJ} ${CHARACTER_OBJ} ${ENEMY_OBJ} ${FACTORY_OBJ} ${GOLD_OBJ} ${PLAYER_OBJ} ${POTION_OBJ} ${TD_OBJ} ${TILE_OBJ}
 DEPENDS =  ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

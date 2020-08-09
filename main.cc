@@ -1,10 +1,9 @@
 #include <iostream>
 #include "readPlan.h"
-#include "../Tile/tile.h"
-#include "../Tile/walkabletile.h"
-#include "../Board/board.h"
-#include "../TextDisplay/textdisplay.h"
-// add includes
+#include "./Tile/tile.h"
+#include "./Tile/walkabletile.h"
+#include "./Board/board.h"
+#include "./TextDisplay/textdisplay.h"
 
 int main(int argc, char* argv[]) {
         std::ifstream infile;
