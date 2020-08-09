@@ -63,7 +63,7 @@ Board::Board(
         std::vector<std::shared_ptr<WalkableTile>> enemies,
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
         std::string race
-) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, player{playerSpawns[0]}, floorNum{1} {
+) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : std::make_shared<WalkableTile>(nullptr)}, floorNum{1} {
     
     // Generate Player by given Race
     if (race == "s") {
