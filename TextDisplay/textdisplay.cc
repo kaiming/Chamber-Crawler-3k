@@ -75,10 +75,10 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
                 } else if (std::static_pointer_cast<WalkableTile>(*it_j)->isExit()) {
                     // Print "/" for stairs
                     out << "/";
-                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getPotion != nullptr) {
+                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getPotion() != nullptr) {
                     // Print "P" for potion
                     out << "P";
-                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getGold != nullptr) {
+                } else if (std::static_pointer_cast<WalkableTile>(*it_j)->getGold() != nullptr) {
                     // Print "G" for gold
                     out << "G";
                 } else {
