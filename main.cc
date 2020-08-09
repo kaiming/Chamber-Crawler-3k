@@ -1,5 +1,5 @@
 #include <iostream>
-#include "./ReadFile/readplan.h"
+#include "./ReadFile/readPlan.h"
 #include "./Tile/tile.h"
 #include "./Tile/walkabletile.h"
 #include "./Board/board.h"
