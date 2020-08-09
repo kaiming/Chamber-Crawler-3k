@@ -25,7 +25,9 @@ int main(int argc, char* argv[]) {
                 std::cout << "error" << std::endl;
             }
             
-        } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
+        } 
+        #if 0
+        else { // if there are at least one command line argument (only take the first one and try to open it as a file)
             try {
                 // get file name (MAKE SURE ITS FULL FILE PATH)
                 const std::string fileName {argv[0]};
@@ -37,6 +39,7 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
         } 
+        #endif
 
         // read in file for floor plan
         readFloorPlan(infile, floors, playerSpawns, enemies, dragonHoards, filled);
