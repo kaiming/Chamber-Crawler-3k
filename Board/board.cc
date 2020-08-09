@@ -338,7 +338,7 @@ std::string Board::movePlayer(std::string direction) {
     if (destination->getGold().size() != 0) {
         
         // Get gold reference
-        std::vector<std::shared_ptr<Gold>> gold = destination->getGold();
+        std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
         
         // Loop over gold vector
         for (auto it = gold.begin(); it != gold.end(); ++it) {
