@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
             } catch (std::ios_base::failure& fail) {
                 std::cerr << "Unable to open file" << std::endl;
                 infile.close();
-                return;
+                return 0;
             }
         } 
 
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
             std::cout << "Enter here: ";
 
             if (std::cin.fail()) {
-                if (std::cin.eof()) return;
+                if (std::cin.eof()) return 0;
 
                 std::cin.clear();
                 std::cin.ignore();
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
         }
 
         if (race == "q") {
-            return; // NOTE: MAYBE HAVEIT SO A NEW GAME STARTS??
+            return 0; // NOTE: MAYBE HAVE IT SO A NEW GAME STARTS??
         } else if (race == "r") {
             restart = true; // Sort of useless LOL
             continue;
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
             // break clause
             if (std::cin.fail()) {
                 if (std::cin.eof()) {
-                    return;
+                    return 0;
                 }
             }
 
@@ -122,9 +122,15 @@ int main(int argc, char* argv[]) {
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "f") {
                 // Freeze enemies
-                bool isFrozen = b.toggleFreeze;
+                bool isFrozen = b.toggleFreeze();
 
-                message = "Enemies Frozen: " + (isFrozen? "Enabled" : "Disabled");
+                message = "Enemies Frozen: ";
+                
+                if (isFrozen) {
+                    message += "Enabled";
+                 } else {
+                    message += "Disabled";
+                 }
 
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "r") {
@@ -137,7 +143,7 @@ int main(int argc, char* argv[]) {
                 // Quit Game
                 std::cout << "You gave up! Better luck next time!";
 
-                return;
+                return 0;
             } else {
                 // Invalid Command
                 std::cerr << "Invalid Command" << std::endl;
@@ -148,7 +154,7 @@ int main(int argc, char* argv[]) {
             message = b.moveEnemies();
             td.drawFloor(std::cout, b, message);
             
-            if (message[-10] == "Game Over!") {
+            if (message.substr(-10) == "Game Over!") {
                 // Player killed and lost
                 winner = 2;
                 break;
@@ -180,7 +186,7 @@ int main(int argc, char* argv[]) {
                 std::cin >> replay;
 
                 if (std::cin.fail()) {
-                    if (std::cin.eof()) return;
+                    if (std::cin.eof()) return 0;
 
                     std::cin.clear();
                     std::cin.ignore();
