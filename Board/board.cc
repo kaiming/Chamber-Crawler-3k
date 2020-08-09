@@ -345,10 +345,10 @@ std::string Board::movePlayer(std::string direction) {
             // Check if Dragon Hoard
             if (std::dynamic_pointer_cast<DragonHoard>(*it)) {
                 // Check if dragon is dead
-                if (std::dynamic_pointer_cast<DragonHoard>(*it)->getDragon()->isAlive()) {
+                if (std::dynamic_pointer_cast<DragonHoard>(*it)->getDragon()->getState()) {
                     // Dragon is dead
                     // Player picks up gold
-                    player->getOccupant()->setGold(player->getOccupant()->getGold() + (*it)->getSize());
+                    std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + (*it)->getSize());
                     // Gold is consumed
                     gold.erase(it); 
                 }
@@ -357,7 +357,7 @@ std::string Board::movePlayer(std::string direction) {
 
             } else {
                 // Player picks up gold
-                player->getOccupant()->setGold(player->getOccupant()->getGold() + (*it)->getSize());
+                std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + (*it)->getSize());
                 // Gold is consumed
                 message = (*it)->getType() + ", value " + std::to_string((*it)->getSize()) + ", picked up. ";
                 gold.erase(it); 
@@ -396,7 +396,7 @@ std::string Board::attackEnemy(std::string direction) {
 
         // Begin attack sequence and store resulting enemy state
         double enemyOgHP = target->getOccupant()->getHP();
-        bool EnemyKilled = target->getOccupant()->getAttacked(*(player->getOccupant());
+        bool EnemyKilled = std::dynamic_pointer_cast<Enemy>(target->getOccupant())->getAttacked(*()std::dynamic_pointer_cast<Player>(player->getOccupant()));
     
         if (EnemyKilled) {
             // Enemy killed, determine Enemy type to generate gold dropped
@@ -407,8 +407,8 @@ std::string Board::attackEnemy(std::string direction) {
                 
                 // Remove this dragon from dragons
                 for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
-                    if ((*it)->getGold()[0]->getDragon() == target->getOccupant()) {
-                        (*it)->getGold()[0]->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
+                    if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon() == target->getOccupant()) {
+                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
                     }
                 }
                 
@@ -448,7 +448,7 @@ std::string Board::attackEnemy(std::string direction) {
             }
 
         } else {
-            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP()) + "HP (" + target->getOccupant()->getHP() + "HP remaining). "  + merchantStatus;
+            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP()) + "HP (" + std::to_string(target->getOccupant()->getHP()) + "HP remaining). "  + merchantStatus;
         }
     } else {
         message = "No Enemy to Attack. ";
