@@ -390,8 +390,8 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     {
                         // player spawn
                         auto tempPlayer {std::make_shared<Player>()}; // NOTE: GAVE PLAYER A DEFAULT CONSTRUCTOR INITIALIZES FIELDS TO 0 SINCE THE BOARD CONSTRUCTOR WILL REASSIGN THE OCCUPANT FIELD FOR PLAYER
-                        std::shared_ptr<Character> tempCharacter;
-                        tempCharacter = tempPlayer;
+                        //std::shared_ptr<Character> tempCharacter;
+                        //tempCharacter = tempPlayer;
                         auto tempGold = std::vector<std::shared_ptr<Gold>> {};
                         auto tempPotion = std::make_shared<Potion>(nullptr);
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempPlayer, tempPotion, tempGold, false)};
