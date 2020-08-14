@@ -42,9 +42,9 @@ bool isWalkable(char type) {
 
 // readFloorPlan helper (PUT IN A SEPARATE FILE LATER) 
 void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<std::shared_ptr<WalkableTile>>& playerSpawns, std::vector<std::shared_ptr<WalkableTile>>& enemies, std::vector<std::shared_ptr<WalkableTile>>& dragonHoards, std::vector<bool>& filled) {
-    std::shared_ptr<Factory> tileType;
-    std::shared_ptr<WalkableFactory> walkable;
-    std::shared_ptr<NonWalkableFactory> nonWalkable;
+    std::shared_ptr<Factory> tileType = std::make_shared<Factory>();
+    std::shared_ptr<WalkableFactory> walkable = std::make_shared<WalkableFactory>();
+    std::shared_ptr<NonWalkableFactory> nonWalkable = std::make_shared<NonWalkableFactory>();
     // keep track of the generated dragonhoard to add dragon after
     std::vector<std::pair<std::pair<int, int>, std::shared_ptr<DragonHoard>>> hoards;
     std::string line;
