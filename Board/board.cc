@@ -407,8 +407,8 @@ std::string Board::attackEnemy(std::string direction) {
                 
                 // Remove this dragon from dragons
                 for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
-                    if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon() == target->getOccupant()) {
-                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
+                    if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon() == target->getOccupant()) {
+                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
                     }
                 }
                 
@@ -623,7 +623,7 @@ std::string Board::moveEnemies() {
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
+        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
 
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
@@ -771,7 +771,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
         // Place type at location
