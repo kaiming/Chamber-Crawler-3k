@@ -158,6 +158,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         break;
                 }   
 
+                // FOR TESTING
+                std::cout << type << std::endl;
+
                 // make tile
                 auto tempTile {tileType->makeTile(type, colNum, rowNum)};
                 // add to floor
