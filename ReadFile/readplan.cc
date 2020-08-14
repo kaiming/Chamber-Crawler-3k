@@ -125,6 +125,11 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 if (ssl.eof()) {
                     if (vert == 2 && horiz == static_cast<int>(line.size() - 2)) {
                         ++borderCount;
+
+                        if (static_cast<int>(filled.size()) != floorNum + 1) {
+                            filled[floorNum] = false;
+                        }
+                        
                         if (borderCount == 2) isStart = false;
                     }
 
@@ -429,8 +434,10 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
             }
 
             ++colNum;
-        }
+        } // End of column
 
         ++rowNum;
-    }
-}
+    } // End of row
+
+
+} // End of floor
