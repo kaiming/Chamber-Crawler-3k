@@ -700,8 +700,8 @@ void Board::generateFloor() {
 
 
     // Generate player
-    int pChamber = std::rand() % chambers.size();
-    int tile = std::rand() % chambers[pChamber].size();
+    int pChamber = std::rand() % static_cast<int>(chambers.size());
+    int tile = std::rand() % static_cast<int>(chambers[pChamber].size());
 
     // Insert Player
     chambers[pChamber][tile]->setOccupant(playerPtr);
@@ -713,10 +713,10 @@ void Board::generateFloor() {
 
     // Ensure exit stairs are not in the same chamber as the player
     do {
-        chamber = std::rand() % chambers.size();
+        chamber = std::rand() % static_cast<int>(chambers.size());
     } while (chamber == pChamber);
 
-    tile = std::rand() % chambers[chamber].size();
+    tile = std::rand() % static_cast<int>(chambers[chamber].size());
 
         // Insert exit stairs
     chambers[chamber][tile]->setExit(true);
@@ -744,8 +744,8 @@ void Board::generateFloor() {
 
         // Generate location (make sure not occupied)
         do {
-            chamber = std::rand() % chambers.size();
-            tile = std::rand() % chambers[chamber].size();
+            chamber = std::rand() % static_cast<int>(chambers.size());
+            tile = std::rand() % static_cast<int>(chambers[chamber].size());
         } while (chambers[chamber][tile]->getPotion());
 
         // Place type at location
@@ -769,8 +769,8 @@ void Board::generateFloor() {
 
         // Generate location (make sure not occupied)
         do {
-            chamber = std::rand() % chambers.size();
-            tile = std::rand() % chambers[chamber].size();
+            chamber = std::rand() % static_cast<int>(chambers.size());
+            tile = std::rand() % static_cast<int>(chambers[chamber].size());
         } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
@@ -837,8 +837,8 @@ void Board::generateFloor() {
 
         // Generate location (make sure not occupied)
         do {
-            chamber = std::rand() % chambers.size();
-            tile = std::rand() % chambers[chamber].size();
+            chamber = std::rand() % static_cast<int>(chambers.size());
+            tile = std::rand() % static_cast<int>(chambers[chamber].size());
         } while (chambers[chamber][tile]->getPotion() != nullptr || static_cast<int>(chambers[chamber][tile]->getGold().size()) != 0 || chambers[chamber][tile]->getOccupant() != nullptr);
 
         // Place type at location
