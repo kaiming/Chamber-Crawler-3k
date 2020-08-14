@@ -362,7 +362,7 @@ std::string Board::movePlayer(std::string direction) {
             message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
             destination->setGold(nullptr); 
         }
-        }
+    
 
     }
 
