@@ -246,11 +246,11 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
     // Check all directions around for matching unidentified chamber floor tiles
 
     // Check to the right
-    if (coords.first + 1 < static_cast<int>(floors[floorNum-1][y].size())) {
+    if (x + 1 < static_cast<int>(floors[floorNum-1][y].size())) {
         std::shared_ptr<WalkableTile> right = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y][x+1]);
         
         if (right && (right)->getType() == '.' && (right)->getRoom() < 0) {
-            tileDFS(right->getCoord(), floorNum, chamber);
+            tileDFS(right->getCoord().first, right->getCoord().second, floorNum, chamber);
         }
     }
 
@@ -259,7 +259,7 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
         std::shared_ptr<WalkableTile> down = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y+1][x]);
         
         if (down && (down)->getType() == '.' && (down)->getRoom() < 0) {
-            tileDFS(down->getCoord(), floorNum, chamber);
+            tileDFS(down->getCoord().first, down->getCoord().second, floorNum, chamber);
         }
     }
     
@@ -268,7 +268,7 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
         std::shared_ptr<WalkableTile> left = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y][]x-1]);
     
         if (left && (left)->getType() == '.' && (left)->getRoom() < 0) {
-            tileDFS(left->getCoord(), floorNum, chamber);
+            tileDFS(left->getCoord().first, left->getCoord().second, floorNum, chamber);
         }
     }
 
@@ -277,7 +277,7 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
         std::shared_ptr<WalkableTile> above = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y - 1][x]]);
      
         if (above && (above)->getType() == '.' && (above)->getRoom() < 0) {
-            tileDFS(above->getCoord(), floorNum, chamber);
+            tileDFS(above->getCoord().first, above->getCoord().second, floorNum, chamber);
         }
     }
     
