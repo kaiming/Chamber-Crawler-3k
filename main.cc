@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
         int winner = -1; // code 0 for restart, code 1 for win, code 2 for loss
 
         // if no file is passed in command line
-        if (argc == 0) {
+        if (argc == 1) {
             //try { // NOTE: TAKE THIS HANDLER OUT LATER ITS FOR TESTING PURPOSES
                 infile.open("../default.txt");
             //} catch (...) {
