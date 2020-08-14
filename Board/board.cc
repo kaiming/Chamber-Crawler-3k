@@ -265,7 +265,7 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
     
     // Check to the left
     if (x - 1 >= 0) {
-        std::shared_ptr<WalkableTile> left = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y][]x-1]);
+        std::shared_ptr<WalkableTile> left = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y][x-1]);
     
         if (left && (left)->getType() == '.' && (left)->getRoom() < 0) {
             tileDFS(left->getCoord().first, left->getCoord().second, floorNum, chamber);
@@ -274,7 +274,7 @@ void Board::tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<Walk
 
     // Check above
     if (y -1 >= 0) {
-        std::shared_ptr<WalkableTile> above = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y - 1][x]]);
+        std::shared_ptr<WalkableTile> above = std::dynamic_pointer_cast<WalkableTile>(floors[floorNum-1][y - 1][x]);
      
         if (above && (above)->getType() == '.' && (above)->getRoom() < 0) {
             tileDFS(above->getCoord().first, above->getCoord().second, floorNum, chamber);
