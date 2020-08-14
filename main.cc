@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
                 std::cin.ignore();
             }
 
-            std::cin >> race;
+            std::cin >> std::noskipws >> race;
         }
 
         if (race == "q") {
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
             } else {
                 // Invalid Command
                 std::cerr << "Invalid Command" << std::endl;
-
+                continue;
             }
 
             // Move Enemies
