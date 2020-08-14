@@ -161,7 +161,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 // make tile
                 auto tempTile {tileType->makeTile(type, colNum, rowNum)};
                 // add to floor
-                std::cout << tempTile->getCoord().first << " " << tempTile->getCoord().second;
+                std::cout << tempTile->getCoord().first << " " << tempTile->getCoord().second << std::endl;
                 floors[floorNum][rowNum].push_back(tempTile);
             } else if (isWalkable(type)) { // else if char is a walkable tile and need to check for pregeneration
                 tileType = walkable;

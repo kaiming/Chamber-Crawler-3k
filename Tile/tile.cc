@@ -7,7 +7,7 @@ Tile::Tile(char Type, int x, int y) :
     type {type},
     coord {std::pair<int, int>(x, y)}
 {
-    std::cout << coord.first << " " << coord.second;
+    std::cout << coord.first << " " << coord.second << std::endl;
 
 }
 
