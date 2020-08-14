@@ -5,7 +5,7 @@
 // NOTE: CAN CHANGE THIS TO TAKE A PAIR IF WE WANT
 Tile::Tile(char Type, int x, int y) : 
     type {type},
-    coord {std::pair<int, int> {x, y}}
+    coord {std::make_pair(x, y)}
 {}
 
 Tile::~Tile() {
