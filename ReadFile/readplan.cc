@@ -86,7 +86,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 } 
 
                 // if the chars inbetween first and last are not '-'
-                if ((counter > 0 || counter < static_cast<int>(line.size()) - 1) && line[counter] != '-') {
+                if ((counter > 0 && counter < static_cast<int>(line.size()) - 1) && line[counter] != '-') {
                     valid = false;
                     break;
                 }
