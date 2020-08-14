@@ -222,7 +222,7 @@ void Board::assignChambers() {
             if (std::dynamic_pointer_cast<WalkableTile>(*it_x) && (*it_x)->getType() == '.' && std::static_pointer_cast<WalkableTile>(*it_x)->getRoom() < 0) {
                 // Begin depth first search algorithm, call helper function
                 // Determine current chamber
-                int floorNum = chambers.size();
+                int floorNum = chambers.size() + 1;
                 std::vector<std::shared_ptr<WalkableTile>> chamber; 
                 
                 // Enter recursive function
