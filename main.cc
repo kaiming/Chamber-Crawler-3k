@@ -51,7 +51,6 @@ int main(int argc, char* argv[]) {
     while (restart) {
         restart = false;
 
-        // Board b;
         TextDisplay td;
 
         // Ask player to enter one of the specified races or quit
@@ -83,10 +82,11 @@ int main(int argc, char* argv[]) {
             restart = true; // Sort of useless LOL
             continue;
         } else if (race == "") { // default race
-            Board b = Board {floors, filled, playerSpawns, enemies, dragonHoards, "s"};
-        } else {
-            Board b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
+            race = "s";
         }
+
+        Board b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
+
 
         td.drawFloor(std::cout, b, "The adventure begins");
 
