@@ -101,6 +101,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 std::vector<std::vector<std::shared_ptr<Tile>>> grid;
                 floors.push_back(grid);
                 ++floorNum;
+                filled[floorNum] = false;
             } else {
                 // if not a valid line then ignore and continue reading the next line
                 continue;
@@ -126,10 +127,6 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     if (vert == 2 && horiz == static_cast<int>(line.size() - 2)) {
                         ++borderCount;
 
-                        if (static_cast<int>(filled.size()) != floorNum + 1) {
-                            filled[floorNum] = false;
-                        }
-                        
                         if (borderCount == 2) isStart = false;
                     }
 
