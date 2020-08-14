@@ -406,6 +406,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
+                        break;
                     }
 
                     case ('\\'):
