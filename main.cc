@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
                 // get file name (MAKE SURE ITS FULL FILE PATH)
                 const std::string fileName {argv[0]};
 
-                std::ifstream infile {fileName};
+                infile.open(argv[0]);
             //} catch (std::ios_base::failure& fail) {
                 //std::cerr << "Unable to open file" << std::endl;
                 //infile.close();
