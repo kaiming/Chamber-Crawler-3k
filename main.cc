@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
 
         std::cin >> race;
 
-        while (race != "" || race != "s" || race != "d" || race != "v" || race != "g" || race != "t") {
+        while (race != "" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
             std::cerr << "Invalid race" << std::endl;
             std::cout << "Enter here: ";
 
