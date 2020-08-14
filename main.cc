@@ -32,9 +32,9 @@ int main(int argc, char* argv[]) {
         } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
             //try {
                 // get file name (MAKE SURE ITS FULL FILE PATH)
-                const std::string fileName {argv[0]};
+                const std::string fileName {argv[1]};
 
-                infile.open(argv[0]);
+                infile.open(fileName);
             //} catch (std::ios_base::failure& fail) {
                 //std::cerr << "Unable to open file" << std::endl;
                 //infile.close();
