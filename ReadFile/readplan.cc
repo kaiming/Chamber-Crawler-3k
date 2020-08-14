@@ -118,7 +118,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
 
         // grab each character and create the appropriate Tile
         while (true) {
-            ssl >> type;
+            ssl >> std::noskipws >> type;
 
             // break clause
             if (ssl.fail()) {
