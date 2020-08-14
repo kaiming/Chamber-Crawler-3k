@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
 
         std::cin >> std::noskipws >> race;
 
-        while (race != "\n" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
+        while (race != "" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
             std::cerr << "Invalid race" << std::endl;
             std::cout << "Enter here: ";
 
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
         } else if (race == "r") {
             restart = true; // Sort of useless LOL
             continue;
-        } else if (race == "\n") { // default race
+        } else if (race == "") { // default race
             race = "s";
         }
 
