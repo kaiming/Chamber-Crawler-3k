@@ -101,7 +101,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 std::vector<std::vector<std::shared_ptr<Tile>>> grid;
                 floors.push_back(grid);
                 ++floorNum;
-                filled[floorNum] = false;
+                filled[floorNum].push_back(false);
             } else {
                 // if not a valid line then ignore and continue reading the next line
                 continue;
