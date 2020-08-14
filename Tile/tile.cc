@@ -19,5 +19,5 @@ char Tile::getType() const {
 
 
 std::pair<int, int> Tile::getCoord() const {
-    return coord;
+    return std::pair<int, int>(coord.first, coord.second);
 }
