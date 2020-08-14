@@ -629,7 +629,7 @@ std::string Board::moveEnemies() {
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
         std::pair<int, int> hoardCoord = (*it)->getCoord();
-        double hoardDistance = std::floor(std::sqrt(std::pow((hoardCoord.first - eCoord.first), 2) + std::pow((hoardCoord.second - eCoord.second), 2)));
+        double hoardDistance = std::floor(std::sqrt(std::pow((pCoord.first - hoardCoord.first), 2) + std::pow((pCoord.second - hoardCoord.second), 2)));
 
 
         if (distance == 1 || hoardDistance == 1) {
