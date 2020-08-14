@@ -17,7 +17,7 @@ class WalkableTile : public Tile {
 
   public:
     // constructor
-    WalkableTile(char type, int x, int y, std::shared_ptr<Character> occupant, std::shared_ptr<Potion> potion, std::shared_ptr<Gold>> gold, bool exit);
+    WalkableTile(char type, int x, int y, std::shared_ptr<Character> occupant, std::shared_ptr<Potion> potion, std::shared_ptr<Gold> gold, bool exit);
 
     // accessors and mutators
     std::shared_ptr<Character> getOccupant() const;
