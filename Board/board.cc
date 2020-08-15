@@ -6,6 +6,7 @@
 #include <string>
 #include <cstdlib>
 #include <cmath>
+#include <algorithm>
 
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
@@ -672,12 +673,18 @@ std::string Board::usePotion(std::string direction) {
         // Add potion to memory, if new
         bool usedBefore = false;
 
+        if (std::find(potionsUsed.begin(), potionsUsed.end(), target->getPotion()->getType()) != potionsUsed.end()) {
+            usedBefore = true;
+        }
+
+#if 0
         for (std::vector<std::string>::iterator it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
             if ((*it) == target->getPotion()->getType()) {
                 usedBefore = true;
                 break;
             }
         }
+#endif
 
         if (!usedBefore) {
             potionsUsed.emplace_back(target->getPotion()->getType());
