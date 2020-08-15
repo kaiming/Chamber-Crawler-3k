@@ -102,6 +102,9 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                 floors.push_back(grid);
                 ++floorNum;
                 filled.push_back(false);
+                std::vector<std::shared_ptr<WalkableTile>> enemyFloor, dHoardFloor;
+                enemies.push_back(enemyFloor);
+                dragonHoards.push_back(dHoardFloor);
             } else {
                 // if not a valid line then ignore and continue reading the next line
                 continue;
@@ -115,10 +118,6 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
         // push in a new row
         std::vector<std::shared_ptr<Tile>> row;
         floors[floorNum].push_back(row);
-        std::vector<std::shared_ptr<WalkableTile>> enemyFloor, dHoardFloor;
-        enemies[floorNum].push_back(enemyFloor);
-        dragonHoards[floorNum].push_back(dHoardFloor);
-
 
 
         // grab each character and create the appropriate Tile
