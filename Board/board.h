@@ -16,7 +16,10 @@ class Orc;
 class Merchant;
 class Dragon;
 class Halfling;
+
 class Potion;
+
+class PieceFactory;
 
 class Player;
 class Shade;
@@ -28,6 +31,7 @@ class Goblin;
 class Potion;
 class Gold;
 class DragonHoard;
+
 
 class Board {
     private:
