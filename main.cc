@@ -11,6 +11,11 @@
 #include "./TextDisplay/textdisplay.h"
 
 int main(int argc, char* argv[]) {
+    bool restart = true;
+
+    while (restart) {
+        restart = false;
+
         std::ifstream infile;
         //infile.exceptions(std::ifstream::failbit);
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
@@ -18,7 +23,6 @@ int main(int argc, char* argv[]) {
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
         std::vector<bool> filled;
-        bool restart = true;
         int winner = -1; // code 0 for restart, code 1 for win, code 2 for loss
 
         // if no file is passed in command line
@@ -47,9 +51,6 @@ int main(int argc, char* argv[]) {
 
         // close file
         infile.close();
-
-    while (restart) {
-        restart = false;
 
         TextDisplay td;
 
