@@ -3,7 +3,7 @@
 
 class PieceFactory {
   public:
-    virtual PieceFactory() = 0;
+    PieceFactory();
 }; 
 
 #endif
