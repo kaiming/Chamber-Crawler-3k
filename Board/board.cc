@@ -336,34 +336,33 @@ std::string Board::movePlayer(std::string direction) {
     }
 
     // Check if destination is occupied by gold
-    if (destination->getGold().size() != 0) {
+    if (destination->getGold() != nullptr) {
         
-        // Get gold reference
-        std::vector<std::shared_ptr<Gold>>& gold = destination->getGold();
+        // Get gold pointer
+        std::shared_ptr<Gold> gold = destination->getGold();
         
-        // Loop over gold vector
-        for (auto it = gold.begin(); it != gold.end(); ++it) {
-            // Check if Dragon Hoard
-            if (std::dynamic_pointer_cast<DragonHoard>(*it)) {
-                // Check if dragon is dead
-                if (std::dynamic_pointer_cast<DragonHoard>(*it)->getDragon()->getState()) {
-                    // Dragon is dead
-                    // Player picks up gold
-                    std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + (*it)->getSize());
-                    // Gold is consumed
-                    gold.erase(it); 
-                }
-
-                // Else do nothing
-
-            } else {
+        // Check if Dragon Hoard
+        if (std::dynamic_pointer_cast<DragonHoard>(gold)) {
+            // Check if dragon is dead
+            if (std::dynamic_pointer_cast<DragonHoard>(gold)->getDragon()->getState()) {
+                // Dragon is dead
                 // Player picks up gold
-                std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + (*it)->getSize());
+                std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + gold->getSize());
                 // Gold is consumed
-                message = (*it)->getType() + ", value " + std::to_string((*it)->getSize()) + ", picked up. ";
-                gold.erase(it); 
+                message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
+                destination->setGold(nullptr); 
             }
+
+            // Dragon is still alive; Else do nothing
+
+        } else {
+            // Player picks up gold
+            std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + gold->getSize());
+            // Gold is consumed
+            message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
+            destination->setGold(nullptr); 
         }
+    
 
     }
 
@@ -408,8 +407,8 @@ std::string Board::attackEnemy(std::string direction) {
                 
                 // Remove this dragon from dragons
                 for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
-                    if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon() == target->getOccupant()) {
-                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
+                    if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon() == target->getOccupant()) {
+                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
                     }
                 }
                 
@@ -505,7 +504,7 @@ std::string Board::moveEnemies() {
                     }
 
                     // Check for gold
-                    if (destination->getGold().size() != 0) {
+                    if (destination->getGold() != nullptr) {
                         // Occupied by gold, loop again
                         // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                         destination = nullptr;
@@ -587,7 +586,7 @@ std::string Board::moveEnemies() {
                 }
 
                 // Check for gold
-                if (destination->getGold().size() != 0) {
+                if (destination->getGold() != nullptr) {
                     // Occupied by gold, loop again
                     // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
                     destination = nullptr;
@@ -624,7 +623,7 @@ std::string Board::moveEnemies() {
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold()[0])->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
+        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
 
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
@@ -772,7 +771,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold().size() != 0); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
         // Place type at location
@@ -840,7 +839,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() != nullptr || static_cast<int>(chambers[chamber][tile]->getGold().size()) != 0 || chambers[chamber][tile]->getOccupant() != nullptr);
+        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr);
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);

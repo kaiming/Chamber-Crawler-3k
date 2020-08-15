@@ -6,11 +6,11 @@
 
 
 // constructor
-WalkableTile::WalkableTile(char type, int x, int y, std::shared_ptr<Character> occupant, std::shared_ptr<Potion> potion, std::vector<std::shared_ptr<Gold>> goldStash, bool exit) :
+WalkableTile::WalkableTile(char type, int x, int y, std::shared_ptr<Character> occupant, std::shared_ptr<Potion> potion, std::shared_ptr<Gold> gold, bool exit) :
     Tile {type, x, y},
     occupant {occupant},
     potion {potion},
-    goldStash {goldStash},
+    gold {gold},
     exit {exit},
     roomNum {-1}
 {}
@@ -37,14 +37,13 @@ void WalkableTile::setPotion(const std::shared_ptr<Potion> potion) {
 }
 
 
-std::vector<std::shared_ptr<Gold>>& WalkableTile::getGold() {
-    return goldStash;
+std::shared_ptr<Gold> WalkableTile::getGold() const {
+    return gold;
 }
 
 
 void WalkableTile::setGold(const std::shared_ptr<Gold> g) {
-    // push new gold to stash
-    goldStash.push_back(g);
+    this->gold = g;
 }
 
 
