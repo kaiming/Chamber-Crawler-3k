@@ -999,3 +999,4 @@ void Board::generateFloor() {
     }
 }
 
+void Board::generatePiece(int num, )
