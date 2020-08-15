@@ -584,7 +584,7 @@ std::string Board::moveEnemies() {
                 while (true) {
 
                     // Exit case in event that no suitable location found
-                    if (i > 16) {
+                    if (i > 40) {
                         break;
                     } else {
                         i++;
@@ -644,9 +644,10 @@ std::string Board::moveEnemies() {
                     break;
                 }
                 
-
-                // Swap Merchant pointers
-                (*it) = (*it)->move(destination);
+                if (destination != nullptr) {
+                    // Swap Merchant pointers
+                    (*it) = (*it)->move(destination);
+                }
 
                 // End Merchant turn
                 continue;
@@ -679,7 +680,7 @@ std::string Board::moveEnemies() {
 
             while(true) {
                 // Exit case in event that no suitable location found
-                if (i > 16) {
+                if (i > 40) {
                     break;
                 } else {
                     i++;
@@ -738,8 +739,9 @@ std::string Board::moveEnemies() {
             }
 
             // Swap Enemy pointers
-            (*it) = (*it)->move(destination);
-
+            if (destination != nullptr) {
+                (*it) = (*it)->move(destination);
+            }
 
         }
 
