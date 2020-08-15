@@ -6,7 +6,7 @@ class Potion;
 
 class PFactory {
   public:
-    // spawnPotion creates a specific type of tile for the floor
+    // spawnPotion returns a pointer to a new Potion
     virtual std::shared_ptr<Potion> spawnPotion() = 0;
 }; 
 

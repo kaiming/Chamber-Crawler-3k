@@ -3,5 +3,5 @@
 #include "../Potion/ba.h"
 
 std::shared_ptr<Potion> BAFactory::spawnEnemy() {
-    return std::make_shared<BA>;
+    return std::make_shared<BA>();
 }

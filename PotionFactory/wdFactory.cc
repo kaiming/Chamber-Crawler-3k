@@ -3,5 +3,5 @@
 #include "../Potion/wd.h"
 
 std::shared_ptr<Potion> WDFactory::spawnEnemy() {
-    return std::make_shared<WD>;
+    return std::make_shared<WD>();
 }

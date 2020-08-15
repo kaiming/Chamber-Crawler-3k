@@ -3,5 +3,5 @@
 #include "../Enemy/human.h"
 
 std::shared_ptr<Enemy> HumanFactory::spawnEnemy() {
-    return std::make_shared<Human>;
+    return std::make_shared<Human>();
 }
