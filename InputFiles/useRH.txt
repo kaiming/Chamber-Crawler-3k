@@ -1,4 +1,4 @@
-s
+v
 so
 ea
 ea
@@ -41,4 +41,6 @@ ea
 ea
 ea
 ea
-u ea
+ea
+ea
+u ne
