@@ -35,6 +35,7 @@ bool Vampire::attack(Human& h) {
 
     // Check if defender died
     if (h.getHP() <= 0) {
+        h.setHP(0);
         return true;
     }
 
@@ -55,6 +56,7 @@ bool Vampire::attack(Dwarf& d) {
 
     // Check if defender died
     if (d.getHP() <= 0) {
+        d.setHP(0);
         return true;
     }
 
@@ -75,6 +77,7 @@ bool Vampire::attack(Elf& e) {
 
     // Check if defender died
     if (e.getHP() <= 0) {
+        e.setHP(0);
         return true;
     }
 
@@ -92,6 +95,7 @@ bool Vampire::attack(Orc& o) {
 
     // Check if defender died
     if (o.getHP() <= 0) {
+        o.setHP(0);
         return true;
     }
 
@@ -112,6 +116,7 @@ bool Vampire::attack(Merchant& m) {
 
     // Check if defender died
     if (m.getHP() <= 0) {
+        m.setHP(0);
         return true;
     }
 
@@ -132,6 +137,7 @@ bool Vampire::attack(Dragon& drag) {
 
     // Check if defender died
     if (drag.getHP() <= 0) {
+        drag.setHP(0);
         return true;
     }
 
@@ -158,6 +164,7 @@ bool Vampire::attack(Halfling& half) {
 
     // Check if defender died
     if (half.getHP() <= 0) {
+        half.setHP(0);
         return true;
     }
 

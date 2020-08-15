@@ -32,6 +32,7 @@ bool Goblin::attack(Human& h) {
 
     // Check if defender died
     if (h.getHP() <= 0) {
+        h.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -51,6 +52,7 @@ bool Goblin::attack(Dwarf& d) {
 
     // Check if defender died
     if (d.getHP() <= 0) {
+        d.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -70,6 +72,7 @@ bool Goblin::attack(Elf& e) {
 
     // Check if defender died
     if (e.getHP() <= 0) {
+        e.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -89,6 +92,7 @@ bool Goblin::attack(Orc& o) {
 
     // Check if defender died
     if (o.getHP() <= 0) {
+        o.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -108,6 +112,7 @@ bool Goblin::attack(Merchant& m) {
 
     // Check if defender died
     if (m.getHP() <= 0) {
+        m.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -127,6 +132,7 @@ bool Goblin::attack(Dragon& drag) {
 
     // Check if defender died
     if (drag.getHP() <= 0) {
+        drag.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
@@ -152,6 +158,7 @@ bool Goblin::attack(Halfling& half) {
 
     // Check if defender died
     if (half.getHP() <= 0) {
+        half.setHP(0);
         // add 5 gold to inventory
         this->setGold(this->getGold() + 5);
         return true;
