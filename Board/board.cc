@@ -157,7 +157,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size())) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size())) {
             return nullptr;
         }
 
@@ -177,7 +177,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size()) || current.second - 1 < 0) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size()) || current.second - 1 < 0) {
             return nullptr;
         }
 
@@ -197,7 +197,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         std::pair<int, int> current = package->getCoord();
 
         // Check if in bounds
-        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][0].size()) || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
+        if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size()) || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
             return nullptr;
         }
 

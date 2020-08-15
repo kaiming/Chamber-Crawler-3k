@@ -110,7 +110,7 @@ void TextDisplay::drawFloor(std::ostream& out, Board& board, std::string action)
 
     // Race: XXXXX  Gold: XXX             Floor: XX
     // 24 chars Race + Gold & 9 Chars for Floor: XX
-    out << "Race: " << std::setw(7) << board.playerPtr->getRace() << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[board.floorNum -1][0].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
+    out << "Race: " << std::setw(7) << board.playerPtr->getRace() << "  Gold: " << std::setw(3) << board.playerPtr->getGold() << std::setw(board.floors[board.floorNum -1][1].size() - 33) << "Floor: " << std::setw(2) << board.floorNum << std::endl; 
     // HP: XXX
     out << "HP: " << board.playerPtr->getHP() << std::endl;
     // Atk: XXX
