@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
         restart = false;
 
         std::ifstream infile;
-        infile.exceptions(std::ifstream::failbit);
+        infile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         if (argc == 1) {
             try { 
                 infile.open("./default.txt");
-            } catch (std::ios_base::failure& fail) {
+            } catch (std::ifstream::failure& fail) {
                std::cerr << "Error reading in file" << std::endl;
                infile.close();
                return 1;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
                 const std::string fileName {argv[1]};
 
                 infile.open(fileName);
-            } catch (std::ios_base::failure& fail) {
+            } catch (std::ifstream::failure& fail) {
                 std::cerr << "Error reading in file" << std::endl;
                 infile.close();
                 return 1;
