@@ -52,6 +52,7 @@ class Board {
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> centre, std::string direction); 
         void assignChambers();
         void tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
+        bool isUnoccupied(std::shared_ptr<WalkableTile> target);
         void changeFloor();
 
     public:
