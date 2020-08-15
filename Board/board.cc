@@ -14,8 +14,6 @@
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
 
-#include "../PieceFactory/pieceFactory.h"
-
 #include "../Enemy/enemy.h"
 #include "../Enemy/human.h"
 #include "../Enemy/dwarf.h"

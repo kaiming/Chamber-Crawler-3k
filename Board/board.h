@@ -19,8 +19,6 @@ class Halfling;
 
 class Potion;
 
-class PieceFactory;
-
 class Player;
 class Shade;
 class Drow;
