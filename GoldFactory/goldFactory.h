@@ -5,7 +5,7 @@
 
 class Gold;
 
-class GFactory {
+class GFactory : public PieceFactory {
   private:
     std::string type;
     int value;

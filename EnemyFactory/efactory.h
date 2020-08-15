@@ -5,7 +5,7 @@
 
 class Enemy;
 
-class EFactory {
+class EFactory : public PieceFactory {
   public:
     // spawnEnemy returns a pointer to a new enemy
     virtual std::shared_ptr<Enemy> spawn() = 0;

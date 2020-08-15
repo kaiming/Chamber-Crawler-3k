@@ -5,7 +5,7 @@
 
 class Potion;
 
-class PFactory {
+class PFactory : public PieceFactory {
   public:
     // spawn returns a pointer to a new Potion
     virtual std::shared_ptr<Potion> spawn() = 0;
