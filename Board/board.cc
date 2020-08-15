@@ -23,6 +23,15 @@
 #include "../Enemy/dragon.h"
 #include "../Enemy/halfling.h"
 
+#include "../EnemyFactory/efactory.h"
+#include "../EnemyFactory/humanFactory.h"
+#include "../EnemyFactory/dwarfFactory.h"
+#include "../EnemyFactory/elfFactory.h"
+#include "../EnemyFactory/orcFactory.h"
+#include "../EnemyFactory/merchantFactory.h"
+#include "../EnemyFactory/dragonFactory.h"
+#include "../EnemyFactory/halflingFactory.h"
+
 #include "../Player/player.h"
 #include "../Player/shade.h"
 #include "../Player/drow.h"
@@ -38,8 +47,19 @@
 #include "../Potion/wa.h"
 #include "../Potion/wd.h"
 
+#include "../PotionFactory/pfactory.h"
+#include "../PotionFactory/rhFactory.h"
+#include "../PotionFactory/baFactory.h"
+#include "../PotionFactory/bdFactory.h"
+#include "../PotionFactory/phFactory.h"
+#include "../PotionFactory/waFactory.h"
+#include "../PotionFactory/wdFactory.h"
+
 #include "../Gold/gold.h"
 #include "../Gold/dragonhoard.h"
+
+#include "../GoldFactory/goldFactory.h"
+#include "../GoldFactory/dHoardFactory.h"
 
 // Include all player and enemy races
 

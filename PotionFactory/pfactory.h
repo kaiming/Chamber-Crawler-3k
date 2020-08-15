@@ -1,6 +1,7 @@
 #ifndef __PFACTORY_H__
 #define __PFACTORY_H__
 #include <memory>
+#include "../PieceFactory/pieceFactory.h"
 
 class Potion;
 

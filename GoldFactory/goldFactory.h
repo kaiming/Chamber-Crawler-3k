@@ -1,6 +1,7 @@
 #ifndef __GFACTORY_H__
 #define __GFACTORY_H__
 #include <memory>
+#include "../PieceFactory/pieceFactory.h"
 
 class Gold;
 
