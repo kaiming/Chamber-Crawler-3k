@@ -958,7 +958,7 @@ void Board::generateFloor() {
         chambers[chamber][tile]->setGold(temp);
 
         // If dragonHoard type, place Dragon around it
-        if (type == 7) {
+        if (std::dynamic_pointer_cast<DragonHoard>(temp)) {
             // Add to dragonHoards
             dragonHoards[floorNum-1].emplace_back(std::dynamic_pointer_cast<WalkableTile>(chambers[chamber][tile])); 
 
@@ -1022,7 +1022,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 20; i++) {
         // Generate type
-        std::shared_ptr<Enemy> temp = generatePiece(enemyfactories)
+        std::shared_ptr<Enemy> temp = generatePiece(enemyfactories);
 
         // Generate location (make sure not occupied)
         do {
