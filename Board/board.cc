@@ -702,21 +702,12 @@ std::string Board::moveEnemies() {
         } else {
             // Too far away to attack, do a random move
             std::shared_ptr<WalkableTile> destination = nullptr;
-            int i = 0;
 
             while(true) {
                 // Exit case in event that no suitable location found
-                if (i > 80) {
-                    break;
-                }
+              
 
                 do {
-                    if (i > 80) {
-                        break;
-                    } else {
-                        i++;
-                    }
-                    
                     int rng = std::rand() % 8;
 
                     if (rng == 0) {
@@ -736,8 +727,6 @@ std::string Board::moveEnemies() {
                     } else if (rng == 7) {
                         destination = validDest(*it, "sw");
                     }
-
-                    
                 } while (destination == nullptr); 
 
                 // Check in chamber (not a doorway or hallway)
@@ -778,9 +767,8 @@ std::string Board::moveEnemies() {
             }
 
             // Swap Enemy pointers
-            if (destination != nullptr) {
-                (*it) = (*it)->move(destination);
-            }
+            (*it) = (*it)->move(destination);
+            
 
         }
 
