@@ -111,6 +111,10 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
             }
         }
 
+        if (line == "") {
+            continue;
+        }
+        
         std::istringstream ssl {line};
         char type;
         int colNum {0};
