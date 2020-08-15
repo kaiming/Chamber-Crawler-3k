@@ -7,7 +7,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <algorithm>
-#include <sstream>
+#include <iostream>
+#include <iomanip>
 
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
