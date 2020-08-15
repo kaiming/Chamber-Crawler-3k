@@ -741,13 +741,13 @@ std::string Board::moveEnemies() {
                     destination = nullptr;
                     continue;
                 }
-                
+
                 // Check for occupant
-                    if (destination->getOccupant() != nullptr) {
-                        // Occupied by gold, loop again
-                        destination = nullptr;
-                        continue;
-                    }
+                if (destination->getOccupant() != nullptr) {
+                    // Occupied by gold, loop again
+                    destination = nullptr;
+                    continue;
+                }
 
                 // Check for gold
                 if (destination->getGold() != nullptr) {
