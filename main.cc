@@ -27,23 +27,25 @@ int main(int argc, char* argv[]) {
 
         // if no file is passed in command line
         if (argc == 1) {
-            //try { // NOTE: TAKE THIS HANDLER OUT LATER ITS FOR TESTING PURPOSES
+            try { 
                 infile.open("./default.txt");
-            //} catch (...) {
-               // std::cout << "error" << std::endl;
-            //}
+            } catch (...) {
+               std::cerr << "Error reading in file" << std::endl;
+               infile.close();
+               return;
+            }
             
         } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
-            //try {
-                // get file name (MAKE SURE ITS FULL FILE PATH)
+            try {
+                // get file name 
                 const std::string fileName {argv[1]};
 
                 infile.open(fileName);
-            //} catch (std::ios_base::failure& fail) {
-                //std::cerr << "Unable to open file" << std::endl;
-                //infile.close();
-                //return 0;
-            //}
+            } catch (std::ios_base::failure& fail) {
+                std::cerr << "Error reading in file" << std::endl;
+                infile.close();
+                return;
+            }
         } 
 
         // read in file for floor plan

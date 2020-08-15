@@ -848,15 +848,6 @@ std::string Board::usePotion(std::string direction) {
             usedBefore = true;
         }
 
-#if 0
-        for (std::vector<std::string>::iterator it = potionsUsed.begin(); it != potionsUsed.end(); ++it) {
-            if ((*it) == target->getPotion()->getType()) {
-                usedBefore = true;
-                break;
-            }
-        }
-#endif
-
         if (!usedBefore) {
             potionsUsed.emplace_back(target->getPotion()->getType());
         }
