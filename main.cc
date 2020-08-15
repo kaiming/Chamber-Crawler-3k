@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
                 break;
             } else if (cmd == "q") {
                 // Quit Game
-                std::cout << "You gave up! Better luck next time!";
+                std::cout << "You gave up! Better luck next time!" << std::endl;;
 
                 return 0;
             } else {
@@ -183,17 +183,17 @@ int main(int argc, char* argv[]) {
         if (winner == 1) {
             // Print winner stuff
             
-            std::cout << "Congratulations! You won!";
+            std::cout << "Congratulations! You won!" << std::endl;
         } else if (winner == 2) {
             // Print loser stuff
             
-            std::cout << "You have been defeated!";
+            std::cout << "You have been defeated!" << std::endl;
 
         }
 
         if (winner != 0) {
             // Ask Player if they want to play again
-            std::cout << "Play again? y or n";
+            std::cout << "Play again? y or n" << std::endl;
             std::string replay = "";
             
             while (replay != "y" && replay != "n") {
