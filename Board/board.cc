@@ -364,12 +364,21 @@ std::string Board::movePlayer(std::string direction) {
         // Check if Dragon Hoard
         if (std::dynamic_pointer_cast<DragonHoard>(gold)) {
             // Check if dragon is dead
-            if (std::dynamic_pointer_cast<DragonHoard>(gold)->getDragon()->getState()) {
+            if (std::dynamic_pointer_cast<DragonHoard>(gold)->getDragon()->getState() == false) {
                 // Dragon is dead
                 // Player picks up gold
                 std::dynamic_pointer_cast<Player>(player->getOccupant())->setGold(std::dynamic_pointer_cast<Player>(player->getOccupant())->getGold() + gold->getSize());
                 // Gold is consumed
                 message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
+
+                // Remove from dragonHoards
+                for (auto it = dragonHoards.begin(); it != dragonHoards.end(); it++) {
+                    if ((*it)->getGold() == gold) {
+                        dragonHoards.erase(it);
+                        break;
+                    }
+                }
+
                 destination->setGold(nullptr); 
             }
 
@@ -428,7 +437,7 @@ std::string Board::attackEnemy(std::string direction) {
                 // Remove this dragon from dragons
                 for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
                     if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon() == target->getOccupant()) {
-                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->setState(false); // This is a really sketchy fix (asssuming the DHoard is the first in the vector)
+                        std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->setState(false);
                     }
                 }
                 
@@ -752,6 +761,13 @@ std::string Board::moveEnemies() {
 
     // Iterate through dragons to see if they attack the player
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
+
+        // Check if associated dragon is still alive
+        if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->getState() == false) {
+            // Dragon is dead
+            continue;
+        }
+
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
         std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragonTile()->getCoord(); 
