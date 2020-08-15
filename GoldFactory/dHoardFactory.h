@@ -8,7 +8,7 @@ class Gold;
 class DHoardFactory : public GFactory {
   public:
     // spawnGold returns a pointer to a new Gold Hoard
-    virtual std::shared_ptr<Gold> spawnGold() override;
+    virtual std::shared_ptr<Gold> spawn() override;
 }; 
 
 #endif

@@ -7,7 +7,7 @@ class Enemy;
 class MerchantFactory : public EFactory {
   public:
     // spawnEnemy returns a pointer to a new enemy
-    std::shared_ptr<Enemy> spawnEnemy() override;
+    std::shared_ptr<Enemy> spawn() override;
 }; 
 
 #endif

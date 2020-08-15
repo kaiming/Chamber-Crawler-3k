@@ -8,7 +8,7 @@ class Enemy;
 class EFactory {
   public:
     // spawnEnemy returns a pointer to a new enemy
-    virtual std::shared_ptr<Enemy> spawnEnemy() = 0;
+    virtual std::shared_ptr<Enemy> spawn() = 0;
 }; 
 
 #endif

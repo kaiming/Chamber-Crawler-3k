@@ -14,6 +14,8 @@
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
 
+#include "../PieceFactory/pieceFactory.h"
+
 #include "../Enemy/enemy.h"
 #include "../Enemy/human.h"
 #include "../Enemy/dwarf.h"
@@ -360,6 +362,22 @@ void Board::changeFloor() {
     player->getOccupant()->setDef(defaultDef);
 }
 
+template <class T> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<PieceFactory>> factories) {
+    
+    int rng = std::rand() % factories.size();
+    std::shared_ptr<T> spawned;
+
+    if (std::dynamic_pointer_cast<PotionFactory>(factories[rng])) {
+        spawned = std::dynamic_pointer_cast<PotionFactory>(factories[rng])->spawn();
+    } else if (std::dynamic_pointer_cast<GoldFactory>(factories[rng])) {
+        spawned = std::dynamic_pointer_cast<GoldFactory>(factories[rng])->spawn();
+    } else if (std::dynamic_pointer_cast<EnemyFactory>(factories[rng])) {
+        spawned = std::dynamic_pointer_cast<EnemyFactory>(factories[rng])->spawn();
+    }
+
+    return spawned;
+
+}
 //--------------------------------------------------------------------------------
 
 std::string Board::movePlayer(std::string direction) {
@@ -891,30 +909,24 @@ void Board::generateFloor() {
 
 
     // Generate 10 Potions
+    std::vector<PFactory> potionfactories;
+    potionfactories.push_back(std::make_shared<RHFactory>());
+    potionfactories.push_back(std::make_shared<BAFactory>());
+    potionfactories.push_back(std::make_shared<BDFactory>());
+    potionfactories.push_back(std::make_shared<PHFactory>());
+    potionfactories.push_back(std::make_shared<WAFactory>());
+    potionfactories.push_back(std::make_shared<WDFactory>());
+    
+
     for (int i = 0; i < 10; i++) {
         // Generate type
-        int type = std::rand() % 6;
-        std::shared_ptr<Potion> temp;
-
-        if (type == 0) {
-            temp = std::make_shared<RH>();
-        } else if (type == 1) {
-            temp = std::make_shared<BA>();
-        } else if (type == 2) {
-            temp = std::make_shared<BD>();
-        } else if (type == 3) {
-            temp = std::make_shared<PH>();
-        } else if (type == 4) {
-            temp = std::make_shared<WA>();
-        } else if (type == 5) {
-            temp = std::make_shared<WD>();
-        }
+        std::shared_ptr<Potion> temp = generatePiece(potionfactories);
 
         // Generate location (make sure not occupied)
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
+        } while (!isUnoccupied(chambers[chamber][tile]));
 
         // Place type at location
         chambers[chamber][tile]->setPotion(temp);
@@ -922,24 +934,24 @@ void Board::generateFloor() {
 
 
     // Generate 10 Gold
+    std::vector<GFactory> goldfactories;
+    for (int i = 0; i < 5; i++) {
+        goldfactories.push_back(std::make_shared<GFactory>("Normal Hoard", 2));
+    }
+    goldfactories.push_back(std::make_shared<GFactory>("Small Hoard", 1));
+    goldfactories.push_back(std::make_shared<GFactory>("Small Hoard", 1));
+    goldfactories.push_back(std::make_shared<DHoardFactory>());
+
+
     for (int i = 0; i < 10; i++) {
         // Generate type
-        int type = std::rand() % 8;
-        std::shared_ptr<Gold> temp;
-
-        if (type >= 0 && type <= 4) {
-            temp = std::make_shared<Gold>("Normal Hoard", 2);
-        } else if (type == 5 || type == 6) {
-            temp = std::make_shared<Gold>("Small Hoard", 1);
-        } else if (type == 7) {
-            temp = std::make_shared<DragonHoard>();
-        }
+        std::shared_ptr<Gold> temp = generatePiece(goldfactories);
 
         // Generate location (make sure not occupied)
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (!isUnoccupied(chambers[chamber][tile])); 
         
 
         // Place type at location
@@ -988,30 +1000,35 @@ void Board::generateFloor() {
 
 
     // Generate 20 Enemies
+    std::vector<EFactory> enemyfactories;
+    for (int i = 0; i < 4; i++) {
+        enemyfactories.push_back(std::make_shared<HumanFactory>());
+    }
+    for (int i = 0; i < 3; i++) {
+        enemyfactories.push_back(std::make_shared<DwarfFactory>());
+    }
+    for (int i = 0; i < 5; i++) {
+        enemyfactories.push_back(std::make_shared<HalflingFactory>());
+    }
+    for (int i = 0; i < 2; i++) {
+        enemyfactories.push_back(std::make_shared<ElfFactory>());
+    }
+    for (int i = 0; i < 2; i++) {
+        enemyfactories.push_back(std::make_shared<OrcFactory>());
+    }
+    for (int i = 0; i < 2; i++) {
+        enemyfactories.push_back(std::make_shared<MerchantFactory>());
+    }
+
     for (int i = 0; i < 20; i++) {
         // Generate type
-        int type = std::rand() % 18;
-        std::shared_ptr<Enemy> temp;
-
-        if (type >= 0 && type <= 3) {
-            temp = std::make_shared<Human>();
-        } else if (type >= 4 && type <= 6) {
-            temp = std::make_shared<Dwarf>();
-        } else if (type >= 7 && type <= 11) {
-            temp = std::make_shared<Halfling>();
-        } else if (type >= 12 && type <= 13) {
-            temp = std::make_shared<Elf>();
-        } else if (type >= 14 && type <= 15) {
-            temp = std::make_shared<Orc>();
-        } else if (type >= 16 && type <= 17) {
-            temp = std::make_shared<Merchant>();
-        }
+        std::shared_ptr<Enemy> temp = generatePiece(enemyfactories)
 
         // Generate location (make sure not occupied)
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getOccupant() || chambers[chamber][tile]->isExit());
+        } while (!isUnoccupied(chambers[chamber][tile]));
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
@@ -1019,4 +1036,3 @@ void Board::generateFloor() {
     }
 }
 
-void Board::generatePiece(int num, )

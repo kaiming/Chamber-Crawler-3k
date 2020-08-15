@@ -12,7 +12,7 @@ class GFactory {
   public:
     // spawnGold returns a pointer to a new Gold Hoard
     GFactory(std::string type, int value);
-    virtual std::shared_ptr<Gold> spawnGold();
+    virtual std::shared_ptr<Gold> spawn();
 }; 
 
 #endif

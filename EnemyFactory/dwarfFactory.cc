@@ -3,6 +3,6 @@
 
 #include "../Enemy/dwarf.h"
 
-std::shared_ptr<Enemy> DwarfFactory::spawnEnemy() {
+std::shared_ptr<Enemy> DwarfFactory::spawn() {
     return std::make_shared<Dwarf>();
 }
