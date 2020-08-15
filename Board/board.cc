@@ -716,7 +716,7 @@ std::string Board::moveEnemies() {
                     } else {
                         i++;
                     }
-                    
+
                     int rng = std::rand() % 8;
 
                     if (rng == 0) {
@@ -775,6 +775,8 @@ std::string Board::moveEnemies() {
                     destination = nullptr; 
                     continue;
                 }
+
+                break;
             }
 
             // Swap Enemy pointers
