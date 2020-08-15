@@ -37,6 +37,8 @@ class Board {
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
         std::string race;
+        bool enemyTracking;
+        int radius;
         int defaultAtk, defaultDef;
 
         std::shared_ptr<WalkableTile> player;
@@ -59,7 +61,10 @@ class Board {
             std::vector<std::shared_ptr<WalkableTile>> playerSpawns = {},
             std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies = {},
             std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards = {},
-            std::string race = ""
+            std::string race = "",
+            int seed,
+            bool enemyTracking,
+            int radius
         );
         
         std::string getRace() const;

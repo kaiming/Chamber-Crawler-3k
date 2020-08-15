@@ -56,9 +56,124 @@ int main(int argc, char* argv[]) {
         TextDisplay td;
 
         // Ask player to enter one of the specified races or quit
-        std::string race;
+        std::string race, in;
 
         std::cout << "Welcome to ChamberCrawler3000, prepare to enter the unknown!" << std::endl;
+        
+        // Extra Features menu
+        std::cout << "Enter settings menu? (y or n)" << std::endl;
+        std::cin >> in;
+
+        while (in != "y" && in != "n") {
+            std::cerr << "Invalid option" << std::endl;
+            std::cout << "Enter here: ";
+
+            if (std::cin.fail()) {
+                if (std::cin.eof()) return 0;
+
+                std::cin.clear();
+                std::cin.ignore();
+            }
+
+            std::cin >> in;
+        }
+
+        int seed = -1;
+        bool enemyTracking = false;
+        int radius = -1;
+
+        if (in == "y") {
+            std::cout << "Settings menu"<< std::endl;
+            
+            // Get seed
+            std::cout << "Enter seed (int) or -1 to skip: ";
+            std::cin >> seed;
+            
+            while (std::cin.fail()) {
+                if (std::cin.eof()) return 0;
+
+                std::cin.clear();
+                std::cin.ignore();
+                std::cout << "Invalid int."<< std::endl;
+                std::cout << "Enter seed (int) or -1 to skip:";
+                std::cin >> seed;
+            }
+
+            if (seed != -1) {
+                std::cout << "Seed entered: " << std::to_string(seed) << std::endl;
+            }
+
+
+            // Get enemy tracking option
+            std::cout << "Enable Enemy Tracking? (y or n)" << std::endl;
+
+            std::cin >> in;
+
+            while (in != "y" && in != "n") {
+                std::cerr << "Invalid option" << std::endl;
+                std::cout << "Enter here: ";
+
+                if (std::cin.fail()) {
+                    if (std::cin.eof()) return 0;
+
+                    std::cin.clear();
+                    std::cin.ignore();
+                }
+                
+                std::cin >> in;
+            }
+
+            if (in == "y") {
+                enemyTracking = true;
+                std::cout << "Enemy Tracking Enabled" << std::endl;
+            } else if (in == "n") {
+                enemyTracking = false;
+                std::cout << "Enemy Tracking Disabled" << std::endl;
+            }
+
+            
+            // If enemy tracking option activated, get difficulty
+            if (enemyTracking) {
+                std::cout << "Set Enemy Tracking difficulty (e, m, h)" << std::endl;
+                std::cin >> in;
+
+                while (in != "e" && in != "m" && in != "h") {
+                    std::cerr << "Invalid option" << std::endl;
+                    std::cout << "Enter here: ";
+
+                    if (std::cin.fail()) {
+                        if (std::cin.eof()) return 0;
+
+                        std::cin.clear();
+                        std::cin.ignore();
+                    }
+
+                    std::cin >> in;
+                }
+
+                if (in == "e") {
+                    radius = 2;
+                    std::cout << "Enemy Tracking Difficulty: Easy (radius 2)" << std::endl;
+                } else if (in == "m") {
+                    radius = 4;
+                    std::cout << "Enemy Tracking Difficulty: Medium (radius 4)" << std::endl;
+                } else if (in == "h") {
+                    radius = 6;
+                    std::cout << "Enemy Tracking Difficulty: Hard (radius 6)" << std::endl;
+                }
+
+            }
+
+            std::cout << "End of Settings menu." << std::endl;
+
+        } else if (race == "n") {
+            // Continue
+            std::cout << "Settings menu bypassed." << std::endl;
+
+        }
+
+
+
         std::cout << "Choose your character: Shade 's' (default), Drow 'd', Vampire 'v', Goblin 'g', Troll 't'" << std::endl;
         std::cout << "Enter here: ";
 
@@ -87,7 +202,13 @@ int main(int argc, char* argv[]) {
             race = "s";
         }
 
-        Board b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race};
+/*
+    int seed = -1;
+        bool enemyTracking = false;
+        int radius = -1;
+*/
+
+        Board b = Board {floors, filled, playerSpawns, enemies, dragonHoards, race, seed, enemyTracking, radius};
 
 
         td.drawFloor(std::cout, b, "The adventure begins");

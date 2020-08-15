@@ -45,19 +45,22 @@
 
 /*
     std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
-    std::vector<bool> filled; 
-    std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
-    std::shared_ptr<WalkableTile> player;
+    std::vector<bool> filled;
+    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
-    std::vector<std::string> potionsUsed;
-
-    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-    std::shared_ptr<Player> playerPtr;
     std::string race;
+    bool enemyTracking;
+    int radius;
+    int defaultAtk, defaultDef;
+
+    std::shared_ptr<WalkableTile> player;
+    std::vector<std::string> potionsUsed;
+    std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
+    std::shared_ptr<Player> playerPtr;
     int floorNum;
-    bool merchantAgro;
-    bool enemiesFrozen;
+    bool merchantAgro = false;
+    bool enemiesFrozen = false;
 */
 
 Board::Board(
@@ -66,9 +69,17 @@ Board::Board(
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies,
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards,
-        std::string race
-) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : nullptr}, floorNum{1} {
-    
+        std::string race,
+        int seed,
+        bool enemyTracking,
+        int radius
+) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, enemyTracking{enemyTracking}, radius{radius}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : nullptr}, floorNum{1} {
+
+    // Set seed
+    if (seed != -1) {
+        std::srand(seed);
+    }
+
     // Generate Player by given Race
     if (race == "s") {
         playerPtr = std::make_shared<Shade>();
