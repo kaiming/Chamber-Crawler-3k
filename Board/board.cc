@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <algorithm>
+#include <sstream>
 
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
@@ -449,7 +450,11 @@ std::string Board::attackEnemy(std::string direction) {
             }
 
         } else {
-            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP() / 10000) + "HP (" + std::to_string(target->getOccupant()->getHP() / 10000) + "HP remaining). "  + merchantStatus;
+            std::stringstream dealt, left;
+            dealt << std::fixed << std::setprecision(2) << enemyOgHP - target->getOccupant()->getHP();
+            left << std::fixed << std::setprecision(2) << target->getOccupant()->getHP();
+
+            message = target->getOccupant()->getRace() + " attacked for " + dealt.str() + "HP (" + left.str() + "HP remaining). "  + merchantStatus;
         }
     } else {
         message = "No Enemy to Attack. ";
