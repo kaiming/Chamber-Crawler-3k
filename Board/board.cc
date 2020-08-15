@@ -900,7 +900,6 @@ void Board::generateFloor() {
     // Insert exit stairs
     chambers[chamber][tile]->setExit(true);
 
-    int j;
 
     // Generate 10 Potions
     for (int i = 0; i < 10; i++) {
@@ -923,7 +922,7 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
-        j = 0;
+        int j = 0;
         do {
             // Infinite loop protection
             if (j > 250) {
