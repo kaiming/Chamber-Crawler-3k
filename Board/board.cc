@@ -909,7 +909,7 @@ void Board::generateFloor() {
 
 
     // Generate 10 Potions
-    std::vector<PFactory> potionfactories;
+    std::vector<std::shared_ptr<PFactory>> potionfactories;
     potionfactories.push_back(std::make_shared<RHFactory>());
     potionfactories.push_back(std::make_shared<BAFactory>());
     potionfactories.push_back(std::make_shared<BDFactory>());
@@ -934,7 +934,7 @@ void Board::generateFloor() {
 
 
     // Generate 10 Gold
-    std::vector<GFactory> goldfactories;
+    std::vector<std::shared_ptr<GFactory>> goldfactories;
     for (int i = 0; i < 5; i++) {
         goldfactories.push_back(std::make_shared<GFactory>("Normal Hoard", 2));
     }
@@ -1000,7 +1000,7 @@ void Board::generateFloor() {
 
 
     // Generate 20 Enemies
-    std::vector<EFactory> enemyfactories;
+    std::vector<std::shared_ptr<EFactory>> enemyfactories;
     for (int i = 0; i < 4; i++) {
         enemyfactories.push_back(std::make_shared<HumanFactory>());
     }
