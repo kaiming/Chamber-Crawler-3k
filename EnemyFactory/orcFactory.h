@@ -6,7 +6,7 @@ class Enemy;
 
 class OrcFactory : public EFactory {
   public:
-    // spawnEnemy creates a specific type of tile for the floor
+    // spawnEnemy returns a pointer to a new enemy
     std::shared_ptr<Enemy> spawnEnemy() override;
 }; 
 

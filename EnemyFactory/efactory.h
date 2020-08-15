@@ -6,7 +6,7 @@ class Enemy;
 
 class EFactory {
   public:
-    // spawnEnemy creates a specific type of tile for the floor
+    // spawnEnemy returns a pointer to a new enemy
     virtual std::shared_ptr<Enemy> spawnEnemy() = 0;
 }; 
 
