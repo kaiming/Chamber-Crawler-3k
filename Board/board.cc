@@ -497,6 +497,13 @@ std::string Board::attackEnemy(std::string direction) {
                             continue;
                         }
 
+                        // Check for occupant
+                        if (destination->getOccupant() != nullptr) {
+                            // Occupied by gold, loop again
+                            destination = nullptr;
+                            continue;
+                        }
+
                         // Check for gold
                         if (destination->getGold() != nullptr) {
                             // Occupied by gold, loop again
@@ -627,6 +634,13 @@ std::string Board::moveEnemies() {
                         continue;
                     }
 
+                    // Check for occupant
+                    if (destination->getOccupant() != nullptr) {
+                        // Occupied by gold, loop again
+                        destination = nullptr;
+                        continue;
+                    }
+
                     // Check for gold
                     if (destination->getGold() != nullptr) {
                         // Occupied by gold, loop again
@@ -670,8 +684,6 @@ std::string Board::moveEnemies() {
         double distance = std::floor(std::sqrt(std::pow((p_coord.first - e_coord.first), 2) + std::pow((p_coord.second - e_coord.second), 2)));
 
         // DLC EXTENSION HERE: add else if (distance < radius) -> move towards player
-
-        std::cout << (*it) << " " << (*it)->getOccupant() << std::endl;
 
         if (distance == 1) {
             double ogHP = player->getOccupant()->getHP();
@@ -728,6 +740,13 @@ std::string Board::moveEnemies() {
                     continue;
                 }
 
+                // Check for occupant
+                if (destination->getOccupant() != nullptr) {
+                    // Occupied by gold, loop again
+                    destination = nullptr;
+                    continue;
+                }
+
                 // Check for gold
                 if (destination->getGold() != nullptr) {
                     // Occupied by gold, loop again
@@ -754,7 +773,6 @@ std::string Board::moveEnemies() {
 
             // Swap Enemy pointers
             if (destination != nullptr) {
-                std::cout << destination << ": destination ptr " << destination->getOccupant() << std::endl;
                 (*it) = (*it)->move(destination);
             }
 
