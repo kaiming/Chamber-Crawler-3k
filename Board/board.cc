@@ -671,7 +671,7 @@ std::string Board::moveEnemies() {
 
         // DLC EXTENSION HERE: add else if (distance < radius) -> move towards player
 
-        std::cout << (*it)->getOccupant() << std::endl;
+        std::cout << << (*it) << " " << (*it)->getOccupant() << std::endl;
 
         if (distance == 1) {
             double ogHP = player->getOccupant()->getHP();
