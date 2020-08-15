@@ -692,6 +692,7 @@ std::string Board::usePotion(std::string direction) {
 
         // Remove potion from board
         target->setPotion(nullptr);
+        player = player->move(target);
 
         message = target->getPotion()->getType() + " was Used. ";
     } else {
