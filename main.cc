@@ -148,6 +148,7 @@ int main(int argc, char* argv[]) {
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "r") {
                 // Restart game
+                std::cout << "Resetting the game..." << std::endl;
                 restart = true;
                 winner = 0;
 
