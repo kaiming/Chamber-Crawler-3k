@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
 
         while (true) {
             std::cout << "Enter command: ";
-            std::cin.getline(cmd);
+            getline(std::cin, cmd);
 
             // break clause
             if (std::cin.fail()) {
