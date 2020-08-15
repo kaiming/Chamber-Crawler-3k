@@ -497,6 +497,13 @@ std::string Board::attackEnemy(std::string direction) {
                             continue;
                         }
 
+                        // Check for occupant
+                        if (destination->getOccupant() != nullptr) {
+                            // Occupied by gold, loop again
+                            destination = nullptr;
+                            continue;
+                        }
+
                         // Check for gold
                         if (destination->getGold() != nullptr) {
                             // Occupied by gold, loop again
@@ -627,6 +634,13 @@ std::string Board::moveEnemies() {
                         continue;
                     }
 
+                    // Check for occupant
+                    if (destination->getOccupant() != nullptr) {
+                        // Occupied by gold, loop again
+                        destination = nullptr;
+                        continue;
+                    }
+
                     // Check for gold
                     if (destination->getGold() != nullptr) {
                         // Occupied by gold, loop again
@@ -727,6 +741,13 @@ std::string Board::moveEnemies() {
                     destination = nullptr;
                     continue;
                 }
+                
+                // Check for occupant
+                    if (destination->getOccupant() != nullptr) {
+                        // Occupied by gold, loop again
+                        destination = nullptr;
+                        continue;
+                    }
 
                 // Check for gold
                 if (destination->getGold() != nullptr) {
