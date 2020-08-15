@@ -501,7 +501,7 @@ std::string Board::attackEnemy(std::string direction) {
                         
                         int rng = std::rand() % directions.size();
 
-                        destination = validDest(*it, directions[rng]);
+                        destination = validDest(*target, directions[rng]);
 
                     } while (!destination && !isUnoccupied(destination)); 
 
@@ -934,7 +934,6 @@ void Board::generateFloor() {
             std::shared_ptr<WalkableTile> destination = nullptr;
 
             // Generate direction around DragonHoard
-            std::shared_ptr<WalkableTile> destination = nullptr;
             std::vector<std::string> directions;
             directions.push_back("no");
             directions.push_back("ea");
@@ -956,7 +955,7 @@ void Board::generateFloor() {
                 
                 int rng = std::rand() % 8;
 
-                destination = validDest(*it, directions[rng]);
+                destination = validDest(chambers[chamber][tile], directions[rng]);
 
             } while (!destination && !isUnoccupied(destination)); 
 
