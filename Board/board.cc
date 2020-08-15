@@ -930,7 +930,6 @@ void Board::generateFloor() {
 
         // Generate location (make sure not occupied)
         do {
-
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
         } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
@@ -996,7 +995,7 @@ void Board::generateFloor() {
                 } else if (rng == 7) {
                     destination = validDest(chambers[chamber][tile], "sw");
                 }
-            } while (chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
+            } while (destination->getGold() || destination->getPotion() || destination->isExit() || destination->getOccupant());
 
             // Place dragon at location and store in DragonHoard
             destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
