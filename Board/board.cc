@@ -367,11 +367,11 @@ template <class T> std::shared_ptr<T> Board::generatePiece(std::vector<std::shar
     int rng = std::rand() % factories.size();
     std::shared_ptr<T> spawned;
     
-    if (std::dynamic_pointer_cast<Potion>(factories[rng]->spawn())) {
+    if (std::dynamic_pointer_cast<Potion>(std::dynamic_pointer_cast<PFactory>(factories[rng])->spawn())) {
         spawned = std::dynamic_pointer_cast<PFactory>(factories[rng])->spawn();
-    } else if (std::dynamic_pointer_cast<Gold>(factories[rng]->spawn())) {
+    } else if (std::dynamic_pointer_cast<Gold>(std::dynamic_pointer_cast<GFactory>(factories[rng])->spawn())) {
         spawned = std::dynamic_pointer_cast<GFactory>(factories[rng])->spawn();
-    } else if (std::dynamic_pointer_cast<Enemy>(factories[rng]->spawn())) {
+    } else if (std::dynamic_pointer_cast<Enemy>(std::dynamic_pointer_cast<EFactory>(factories[rng])->spawn())) {
         spawned = std::dynamic_pointer_cast<EFactory>(factories[rng])->spawn();
     }
 
