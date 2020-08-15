@@ -37,6 +37,7 @@ class Board {
         std::vector<std::shared_ptr<WalkableTile>> enemies;
         std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
         std::string race;
+        int defaultAtk, defaultDef;
 
         std::shared_ptr<WalkableTile> player;
         std::vector<std::string> potionsUsed;

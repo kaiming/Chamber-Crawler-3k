@@ -72,14 +72,24 @@ Board::Board(
     // Generate Player by given Race
     if (race == "s") {
         playerPtr = std::make_shared<Shade>();
+        defaultAtk = 25;
+        defaultDef = 25;
     } else if (race == "d") {
         playerPtr = std::make_shared<Drow>();
+        defaultAtk = 25;
+        defaultDef = 15;
     } else if (race == "v") {
         playerPtr = std::make_shared<Vampire>();
+        defaultAtk = 25;
+        defaultDef = 25;
     } else if (race == "g") {
         playerPtr = std::make_shared<Goblin>();
+        defaultAtk = 15;
+        defaultDef = 20;
     } else if (race == "t") {
         playerPtr = std::make_shared<Troll>();
+        defaultAtk = 25;
+        defaultDef = 15;
     }
 
     this->race = playerPtr->getRace(); 
@@ -304,6 +314,8 @@ void Board::changeFloor() {
         generateFloor();
     }
 
+    player->getOccupant()->setAtk(defaultAtk);
+    player->getOccupant()->setDef(defaultDef);
 }
 
 //--------------------------------------------------------------------------------
