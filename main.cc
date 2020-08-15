@@ -165,8 +165,13 @@ int main(int argc, char* argv[]) {
 
             // Move Enemies
             message = b.moveEnemies();
+
+            if (message.length() == 0) {
+                message = "Enemies moved."
+            }
+
             td.drawFloor(std::cout, b, message);
-            
+
             if (message.length() > 10 && message.substr(-10) == "Game Over!") {
                 // Player killed and lost
                 winner = 2;
