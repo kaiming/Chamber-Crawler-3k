@@ -781,6 +781,7 @@ std::string Board::moveEnemies() {
 
             // Swap Enemy pointers
             if (destination != nullptr) {
+                std::cout << destination << ": destination ptr" << std::endl;
                 (*it) = (*it)->move(destination);
             }
 
