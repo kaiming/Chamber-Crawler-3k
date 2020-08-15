@@ -676,7 +676,10 @@ std::string Board::moveEnemies() {
 
             // 1 tile away, attack player
             bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Enemy>((*it)->getOccupant())));
-            message += player->getOccupant()->getRace() + " attacked by " + std::dynamic_pointer_cast<Enemy>((*it)->getOccupant())->getRace() + " for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. ";  
+            std::stringstream dealt;
+            dealt << std::fixed << std::setprecision(2) << ogHP - playerPtr->getHP();
+            
+            message += player->getOccupant()->getRace() + " attacked by " + std::dynamic_pointer_cast<Enemy>((*it)->getOccupant())->getRace() + " for " + dealt.str() + "HP. ";  
             
             if (killed) {
                 // Player is dead, game is over
@@ -779,10 +782,12 @@ std::string Board::moveEnemies() {
 
         if (distance == 1 || hoardDistance == 1) {
             double ogHP = player->getOccupant()->getHP();
-            
+            std::stringstream dealt;
+            dealt << std::fixed << std::setprecision(2) << ogHP - playerPtr->getHP();
+
             // 1 tile away from either the dragon or the dragon hoard, attack player
             bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Dragon>(std::static_pointer_cast<DragonHoard>((*it)->getGold())->getDragon())));
-            message += player->getOccupant()->getRace() + " attacked by Dragon for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "; 
+            message += player->getOccupant()->getRace() + " attacked by Dragon for "+ dealt.str() + "HP. "; 
 
             if (killed) {
                 // Player is dead, game is over
