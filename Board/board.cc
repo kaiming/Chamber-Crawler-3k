@@ -463,7 +463,7 @@ std::string Board::attackEnemy(std::string direction) {
                     while (true) {
                         
                         // Exit case in event that no suitable location found
-                        if (i > 16) {
+                        if (i > 250) {
                             break;
                         } else {
                             i++;
@@ -600,7 +600,7 @@ std::string Board::moveEnemies() {
                 while (true) {
 
                     // Exit case in event that no suitable location found
-                    if (i > 40) {
+                    if (i > 250) {
                         break;
                     } else {
                         i++;
