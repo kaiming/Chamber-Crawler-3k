@@ -15,8 +15,8 @@ int main(int argc, char* argv[]) {
         //infile.exceptions(std::ifstream::failbit);
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-        std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
         std::vector<bool> filled;
         bool restart = true;
         int winner = -1; // code 0 for restart, code 1 for win, code 2 for loss
@@ -148,13 +148,14 @@ int main(int argc, char* argv[]) {
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "r") {
                 // Restart game
+                std::cout << "Resetting the game..." << std::endl;
                 restart = true;
                 winner = 0;
 
                 break;
             } else if (cmd == "q") {
                 // Quit Game
-                std::cout << "You gave up! Better luck next time!";
+                std::cout << "You gave up! Better luck next time!" << std::endl;;
 
                 return 0;
             } else {
@@ -183,17 +184,17 @@ int main(int argc, char* argv[]) {
         if (winner == 1) {
             // Print winner stuff
             
-            std::cout << "Congratulations! You won!";
+            std::cout << "Congratulations! You won!" << std::endl;
         } else if (winner == 2) {
             // Print loser stuff
             
-            std::cout << "You have been defeated!";
+            std::cout << "You have been defeated!" << std::endl;
 
         }
 
         if (winner != 0) {
             // Ask Player if they want to play again
-            std::cout << "Play again? y or n";
+            std::cout << "Play again? y or n" << std::endl;
             std::string replay = "";
             
             while (replay != "y" && replay != "n") {
