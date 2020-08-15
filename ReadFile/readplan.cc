@@ -306,7 +306,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                             break;
                         }
 
-                        //enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile)); // Not sure about this line
+                        //enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile)); // Not sure about this line
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
