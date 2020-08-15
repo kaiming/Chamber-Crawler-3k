@@ -416,30 +416,67 @@ std::string Board::attackEnemy(std::string direction) {
                 }
                 
                 message = "Dragon killed. " + merchantStatus;
+
+                // Remove enemy + move player to old spot
+                target->setOccupant(nullptr);
+                player = player->move(target);
+
             } else {
                 
+                std::string eRace = target->getOccupant()->getRace();
+                message = eRace + " killed. ";
+
                 // Check if target is human or merchant
                 if (target->getOccupant()->getRace() == "Human") {
                     // Human type, drop 2 Normal Piles
-                    target->setGold(std::make_shared<Gold>("Normal Pile", 2));
-                    // Need to generate second pile somewhere else  ----------------- TO DO ------------------------------
-                    target->setGold(std::make_shared<Gold>("Normal Pile", 2));
+                    playerPtr->setGold(playerPtr->getGold() + 2);
+                    message += "Normal hoard picked up. ";
+
+                    // RNG a second pile nearby
+                    std::shared_ptr<WalkableTile> destination;
+                    do {
+                        int rng = std::rand() % 8;
+
+                        if (rng == 0) {
+                            destination = validDest(target, "no");
+                        } else if (rng == 1) {
+                            destination = validDest(target, "so");
+                        } else if (rng == 2) {
+                            destination = validDest(target, "ea");
+                        } else if (rng == 3) {
+                            destination = validDest(target, "we");
+                        } else if (rng == 4) {
+                            destination = validDest(target, "ne");
+                        } else if (rng == 5) {
+                            destination = validDest(target, "nw");
+                        } else if (rng == 6) {
+                            destination = validDest(target, "se");
+                        } else if (rng == 7) {
+                            destination = validDest(target, "sw");
+                        }
+                    } while (!destination);
+
+                    destination->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
                 } else if (target->getOccupant()->getRace() == "Merchant") {
                     // Merchant Type, drop Merchant Hoard
-                    target->setGold(std::make_shared<Gold>("Merchant Hoard", 4));
-                    
+                    playerPtr->setGold(playerPtr->getGold() + 4);
+                    message += "Merchant hoard picked up. ";
+
                 } else {
                     // Other type, RNG gold
                     if (std::rand() % 2 == 0) {
-                        target->setGold(std::make_shared<Gold>("Small Pile", 1));
+                        // Small pile
+                        playerPtr->setGold(playerPtr->getGold() + 1);
+                        message += "Small hoard picked up. ";
                     } else {
-                        target->setGold(std::make_shared<Gold>("Normal Pile", 2));
+                        // Normal pile
+                        playerPtr->setGold(playerPtr->getGold() + 2);
+                        message += "Normal hoard picked up. ";
                     }
                 }
 
-                std::string eRace = target->getOccupant()->getRace();
-                message = eRace + " killed. "  + merchantStatus;
+                message += merchantStatus;
 
                 // Remove this enemy from enemies
                 for (auto it = enemies.begin(); it != enemies.end(); ++it) {
@@ -448,8 +485,9 @@ std::string Board::attackEnemy(std::string direction) {
                     }
                 }
 
-                // Remove enemy from 
+                // Remove enemy + move player to old spot
                 target->setOccupant(nullptr);
+                player = player->move(target);
                 
             }
 
