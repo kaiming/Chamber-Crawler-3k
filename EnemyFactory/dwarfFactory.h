@@ -1,6 +1,6 @@
 #ifndef __DWARFFACTORY_H__
 #define __DWARFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 

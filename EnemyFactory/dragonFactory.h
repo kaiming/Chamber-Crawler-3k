@@ -1,6 +1,6 @@
 #ifndef __DRAGFACTORY_H__
 #define __DRAGFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 

@@ -1,6 +1,6 @@
 #ifndef __MERCHFACTORY_H__
 #define __MERCHFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 

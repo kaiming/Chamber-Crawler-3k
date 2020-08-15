@@ -1,6 +1,6 @@
 #ifndef __HUMANFACTORY_H__
 #define __HUMANFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 

@@ -1,6 +1,6 @@
 #ifndef __ORCFACTORY_H__
 #define __ORCFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 

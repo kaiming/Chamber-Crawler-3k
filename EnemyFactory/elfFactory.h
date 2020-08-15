@@ -1,6 +1,6 @@
 #ifndef __ELFFACTORY_H__
 #define __ELFFACTORY_H__
-#include "efactory.h"
+#include "./efactory.h"
 
 class Enemy;
 
