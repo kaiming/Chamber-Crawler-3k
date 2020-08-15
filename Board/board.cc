@@ -361,7 +361,7 @@ std::string Board::movePlayer(std::string direction) {
         std::shared_ptr<Gold> gold = destination->getGold();
         
         // Check if Dragon Hoard
-        if (std::dynamic_pointer_cast<DragonHoard>(gold)) {
+        if (std::dynamic_pointer_cast<DragonHoard>(gold) == false) {
             // Check if dragon is dead
             if (std::dynamic_pointer_cast<DragonHoard>(gold)->getDragon()->getState()) {
                 // Dragon is dead
