@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Welcome to ChamberCrawler3000, prepare to enter the unknown!" << std::endl;
         
         // Extra Features menu
-        std::cout << "Enter settings menu? (y or n)" << std::endl;
+        std::cout << "Enter settings menu? (y or n): ";
         std::cin >> in;
 
         while (in != "y" && in != "n") {
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
 
 
             // Get enemy tracking option
-            std::cout << "Enable Enemy Tracking? (y or n)" << std::endl;
+            std::cout << "Enable Enemy Tracking? (y or n): ";
 
             std::cin >> in;
 
@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
             
             // If enemy tracking option activated, get difficulty
             if (enemyTracking) {
-                std::cout << "Set Enemy Tracking difficulty (e, m, h)" << std::endl;
+                std::cout << "Set Enemy Tracking difficulty (e, m, h): ";
                 std::cin >> in;
 
                 while (in != "e" && in != "m" && in != "h") {
