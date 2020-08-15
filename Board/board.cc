@@ -434,27 +434,67 @@ std::string Board::attackEnemy(std::string direction) {
 
                     // RNG a second pile nearby
                     std::shared_ptr<WalkableTile> destination;
-                    do {
-                        int rng = std::rand() % 8;
-
-                        if (rng == 0) {
-                            destination = validDest(target, "no");
-                        } else if (rng == 1) {
-                            destination = validDest(target, "so");
-                        } else if (rng == 2) {
-                            destination = validDest(target, "ea");
-                        } else if (rng == 3) {
-                            destination = validDest(target, "we");
-                        } else if (rng == 4) {
-                            destination = validDest(target, "ne");
-                        } else if (rng == 5) {
-                            destination = validDest(target, "nw");
-                        } else if (rng == 6) {
-                            destination = validDest(target, "se");
-                        } else if (rng == 7) {
-                            destination = validDest(target, "sw");
+                    int i = 0;
+                    while (true) {
+                        
+                        // Exit case in event that no suitable location found
+                        if (i > 16) {
+                            break;
+                        } else {
+                            i++;
                         }
-                    } while (!destination);
+                        
+                        
+                        do {
+                            int rng = std::rand() % 8;
+
+                            if (rng == 0) {
+                                destination = validDest(target, "no");
+                            } else if (rng == 1) {
+                                destination = validDest(target, "so");
+                            } else if (rng == 2) {
+                                destination = validDest(target, "ea");
+                            } else if (rng == 3) {
+                                destination = validDest(target, "we");
+                            } else if (rng == 4) {
+                                destination = validDest(target, "ne");
+                            } else if (rng == 5) {
+                                destination = validDest(target, "nw");
+                            } else if (rng == 6) {
+                                destination = validDest(target, "se");
+                            } else if (rng == 7) {
+                                destination = validDest(target, "sw");
+                            }
+                        } while (!destination);
+                        // Check in chamber (not a doorway or hallway)
+                        if (destination->getRoom() < 0) {
+                            destination = nullptr;
+                            continue;
+                        }
+
+                        // Check for gold
+                        if (destination->getGold() != nullptr) {
+                            // Occupied by gold, loop again
+                            destination = nullptr;
+                            continue;
+                        }
+
+                        // Check for potions
+                        if (destination->getPotion() != nullptr) {
+                            // Occupied by potion, loop again
+                            destination = nullptr;
+                            continue;
+                        }
+
+                        // Check for exit
+                        if (destination->isExit()) {
+                            // Occupied by exit stairs, loop again
+                            destination = nullptr; 
+                            continue;
+                        }
+
+                        break;
+                    }
 
                     destination->setGold(std::make_shared<Gold>("Normal Pile", 2));
 
@@ -523,27 +563,38 @@ std::string Board::moveEnemies() {
             if (!merchantAgro) {
                 // Not hostile, just move
                 std::shared_ptr<WalkableTile> destination = nullptr;
+                int i = 0; 
 
-                while (destination == nullptr) {
-                    int rng = std::rand() % 8;
+                while (true) {
 
-                    if (rng == 0) {
-                        destination = validDest(*it, "no");
-                    } else if (rng == 1) {
-                        destination = validDest(*it, "so");
-                    } else if (rng == 2) {
-                        destination = validDest(*it, "ea");
-                    } else if (rng == 3) {
-                        destination = validDest(*it, "we");
-                    } else if (rng == 4) {
-                        destination = validDest(*it, "ne");
-                    } else if (rng == 5) {
-                        destination = validDest(*it, "nw");
-                    } else if (rng == 6) {
-                        destination = validDest(*it, "se");
-                    } else if (rng == 7) {
-                        destination = validDest(*it, "sw");
+                    // Exit case in event that no suitable location found
+                    if (i > 16) {
+                        break;
+                    } else {
+                        i++;
                     }
+
+                    do {
+                        int rng = std::rand() % 8;
+
+                        if (rng == 0) {
+                            destination = validDest(*it, "no");
+                        } else if (rng == 1) {
+                            destination = validDest(*it, "so");
+                        } else if (rng == 2) {
+                            destination = validDest(*it, "ea");
+                        } else if (rng == 3) {
+                            destination = validDest(*it, "we");
+                        } else if (rng == 4) {
+                            destination = validDest(*it, "ne");
+                        } else if (rng == 5) {
+                            destination = validDest(*it, "nw");
+                        } else if (rng == 6) {
+                            destination = validDest(*it, "se");
+                        } else if (rng == 7) {
+                            destination = validDest(*it, "sw");
+                        }
+                    } while (destination == nullptr);
 
                     // Check in chamber (not a doorway or hallway)
                     if (destination->getRoom() < 0) {
@@ -573,7 +624,10 @@ std::string Board::moveEnemies() {
                         destination = nullptr; 
                         continue;
                     }
+
+                    break;
                 }
+                
 
                 // Swap Merchant pointers
                 (*it) = (*it)->move(destination);
@@ -605,27 +659,37 @@ std::string Board::moveEnemies() {
         } else {
             // Too far away to attack, do a random move
             std::shared_ptr<WalkableTile> destination = nullptr;
+            int i = 0;
 
-            while (destination == nullptr) {
-                int rng = std::rand() % 8;
-
-                if (rng == 0) {
-                    destination = validDest(*it, "no");
-                } else if (rng == 1) {
-                    destination = validDest(*it, "so");
-                } else if (rng == 2) {
-                    destination = validDest(*it, "ea");
-                } else if (rng == 3) {
-                    destination = validDest(*it, "we");
-                } else if (rng == 4) {
-                    destination = validDest(*it, "ne");
-                } else if (rng == 5) {
-                    destination = validDest(*it, "nw");
-                } else if (rng == 6) {
-                    destination = validDest(*it, "se");
-                } else if (rng == 7) {
-                    destination = validDest(*it, "sw");
+            while(true) {
+                // Exit case in event that no suitable location found
+                if (i > 16) {
+                    break;
+                } else {
+                    i++;
                 }
+
+                do {
+                    int rng = std::rand() % 8;
+
+                    if (rng == 0) {
+                        destination = validDest(*it, "no");
+                    } else if (rng == 1) {
+                        destination = validDest(*it, "so");
+                    } else if (rng == 2) {
+                        destination = validDest(*it, "ea");
+                    } else if (rng == 3) {
+                        destination = validDest(*it, "we");
+                    } else if (rng == 4) {
+                        destination = validDest(*it, "ne");
+                    } else if (rng == 5) {
+                        destination = validDest(*it, "nw");
+                    } else if (rng == 6) {
+                        destination = validDest(*it, "se");
+                    } else if (rng == 7) {
+                        destination = validDest(*it, "sw");
+                    }
+                } while (destination == nullptr); 
 
                 // Check in chamber (not a doorway or hallway)
                 if (destination->getRoom() < 0) {
