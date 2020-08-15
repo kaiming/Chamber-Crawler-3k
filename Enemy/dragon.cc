@@ -28,6 +28,7 @@ std::string Dragon::getRace() const {
 }
 
 bool Dragon::getAttacked(Player & p) {
+    
     bool Killed = p.attack(*this);
 
     // Check if Dragon is dead
