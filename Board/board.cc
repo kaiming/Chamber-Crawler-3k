@@ -545,7 +545,7 @@ std::string Board::attackEnemy(std::string direction) {
 
                 // Remove this enemy from enemies
                 for (auto it = enemies[floorNum-1].begin(); it != enemies[floorNum-1].end(); ++it) {
-                    if ((*it)->getCoord() == target->getCoord()) {
+                    if ((*it)->getOccupant() == target->getOccupant()) {
                         enemies[floorNum-1].erase(it); 
                     }
                 }
