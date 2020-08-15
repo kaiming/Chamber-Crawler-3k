@@ -8,6 +8,7 @@ class PFactory {
   public:
     // spawn returns a pointer to a new Potion
     virtual std::shared_ptr<Potion> spawn() = 0;
+    virtual ~PFactory() = 0;
 }; 
 
 #endif

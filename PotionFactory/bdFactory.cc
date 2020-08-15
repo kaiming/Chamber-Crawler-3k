@@ -5,3 +5,7 @@
 std::shared_ptr<Potion> BDFactory::spawn() {
     return std::make_shared<BD>();
 }
+
+BDFactory::~BDFactory() {
+    
+}
