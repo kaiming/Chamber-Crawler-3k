@@ -442,11 +442,14 @@ std::string Board::attackEnemy(std::string direction) {
                 message = eRace + " killed. "  + merchantStatus;
 
                 // Remove this enemy from enemies
-                    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
-                        if ((*it)->getCoord() == target->getCoord()) {
-                            enemies.erase(it); 
-                        }
+                for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+                    if ((*it)->getCoord() == target->getCoord()) {
+                        enemies.erase(it); 
                     }
+                }
+
+                // Remove enemy from 
+                target->setOccupant(nullptr);
                 
             }
 
