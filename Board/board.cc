@@ -692,7 +692,7 @@ std::string Board::moveEnemies() {
 
             while(true) {
                 // Exit case in event that no suitable location found
-                if (i > 40) {
+                if (i > 50) {
                     break;
                 } else {
                     i++;
