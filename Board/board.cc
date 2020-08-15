@@ -362,7 +362,7 @@ void Board::changeFloor() {
     player->getOccupant()->setDef(defaultDef);
 }
 
-template <class T> <class X> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<X>>& factories) {
+template <class T, class X> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<X>>& factories) {
     
     int rng = std::rand() % factories.size();
     std::shared_ptr<T> spawned;
