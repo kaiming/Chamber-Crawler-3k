@@ -920,7 +920,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 10; i++) {
         // Generate type
-        std::shared_ptr<Potion> temp = generatePiece(potionfactories);
+        std::shared_ptr<Potion> temp = generatePiece<Potion>(potionfactories);
 
         // Generate location (make sure not occupied)
         do {
@@ -945,7 +945,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 10; i++) {
         // Generate type
-        std::shared_ptr<Gold> temp = generatePiece(goldfactories);
+        std::shared_ptr<Gold> temp = generatePiece<Gold>(goldfactories);
 
         // Generate location (make sure not occupied)
         do {
@@ -1022,7 +1022,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 20; i++) {
         // Generate type
-        std::shared_ptr<Enemy> temp = generatePiece(enemyfactories);
+        std::shared_ptr<Enemy> temp = generatePiece<Enemy>(enemyfactories);
 
         // Generate location (make sure not occupied)
         do {
