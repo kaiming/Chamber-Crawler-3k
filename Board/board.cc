@@ -371,7 +371,12 @@ std::string Board::movePlayer(std::string direction) {
                 message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
 
                 // Remove from dragonHoards
-                dragonHoards.erase(std::find(dragonHoards.begin(), dragonHoards.end(), gold));
+                for (auto it = dragonHoards.begin(); it != dragonHoards.end(); it++) {
+                    if ((*it)->getGold() == gold) {
+                        dragonHoards.erase(it);
+                        break;
+                    }
+                }
 
                 destination->setGold(nullptr); 
             }
