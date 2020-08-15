@@ -501,7 +501,7 @@ std::string Board::attackEnemy(std::string direction) {
                         
                         int rng = std::rand() % directions.size();
 
-                        destination = validDest(*target, directions[rng]);
+                        destination = validDest(target, directions[rng]);
 
                     } while (!destination && !isUnoccupied(destination)); 
 
