@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
+#include <iomanip>
 
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
@@ -440,16 +442,23 @@ std::string Board::attackEnemy(std::string direction) {
                 message = eRace + " killed. "  + merchantStatus;
 
                 // Remove this enemy from enemies
-                    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
-                        if ((*it)->getCoord() == target->getCoord()) {
-                            enemies.erase(it); 
-                        }
+                for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+                    if ((*it)->getCoord() == target->getCoord()) {
+                        enemies.erase(it); 
                     }
+                }
+
+                // Remove enemy from 
+                target->setOccupant(nullptr);
                 
             }
 
         } else {
-            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP()) + "HP (" + std::to_string(target->getOccupant()->getHP()) + "HP remaining). "  + merchantStatus;
+            std::stringstream dealt, left;
+            dealt << std::fixed << std::setprecision(2) << enemyOgHP - target->getOccupant()->getHP();
+            left << std::fixed << std::setprecision(2) << target->getOccupant()->getHP();
+
+            message = target->getOccupant()->getRace() + " attacked for " + dealt.str() + "HP (" + left.str() + "HP remaining). "  + merchantStatus;
         }
     } else {
         message = "No Enemy to Attack. ";
