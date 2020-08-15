@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
             } catch (std::ios_base::failure& fail) {
                std::cerr << "Error reading in file" << std::endl;
                infile.close();
-               return;
+               return 1;
             }
             
         } else { // if there are at least one command line argument (only take the first one and try to open it as a file)
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
             } catch (std::ios_base::failure& fail) {
                 std::cerr << "Error reading in file" << std::endl;
                 infile.close();
-                return;
+                return 1;
             }
         } 
 
