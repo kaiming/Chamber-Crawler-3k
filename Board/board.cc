@@ -307,9 +307,10 @@ void Board::changeFloor() {
         player->setOccupant(playerPtr);
     } else {
         // Floor has not been pre-generated
-        assignChambers();
-        enemies.clear();
         chambers.clear();
+        assignChambers();
+        
+        enemies.clear();
         dragonHoards.clear();
         generateFloor();
     }
