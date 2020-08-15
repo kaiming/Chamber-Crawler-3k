@@ -58,7 +58,7 @@ class Board {
         void tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
         bool isUnoccupied(std::shared_ptr<WalkableTile> target);
         void changeFloor();
-        template <class T> std::shared_ptr<T> generatePiece(std::vector<std::shared_ptr<PieceFactory>> factories);
+        template <class T> std::shared_ptr<T> generatePiece(std::vector<std::shared_ptr<PieceFactory>>& factories);
 
     public:
         Board(
