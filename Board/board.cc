@@ -362,7 +362,7 @@ void Board::changeFloor() {
     player->getOccupant()->setDef(defaultDef);
 }
 
-template <class T> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<PieceFactory>>& factories) {
+template <class T> <class X> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<X>>& factories) {
     
     int rng = std::rand() % factories.size();
     std::shared_ptr<T> spawned;
@@ -920,7 +920,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 10; i++) {
         // Generate type
-        std::shared_ptr<Potion> temp = generatePiece<Potion>(potionfactories);
+        std::shared_ptr<Potion> temp = generatePiece<Potion><PFactory>(potionfactories);
 
         // Generate location (make sure not occupied)
         do {
@@ -945,7 +945,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 10; i++) {
         // Generate type
-        std::shared_ptr<Gold> temp = generatePiece<Gold>(goldfactories);
+        std::shared_ptr<Gold> temp = generatePiece<Gold><GFactory>(goldfactories);
 
         // Generate location (make sure not occupied)
         do {
@@ -1022,7 +1022,7 @@ void Board::generateFloor() {
 
     for (int i = 0; i < 20; i++) {
         // Generate type
-        std::shared_ptr<Enemy> temp = generatePiece<Enemy>(enemyfactories);
+        std::shared_ptr<Enemy> temp = generatePiece<Enemy><EFactory>(enemyfactories);
 
         // Generate location (make sure not occupied)
         do {
