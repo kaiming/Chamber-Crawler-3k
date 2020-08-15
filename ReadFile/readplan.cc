@@ -236,7 +236,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     case ('6'):
                     {
                         // normal gold pile
-                        auto tempGold {std::make_shared<Gold>("normal pile", 2)};
+                        auto tempGold {std::make_shared<Gold>("Normal Hoard", 2)};
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, nullptr, tempGold, false)};
                         floors[floorNum][rowNum].push_back(tempTile);
@@ -247,7 +247,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     case ('7'):
                     {
                         // small gold pile
-                        auto tempGold {std::make_shared<Gold>("small pile", 1)};
+                        auto tempGold {std::make_shared<Gold>("Small Hoard", 1)};
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, nullptr, tempGold, false)};
                         floors[floorNum][rowNum].push_back(tempTile);
@@ -258,7 +258,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                     case ('8'):
                     {
                         // merchant hoard
-                        auto tempGold {std::make_shared<Gold>("merchant hoard", 4)};
+                        auto tempGold {std::make_shared<Gold>("Merchant Hoard", 4)};
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, nullptr, tempGold, false)};
                         floors[floorNum][rowNum].push_back(tempTile);
