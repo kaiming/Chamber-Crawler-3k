@@ -365,14 +365,13 @@ void Board::changeFloor() {
 template <class T> std::shared_ptr<T> Board::generatePiece(std::vector<std::shared_ptr<PieceFactory>> factories) {
     
     int rng = std::rand() % factories.size();
-    std::shared_ptr<T> spawned;
 
     if (std::dynamic_pointer_cast<PFactory>(factories[rng])) {
-        spawned = std::dynamic_pointer_cast<PFactory>(factories[rng])->spawn();
+        std::shared_ptr<T> spawned = std::dynamic_pointer_cast<PFactory>(factories[rng])->spawn();
     } else if (std::dynamic_pointer_cast<GFactory>(factories[rng])) {
-        spawned = std::dynamic_pointer_cast<GFactory>(factories[rng])->spawn();
+        std::shared_ptr<T> spawned = std::dynamic_pointer_cast<GFactory>(factories[rng])->spawn();
     } else if (std::dynamic_pointer_cast<EFactory>(factories[rng])) {
-        spawned = std::dynamic_pointer_cast<EFactory>(factories[rng])->spawn();
+        std::shared_ptr<T> spawned = std::dynamic_pointer_cast<EFactory>(factories[rng])->spawn();
     }
 
     return spawned;
