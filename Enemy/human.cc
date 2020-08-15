@@ -35,6 +35,7 @@ bool Human::attack(Shade & s) {
 
     // Check if defender died
     if (s.getHP() <= 0) {
+        s.setHP(0);
         return true;
     }
 
@@ -59,6 +60,7 @@ bool Human::attack(Drow & d) {
 
     // Check if defender died
     if (d.getHP() <= 0) {
+        d.setHP(0);
         return true;
     }
 
@@ -82,6 +84,7 @@ bool Human::attack(Vampire & v) {
 
     // Check if defender died
     if (v.getHP() <= 0) {
+        v.setHP(0);
         return true;
     }
 
@@ -105,6 +108,7 @@ bool Human::attack(Troll & t) {
 
     // Check if defender died
     if (t.getHP() <= 0) {
+        t.setHP(0);
         return true;
     }
 
@@ -128,6 +132,7 @@ bool Human::attack(Goblin & g) {
 
     // Check if defender died
     if (g.getHP() <= 0) {
+        g.setHP(0);
         return true;
     }
 
