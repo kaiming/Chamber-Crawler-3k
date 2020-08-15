@@ -167,7 +167,7 @@ int main(int argc, char* argv[]) {
             message = b.moveEnemies();
 
             if (message.length() == 0) {
-                message = "Enemies moved."
+                message = "Enemies moved.";
             }
 
             td.drawFloor(std::cout, b, message);
