@@ -503,7 +503,7 @@ std::string Board::attackEnemy(std::string direction) {
 
                         destination = validDest(target, directions[rng]);
 
-                    } while (!destination && !isUnoccupied(destination)); 
+                    } while (!destination || !isUnoccupied(destination)); 
 
                     destination->setGold(std::make_shared<Gold>("Normal Hoard", 2));
 
@@ -595,7 +595,7 @@ std::string Board::moveEnemies() {
 
                     destination = validDest(*it, directions[rng]);
 
-                } while (!destination && !isUnoccupied(destination)); 
+                } while (!destination || !isUnoccupied(destination)); 
 
 
                 // Swap Merchant pointers
@@ -713,7 +713,7 @@ std::string Board::moveEnemies() {
 
                 int rng = std::rand() % directions.size();
                 destination = validDest(*it, directions[rng]);
-            } while (!destination && !isUnoccupied(destination)); 
+            } while (!destination || !isUnoccupied(destination)); 
             
             // Swap Enemy pointers
             if (destination != nullptr) {
@@ -746,7 +746,7 @@ std::string Board::moveEnemies() {
 
                 destination = validDest(*it, directions[rng]);
 
-            } while (!destination && !isUnoccupied(destination)); 
+            } while (!destination || !isUnoccupied(destination)); 
 
 
             // Swap Enemy pointers
@@ -957,7 +957,7 @@ void Board::generateFloor() {
 
                 destination = validDest(chambers[chamber][tile], directions[rng]);
 
-            } while (!destination && !isUnoccupied(destination)); 
+            } while (!destination || !isUnoccupied(destination)); 
 
 
             // Place dragon at location and store in DragonHoard
