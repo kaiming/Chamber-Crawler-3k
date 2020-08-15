@@ -122,7 +122,7 @@ bool Board::toggleFreeze() {
 
 //--------------------------------------------------------------------------------
 
-std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> package, std::string direction) {
+std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> centre, std::string direction) {
     
     // Set up variable to hold destination
     std::shared_ptr<Tile> destination;
@@ -134,7 +134,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
     // std::pair<int x, int y>
     if (direction == "no") {
         // no = North/Up
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.second - 1 < 0) {
@@ -144,7 +144,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first];
     } else if (direction == "so") {
         // so = South/Down
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
@@ -154,7 +154,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second + 1][current.first];
     } else if (direction == "ea") {
         // ea = East/Right
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size())) {
@@ -164,7 +164,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second][current.first + 1];
     } else if (direction == "we") {
         // we = West/Left
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0) {
@@ -174,7 +174,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second][current.first - 1];
     } else if (direction == "ne") { // ----------------------------------------------------------------------
         // ne = North East/Right and Up
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size()) || current.second - 1 < 0) {
@@ -184,7 +184,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first + 1];
     } else if (direction == "nw") {
         // nw = North West/Left and Up 
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0 || current.second - 1 < 0) {
@@ -194,7 +194,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second - 1][current.first - 1];
     } else if (direction == "se") {
         // se = South East/Right and Down
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first + 1 >= static_cast<int>(floors[floorNum-1][1].size()) || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {
@@ -204,7 +204,7 @@ std::shared_ptr<WalkableTile> Board::validDest(std::shared_ptr<WalkableTile> pac
         destination = floors[floorNum-1][current.second + 1][current.first + 1];
     } else if (direction == "sw") {
         // sw = South West/Left and Down
-        std::pair<int, int> current = package->getCoord();
+        std::pair<int, int> current = centre->getCoord();
 
         // Check if in bounds
         if (current.first - 1 < 0 || current.second + 1 >= static_cast<int>(floors[floorNum-1].size())) {

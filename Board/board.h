@@ -47,7 +47,7 @@ class Board {
         bool merchantAgro = false;
         bool enemiesFrozen = false;
 
-        std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> package, std::string direction); 
+        std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> centre, std::string direction); 
         void assignChambers();
         void tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
         void changeFloor();
