@@ -48,8 +48,8 @@
     std::vector<bool> filled; 
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
     std::shared_ptr<WalkableTile> player;
-    std::vector<std::shared_ptr<WalkableTile>> enemies;
-    std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+    std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
+    std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
     std::vector<std::string> potionsUsed;
 
     std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
@@ -64,8 +64,8 @@ Board::Board(
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors, 
         std::vector<bool> filled, 
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
-        std::vector<std::shared_ptr<WalkableTile>> enemies,
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards,
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies,
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards,
         std::string race
 ) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : nullptr}, floorNum{1} {
     
@@ -298,7 +298,8 @@ void Board::tileDFS(int x, int y, int chamberNum, std::vector<std::shared_ptr<Wa
 }
 
 void Board::changeFloor() {
-    // Change Floor, floorNum has already been updated
+    // Change Floor
+    floorNum += 1;
 
     // Check if floors[floorNum-1] is populated
     if (filled[floorNum-1]) {
@@ -336,7 +337,6 @@ std::string Board::movePlayer(std::string direction) {
             return "Dungeon cleared. You win! ";
         } else {
             // Proceed to next floor
-            floorNum += 1;
             changeFloor();
             return "Floor " + std::to_string(floorNum - 1) + " cleared. Proceeding to next floor. ";
         }
@@ -371,9 +371,9 @@ std::string Board::movePlayer(std::string direction) {
                 message = gold->getType() + ", value " + std::to_string(gold->getSize()) + ", picked up. ";
 
                 // Remove from dragonHoards
-                for (auto it = dragonHoards.begin(); it != dragonHoards.end(); it++) {
+                for (auto it = dragonHoards[floorNum-1].begin(); it != dragonHoards[floorNum-1].end(); it++) {
                     if ((*it)->getGold() == gold) {
-                        dragonHoards.erase(it);
+                        dragonHoards[floorNum-1].erase(it);
                         break;
                     }
                 }
@@ -434,7 +434,7 @@ std::string Board::attackEnemy(std::string direction) {
                 // Dragon Type, drop nothing
                 
                 // Remove this dragon from dragons
-                for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
+                for (auto it = dragonHoards[floorNum-1].begin(); it != dragonHoards[floorNum-1].end(); ++it) {
                     if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon() == target->getOccupant()) {
                         std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->setState(false);
                     }
@@ -544,9 +544,9 @@ std::string Board::attackEnemy(std::string direction) {
                 message += merchantStatus;
 
                 // Remove this enemy from enemies
-                for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+                for (auto it = enemies[floorNum-1].begin(); it != enemies[floorNum-1].end(); ++it) {
                     if ((*it)->getCoord() == target->getCoord()) {
-                        enemies.erase(it); 
+                        enemies[floorNum-1].erase(it); 
                     }
                 }
 
@@ -579,7 +579,7 @@ std::string Board::moveEnemies() {
     }
 
     // Iterate through enemies and dragons to execute their turn
-    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+    for (auto it = enemies[floorNum-1].begin(); it != enemies[floorNum-1].end(); ++it) {
 
         // Check if merchant
         if (std::dynamic_pointer_cast<Merchant>((*it)->getOccupant())) {
@@ -762,7 +762,7 @@ std::string Board::moveEnemies() {
     } // end of Enemies loop
 
     // Iterate through dragons to see if they attack the player
-    for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
+    for (auto it = dragonHoards[floorNum-1].begin(); it != dragonHoards[floorNum-1].end(); ++it) {
 
         // Check if associated dragon is still alive
         if (std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragon()->getState() == false) {
@@ -938,7 +938,7 @@ void Board::generateFloor() {
         // If dragonHoard type, place Dragon around it
         if (type == 7) {
             // Add to dragonHoards
-            dragonHoards.emplace_back(std::dynamic_pointer_cast<WalkableTile>(chambers[chamber][tile])); 
+            dragonHoards[floorNum-1].emplace_back(std::dynamic_pointer_cast<WalkableTile>(chambers[chamber][tile])); 
 
             // Allocate dragon spawn destination
             std::shared_ptr<WalkableTile> destination = nullptr;
@@ -1001,7 +1001,7 @@ void Board::generateFloor() {
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
-        enemies.emplace_back(chambers[chamber][tile]);
+        enemies[floorNum-1].emplace_back(chambers[chamber][tile]);
     }
 }
 

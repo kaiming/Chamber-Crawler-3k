@@ -41,7 +41,7 @@ bool isWalkable(char type) {
 
 
 // readFloorPlan helper (PUT IN A SEPARATE FILE LATER) 
-void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<std::shared_ptr<WalkableTile>>& playerSpawns, std::vector<std::shared_ptr<WalkableTile>>& enemies, std::vector<std::shared_ptr<WalkableTile>>& dragonHoards, std::vector<bool>& filled) {
+void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>>& floors, std::vector<std::shared_ptr<WalkableTile>>& playerSpawns, std::vector<std::vector<std::shared_ptr<WalkableTile>>>& enemies, std::vector<std::vector<std::shared_ptr<WalkableTile>>>& dragonHoards, std::vector<bool>& filled) {
     std::shared_ptr<Factory> tileType;
     std::shared_ptr<WalkableFactory> walkable = std::make_shared<WalkableFactory>();
     std::shared_ptr<NonWalkableFactory> nonWalkable = std::make_shared<NonWalkableFactory>();
@@ -274,7 +274,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         type = 'G';
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, nullptr, nullptr, tempGold, false)};
 
-                        dragonHoards.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        dragonHoards[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -306,7 +306,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                             break;
                         }
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile)); // Not sure about this line
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -319,7 +319,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Human>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));                        
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));                        
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -332,7 +332,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Dwarf>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -345,7 +345,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Elf>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -358,7 +358,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Orc>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -371,7 +371,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Merchant>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
@@ -384,7 +384,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                         auto tempHuman {std::make_shared<Halfling>()};
                         auto tempTile {tileType->makeTile(type, colNum, rowNum, tempHuman)};
 
-                        enemies.push_back(std::static_pointer_cast<WalkableTile>(tempTile));
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile));
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;

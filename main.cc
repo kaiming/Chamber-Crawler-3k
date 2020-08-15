@@ -15,8 +15,8 @@ int main(int argc, char* argv[]) {
         //infile.exceptions(std::ifstream::failbit);
         std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-        std::vector<std::shared_ptr<WalkableTile>> enemies;
-        std::vector<std::shared_ptr<WalkableTile>> dragonHoards;
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
+        std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
         std::vector<bool> filled;
         bool restart = true;
         int winner = -1; // code 0 for restart, code 1 for win, code 2 for loss
