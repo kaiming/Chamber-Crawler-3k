@@ -125,12 +125,12 @@ int main(int argc, char* argv[]) {
 
             } else if (cmd[0] == 'u') {
                 // Use potion in given direction
-                message = b.usePotion(cmd.substr(2));
+                message = b.usePotion(cmd.substr(cmd.length() - 2));
 
                 td.drawFloor(std::cout, b, message);
             } else if (cmd[0] == 'a') {
                 // Attack enemy in the given direction
-                message = b.attackEnemy(cmd.substr(2));
+                message = b.attackEnemy(cmd.substr(cmd.length() - 2));
 
                 td.drawFloor(std::cout, b, message);
             } else if (cmd == "f") {
