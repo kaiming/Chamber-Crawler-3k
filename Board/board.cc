@@ -916,7 +916,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion());
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
 
         // Place type at location
         chambers[chamber][tile]->setPotion(temp);
@@ -930,9 +930,9 @@ void Board::generateFloor() {
         std::shared_ptr<Gold> temp;
 
         if (type >= 0 && type <= 4) {
-            temp = std::make_shared<Gold>("Normal", 2);
+            temp = std::make_shared<Gold>("Normal Hoard", 2);
         } else if (type == 5 || type == 6) {
-            temp = std::make_shared<Gold>("Small", 1);
+            temp = std::make_shared<Gold>("Small Hoard", 1);
         } else if (type == 7) {
             temp = std::make_shared<DragonHoard>();
         }
@@ -941,7 +941,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
         
 
         // Place type at location
@@ -976,7 +976,7 @@ void Board::generateFloor() {
                 } else if (rng == 7) {
                     destination = validDest(chambers[chamber][tile], "sw");
                 }
-            } while (destination == nullptr);
+            } while (!destination || destination->getPotion() || destination->getGold() || destination->isExit() || destination->getOccupant());
 
             // Place dragon at location and store in DragonHoard
             destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
@@ -1009,7 +1009,7 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr || chambers[chamber][tile]->isExit());
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getOccupant() || chambers[chamber][tile]->isExit());
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
