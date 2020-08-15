@@ -298,6 +298,9 @@ void Board::changeFloor() {
     } else {
         // Floor has not been pre-generated
         assignChambers();
+        enemies.clear();
+        chambers.clear();
+        dragonHoards.clear();
         generateFloor();
     }
 
@@ -963,7 +966,7 @@ void Board::generateFloor() {
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
-
+        enemies.emplace_back();
     }
 }
 
