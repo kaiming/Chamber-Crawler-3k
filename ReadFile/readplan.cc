@@ -115,6 +115,11 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
         // push in a new row
         std::vector<std::shared_ptr<Tile>> row;
         floors[floorNum].push_back(row);
+        std::vector<std::shared_ptr<WalkableTile>> enemyFloor, dHoardFloor;
+        enemies[floorNum].push_back(enemyFloor);
+        dragonHoards[floorNum].push_back(dHoardFloor);
+
+
 
         // grab each character and create the appropriate Tile
         while (true) {
@@ -306,7 +311,7 @@ void readFloorPlan(std::istream& in, std::vector<std::vector<std::vector<std::sh
                             break;
                         }
 
-                        //enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile)); // Not sure about this line
+                        enemies[floorNum].push_back(std::static_pointer_cast<WalkableTile>(tempTile)); // Not sure about this line
 
                         floors[floorNum][rowNum].push_back(tempTile);
                         if (!filled[floorNum]) filled[floorNum] = true;
