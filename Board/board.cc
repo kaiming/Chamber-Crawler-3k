@@ -962,11 +962,11 @@ void Board::generateFloor() {
         do {
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr);
+        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr || chambers[chamber][tile]->isExit());
 
         // Place type at location
         chambers[chamber][tile]->setOccupant(temp);
-        enemies.emplace_back();
+        enemies.emplace_back(chambers[chamber][tile]);
     }
 }
 
