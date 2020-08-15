@@ -685,6 +685,8 @@ std::string Board::moveEnemies() {
 
         // DLC EXTENSION HERE: add else if (distance < radius) -> move towards player
 
+        std::cout << (*it) << " " << (*it)->getOccupant() << std::endl;
+
         if (distance == 1) {
             double ogHP = player->getOccupant()->getHP();
 
@@ -773,6 +775,7 @@ std::string Board::moveEnemies() {
 
             // Swap Enemy pointers
             if (destination != nullptr) {
+                std::cout << destination << ": destination ptr " << destination->getOccupant() << std::endl;
                 (*it) = (*it)->move(destination);
             }
 
@@ -922,13 +925,13 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
-        int j = 0;
+        int i = 0;
         do {
             // Infinite loop protection
-            if (j > 250) {
+            if (i > 250) {
                 break;
             } else {
-                j++;
+                i++;
             }
 
             chamber = std::rand() % static_cast<int>(chambers.size());
@@ -957,13 +960,13 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
-        j = 0;
+        int i = 0;
         do {
             // Infinite loop protection
-            if (j > 250) {
+            if (i > 250) {
                 break;
             } else {
-                j++;
+                i++;
             }
 
             chamber = std::rand() % static_cast<int>(chambers.size());
@@ -985,13 +988,13 @@ void Board::generateFloor() {
             std::shared_ptr<WalkableTile> destination = nullptr;
 
             // Generate direction around DragonHoard
-            j = 0;
+            int i = 0;
             do {
                 // Infinite loop protection
-                if (j > 250) {
+                if (i > 250) {
                     break;
                 } else {
-                    j++;
+                    i++;
                 }
 
                 int rng = std::rand() % 8;
@@ -1045,13 +1048,13 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
-        j = 0;
+        int i = 0;
         do {
             // Infinite loop protection
-            if (j > 250) {
+            if (i > 250) {
                 break;
             } else {
-                j++;
+                i++;
             }
 
             chamber = std::rand() % static_cast<int>(chambers.size());
