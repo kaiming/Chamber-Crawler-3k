@@ -1,11 +1,10 @@
 #ifndef __GFACTORY_H__
 #define __GFACTORY_H__
 #include <memory>
-#include "../PieceFactory/pieceFactory.h"
 
 class Gold;
 
-class GFactory : public PieceFactory {
+class GFactory {
   private:
     std::string type;
     int value;
