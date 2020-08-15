@@ -521,23 +521,23 @@ std::string Board::attackEnemy(std::string direction) {
                         break;
                     }
 
-                    destination->setGold(std::make_shared<Gold>("Normal Pile", 2));
+                    destination->setGold(std::make_shared<Gold>("Normal Hoard", 2));
 
                 } else if (target->getOccupant()->getRace() == "Merchant") {
                     // Merchant Type, drop Merchant Hoard
                     playerPtr->setGold(playerPtr->getGold() + 4);
-                    message += "Merchant hoard picked up. ";
+                    message += "Merchant Hoard picked up. ";
 
                 } else {
                     // Other type, RNG gold
                     if (std::rand() % 2 == 0) {
                         // Small pile
                         playerPtr->setGold(playerPtr->getGold() + 1);
-                        message += "Small hoard picked up. ";
+                        message += "Small Hoard picked up. ";
                     } else {
                         // Normal pile
                         playerPtr->setGold(playerPtr->getGold() + 2);
-                        message += "Normal hoard picked up. ";
+                        message += "Normal Hoard picked up. ";
                     }
                 }
 
@@ -575,7 +575,7 @@ std::string Board::moveEnemies() {
     
     // If enemies frozen, do nothing
     if (enemiesFrozen) {
-        return message;
+        return "Enemies frozen. ";
     }
 
     // Iterate through enemies and dragons to execute their turn
