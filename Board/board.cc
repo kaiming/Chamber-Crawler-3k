@@ -334,7 +334,7 @@ std::string Board::movePlayer(std::string direction) {
     if (destination->isExit()) {
         if (floorNum == static_cast<int>(floors.size())) {
             // Game completed
-            return "Dungeon cleared. You win! ";
+            return "Dungeon cleared. You win!";
         } else {
             // Proceed to next floor
             changeFloor();
