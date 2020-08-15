@@ -497,6 +497,13 @@ std::string Board::attackEnemy(std::string direction) {
                             continue;
                         }
 
+                        // Check for occupants
+                        if (destination->getOccupant() != nullptr) {
+                            // Occupied by Character, loop again
+                            destination = nullptr;
+                            continue;
+                        }
+
                         // Check for gold
                         if (destination->getGold() != nullptr) {
                             // Occupied by gold, loop again
@@ -627,6 +634,13 @@ std::string Board::moveEnemies() {
                         continue;
                     }
 
+                    // Check for occupants
+                    if (destination->getOccupant() != nullptr) {
+                        // Occupied by Character, loop again
+                        destination = nullptr;
+                        continue;
+                    }
+
                     // Check for gold
                     if (destination->getGold() != nullptr) {
                         // Occupied by gold, loop again
@@ -724,6 +738,13 @@ std::string Board::moveEnemies() {
 
                 // Check in chamber (not a doorway or hallway)
                 if (destination->getRoom() < 0) {
+                    destination = nullptr;
+                    continue;
+                }
+                
+                // Check for occupants
+                if (destination->getOccupant() != nullptr) {
+                    // Occupied by Character, loop again
                     destination = nullptr;
                     continue;
                 }
@@ -879,7 +900,7 @@ void Board::generateFloor() {
 
     tile = std::rand() % static_cast<int>(chambers[chamber].size());
 
-        // Insert exit stairs
+    // Insert exit stairs
     chambers[chamber][tile]->setExit(true);
 
 
@@ -904,13 +925,23 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
+        int i = 0;
         do {
+            // Infinite loop protection
+            if (i > 250) {
+                break;
+            } else {
+                i++;
+            }
+
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion());
+        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
 
         // Place type at location
-        chambers[chamber][tile]->setPotion(temp);
+        if (!chambers[chamber][tile]->getPotion() && !chambers[chamber][tile]->isExit() && !chambers[chamber][tile]->getOccupant()) {
+            chambers[chamber][tile]->setPotion(temp);
+        }
     }
 
 
@@ -929,14 +960,24 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
+        int i = 0;
         do {
+            // Infinite loop protection
+            if (i > 250) {
+                break;
+            } else {
+                i++;
+            }
+
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->getGold()); // DLC EXTENSION HERE: if gold can stack, remove second if clause
+        } while (chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant()); 
         
 
         // Place type at location
-        chambers[chamber][tile]->setGold(temp);
+        if (!chambers[chamber][tile]->getGold() && !chambers[chamber][tile]->getPotion() && !chambers[chamber][tile]->isExit() && !chambers[chamber][tile]->getOccupant()) {            
+            chambers[chamber][tile]->setGold(temp);
+        }
 
         // If dragonHoard type, place Dragon around it
         if (type == 7) {
@@ -947,7 +988,15 @@ void Board::generateFloor() {
             std::shared_ptr<WalkableTile> destination = nullptr;
 
             // Generate direction around DragonHoard
+            int i = 0;
             do {
+                // Infinite loop protection
+                if (i > 250) {
+                    break;
+                } else {
+                    i++;
+                }
+
                 int rng = std::rand() % 8;
 
                 if (rng == 0) {
@@ -967,11 +1016,13 @@ void Board::generateFloor() {
                 } else if (rng == 7) {
                     destination = validDest(chambers[chamber][tile], "sw");
                 }
-            } while (destination == nullptr);
+            } while (chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
 
             // Place dragon at location and store in DragonHoard
-            destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
-            std::dynamic_pointer_cast<DragonHoard>(temp)->setDragonTile(destination);
+            if (!chambers[chamber][tile]->getGold() && !chambers[chamber][tile]->getPotion() && !chambers[chamber][tile]->isExit() && !chambers[chamber][tile]->getOccupant()) {
+                destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
+                std::dynamic_pointer_cast<DragonHoard>(temp)->setDragonTile(destination);
+            }
         }
     }
 
@@ -997,14 +1048,24 @@ void Board::generateFloor() {
         }
 
         // Generate location (make sure not occupied)
+        int i = 0;
         do {
+            // Infinite loop protection
+            if (i > 250) {
+                break;
+            } else {
+                i++;
+            }
+
             chamber = std::rand() % static_cast<int>(chambers.size());
             tile = std::rand() % static_cast<int>(chambers[chamber].size());
-        } while (chambers[chamber][tile]->getPotion() != nullptr || chambers[chamber][tile]->getGold() != nullptr || chambers[chamber][tile]->getOccupant() != nullptr || chambers[chamber][tile]->isExit());
+        } while (chambers[chamber][tile]->getGold() || chambers[chamber][tile]->getPotion() || chambers[chamber][tile]->isExit() || chambers[chamber][tile]->getOccupant());
 
         // Place type at location
-        chambers[chamber][tile]->setOccupant(temp);
-        enemies[floorNum-1].emplace_back(chambers[chamber][tile]);
+        if (!chambers[chamber][tile]->getGold() && !chambers[chamber][tile]->getPotion() && !chambers[chamber][tile]->isExit() && !chambers[chamber][tile]->getOccupant()) {
+            chambers[chamber][tile]->setOccupant(temp);
+            enemies[floorNum-1].emplace_back(chambers[chamber][tile]);
+        }
     }
 }
 
