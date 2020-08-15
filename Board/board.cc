@@ -449,7 +449,7 @@ std::string Board::attackEnemy(std::string direction) {
             }
 
         } else {
-            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP()) + "HP (" + std::to_string(target->getOccupant()->getHP()) + "HP remaining). "  + merchantStatus;
+            message = target->getOccupant()->getRace() + " attacked for " + std::to_string(enemyOgHP - target->getOccupant()->getHP() / 10000) + "HP (" + std::to_string(target->getOccupant()->getHP() / 10000) + "HP remaining). "  + merchantStatus;
         }
     } else {
         message = "No Enemy to Attack. ";
