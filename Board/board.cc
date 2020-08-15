@@ -690,11 +690,11 @@ std::string Board::usePotion(std::string direction) {
             potionsUsed.emplace_back(target->getPotion()->getType());
         }
 
+        message = target->getPotion()->getType() + " was Used. ";
+
         // Remove potion from board
         target->setPotion(nullptr);
         player = player->move(target);
-
-        message = target->getPotion()->getType() + " was Used. ";
     } else {
         message = "No Potion to Use. ";
     }
