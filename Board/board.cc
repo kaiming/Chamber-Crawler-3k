@@ -939,9 +939,9 @@ void Board::generateFloor() {
         std::shared_ptr<Gold> temp;
 
         if (type >= 0 && type <= 4) {
-            temp = std::make_shared<Gold>("Normal", 2);
+            temp = std::make_shared<Gold>("Normal Hoard", 2);
         } else if (type == 5 || type == 6) {
-            temp = std::make_shared<Gold>("Small", 1);
+            temp = std::make_shared<Gold>("Small Hoard", 1);
         } else if (type == 7) {
             temp = std::make_shared<DragonHoard>();
         }
