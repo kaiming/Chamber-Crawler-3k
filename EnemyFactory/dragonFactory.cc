@@ -5,3 +5,7 @@
 std::shared_ptr<Enemy> DragonFactory::spawn() {
     return std::make_shared<Dragon>();
 }
+
+DragonFactory::~DragonFactory() {
+    
+}

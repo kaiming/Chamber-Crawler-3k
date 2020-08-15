@@ -8,6 +8,7 @@ class DragonFactory : public EFactory {
   public:
     // spawnEnemy returns a pointer to a new enemy
     virtual std::shared_ptr<Enemy> spawn() override;
+    virtual ~DragonFactory(); 
 }; 
 
 #endif
