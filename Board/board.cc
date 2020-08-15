@@ -753,7 +753,7 @@ std::string Board::moveEnemies() {
     for (auto it = dragonHoards.begin(); it != dragonHoards.end(); ++it) {
         // Check dragon distance from player
         std::pair<int, int> pCoord = player->getCoord();
-        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragonTile()->getCoord(); // Sketchy getGold()[0] here again
+        std::pair<int, int> eCoord = std::dynamic_pointer_cast<DragonHoard>((*it)->getGold())->getDragonTile()->getCoord(); 
 
         double distance = std::floor(std::sqrt(std::pow((pCoord.first - eCoord.first), 2) + std::pow((pCoord.second - eCoord.second), 2))); 
 
@@ -765,7 +765,7 @@ std::string Board::moveEnemies() {
             double ogHP = player->getOccupant()->getHP();
             
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<WalkableTile>((*it)->getOccupant())));
+            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Dragon>((*it)->getOccupant())));
             message += player->getOccupant()->getRace() + " attacked by Dragon for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "; 
 
             if (killed) {
