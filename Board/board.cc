@@ -765,7 +765,7 @@ std::string Board::moveEnemies() {
             double ogHP = player->getOccupant()->getHP();
             
             // 1 tile away from either the dragon or the dragon hoard, attack player
-            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Dragon>((*it)->getOccupant())));
+            bool killed = std::dynamic_pointer_cast<Player>(player->getOccupant())->getAttacked(*(std::dynamic_pointer_cast<Dragon>((*it)->getGold()->getDragon())));
             message += player->getOccupant()->getRace() + " attacked by Dragon for "+ std::to_string(ogHP - player->getOccupant()->getHP()) + "HP. "; 
 
             if (killed) {
