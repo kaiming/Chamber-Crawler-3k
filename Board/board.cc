@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 #include "../Tile/tile.h"
 #include "../Tile/walkabletile.h"
