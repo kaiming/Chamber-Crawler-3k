@@ -217,10 +217,6 @@ int main(int argc, char* argv[]) {
 
         td.drawFloor(std::cout, b, "The adventure begins");
 
-        // clear input stream
-        //std::cin.clear();
-        //std::cin.ignore();
-
         std::string cmd;
 
         while (true) {
