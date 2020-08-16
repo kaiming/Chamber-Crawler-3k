@@ -419,6 +419,37 @@ std::string Board::movePlayer(std::string direction) {
     player = player->move(destination);
     message = playerPtr->getRace() + " moved " + direction + ". " + message;
 
+    // Potion detection
+    // Check surrounding tiles for potions
+    std::shared_ptr<WalkableTile> target = nullptr;
+    std::vector<std::string> directions;
+    directions.push_back("no");
+    directions.push_back("ea");
+    directions.push_back("so");
+    directions.push_back("we");
+    directions.push_back("ne");
+    directions.push_back("nw");
+    directions.push_back("se");
+    directions.push_back("sw");
+
+    for (int i = 0; i < directions.size(); i++) {
+        // Check if the direction is a WalkableTile and has a potion
+        target = validDest(player, directions[i]);
+        if (target && target->getPotion()) {
+            // Potion found 
+            std::string type = target->getPotion()->getType();
+
+            // Search to see if type is in potionsUsed
+            if (std::find(potionsUsed.begin(), potionsUsed.end(), type) != potionsUsed.end()) {
+                // Potion found
+                message += playerPtr->getRace() + " sees a " + type + " potion. ";
+            } else {
+                // Potion not found
+                message += playerPtr->getRace() + " sees an unknown potion. ";
+            }
+        }
+    }
+
     // Exit not reached
     return message;
 }

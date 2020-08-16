@@ -152,11 +152,11 @@ int main(int argc, char* argv[]) {
                 }
 
                 if (in == "e") {
-                    radius = 1;
-                    std::cout << "Enemy Tracking Difficulty: Easy (radius 1)" << std::endl;
-                } else if (in == "m") {
                     radius = 2;
-                    std::cout << "Enemy Tracking Difficulty: Medium (radius 2)" << std::endl;
+                    std::cout << "Enemy Tracking Difficulty: Easy (radius 2)" << std::endl;
+                } else if (in == "m") {
+                    radius = 3;
+                    std::cout << "Enemy Tracking Difficulty: Medium (radius 3)" << std::endl;
                 } else if (in == "h") {
                     radius = 4;
                     std::cout << "Enemy Tracking Difficulty: Hard (radius 4)" << std::endl;
@@ -283,13 +283,18 @@ int main(int argc, char* argv[]) {
             }
 
             // Move Enemies
-            std::string e_message = b.moveEnemies();
+            if (message.length () > 30 && message.substr(message.length()-26) == "Proceeding to next floor. ") {
 
-            if (e_message.length() == 0) {
-                e_message = "Enemies moved.";
+            } else {
+                std::string e_message = b.moveEnemies();
+
+                if (e_message.length() == 0) {
+                    e_message = "Enemies moved.";
+                }
+
+                message +=e_message;
             }
-
-            message +=e_message;
+            
 
             td.drawFloor(std::cout, b, message);
 
