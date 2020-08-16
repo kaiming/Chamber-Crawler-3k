@@ -45,19 +45,22 @@
 
 /*
     std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> floors;
-    std::vector<bool> filled; 
-    std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
-    std::shared_ptr<WalkableTile> player;
+    std::vector<bool> filled;
+    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
     std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
-    std::vector<std::string> potionsUsed;
-
-    std::vector<std::shared_ptr<WalkableTile>> playerSpawns;
-    std::shared_ptr<Player> playerPtr;
     std::string race;
+    bool enemyTracking;
+    int radius;
+    int defaultAtk, defaultDef;
+
+    std::shared_ptr<WalkableTile> player;
+    std::vector<std::string> potionsUsed;
+    std::vector<std::vector<std::shared_ptr<WalkableTile>>> chambers;
+    std::shared_ptr<Player> playerPtr;
     int floorNum;
-    bool merchantAgro;
-    bool enemiesFrozen;
+    bool merchantAgro = false;
+    bool enemiesFrozen = false;
 */
 
 Board::Board(
@@ -66,9 +69,17 @@ Board::Board(
         std::vector<std::shared_ptr<WalkableTile>> playerSpawns,
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies,
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards,
-        std::string race
-) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : nullptr}, floorNum{1} {
-    
+        std::string race,
+        int seed,
+        bool enemyTracking,
+        int radius
+) : floors{floors}, filled{filled}, playerSpawns{playerSpawns}, enemies{enemies}, dragonHoards{dragonHoards}, enemyTracking{enemyTracking}, radius{radius}, player{static_cast<int>(playerSpawns.size()) > 0 ? playerSpawns[0] : nullptr}, floorNum{1} {
+
+    // Set seed
+    if (seed != -1) {
+        std::srand(seed);
+    }
+
     // Generate Player by given Race
     if (race == "s") {
         playerPtr = std::make_shared<Shade>();
@@ -297,6 +308,16 @@ void Board::tileDFS(int x, int y, int chamberNum, std::vector<std::shared_ptr<Wa
     
 }
 
+bool Board::isUnoccupied(std::shared_ptr<WalkableTile> target) {
+    // Check in chamber (not a doorway or hallway)
+    if (target->getRoom() < 0 || target->getOccupant() || target->getGold() || target->getPotion() || target->isExit()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
 void Board::changeFloor() {
     // Change Floor
     floorNum += 1;
@@ -458,75 +479,31 @@ std::string Board::attackEnemy(std::string direction) {
                     message += "Normal hoard picked up. ";
 
                     // RNG a second pile nearby
-                    std::shared_ptr<WalkableTile> destination;
+                    std::shared_ptr<WalkableTile> destination = nullptr;
+                    std::vector<std::string> directions;
+                    directions.push_back("no");
+                    directions.push_back("ea");
+                    directions.push_back("so");
+                    directions.push_back("we");
+                    directions.push_back("ne");
+                    directions.push_back("nw");
+                    directions.push_back("se");
+                    directions.push_back("sw");
                     int i = 0;
-                    while (true) {
-                        
+
+                    do {
                         // Exit case in event that no suitable location found
-                        if (i > 16) {
+                        if (i > 80) {
                             break;
                         } else {
                             i++;
                         }
                         
-                        
-                        do {
-                            int rng = std::rand() % 8;
+                        int rng = std::rand() % directions.size();
 
-                            if (rng == 0) {
-                                destination = validDest(target, "no");
-                            } else if (rng == 1) {
-                                destination = validDest(target, "so");
-                            } else if (rng == 2) {
-                                destination = validDest(target, "ea");
-                            } else if (rng == 3) {
-                                destination = validDest(target, "we");
-                            } else if (rng == 4) {
-                                destination = validDest(target, "ne");
-                            } else if (rng == 5) {
-                                destination = validDest(target, "nw");
-                            } else if (rng == 6) {
-                                destination = validDest(target, "se");
-                            } else if (rng == 7) {
-                                destination = validDest(target, "sw");
-                            }
-                        } while (!destination);
-                        // Check in chamber (not a doorway or hallway)
-                        if (destination->getRoom() < 0) {
-                            destination = nullptr;
-                            continue;
-                        }
+                        destination = validDest(target, directions[rng]);
 
-                        // Check for occupant
-                        if (destination->getOccupant() != nullptr) {
-                            // Occupied by gold, loop again
-                            destination = nullptr;
-                            continue;
-                        }
-
-                        // Check for gold
-                        if (destination->getGold() != nullptr) {
-                            // Occupied by gold, loop again
-                            destination = nullptr;
-                            continue;
-                        }
-
-                        // Check for potions
-                        if (destination->getPotion() != nullptr) {
-                            // Occupied by potion, loop again
-                            destination = nullptr;
-                            continue;
-                        }
-
-                        // Check for exit
-                        if (destination->isExit()) {
-                            // Occupied by exit stairs, loop again
-                            destination = nullptr; 
-                            continue;
-                        }
-
-                        break;
-                    }
+                    } while (!destination || !isUnoccupied(destination)); 
 
                     destination->setGold(std::make_shared<Gold>("Normal Hoard", 2));
 
@@ -595,80 +572,34 @@ std::string Board::moveEnemies() {
             if (!merchantAgro) {
                 // Not hostile, just move
                 std::shared_ptr<WalkableTile> destination = nullptr;
-                int i = 0; 
+                std::vector<std::string> directions;
+                directions.push_back("no");
+                directions.push_back("ea");
+                directions.push_back("so");
+                directions.push_back("we");
+                directions.push_back("ne");
+                directions.push_back("nw");
+                directions.push_back("se");
+                directions.push_back("sw");
+                int i = 0;
 
-                while (true) {
-
+                do {
                     // Exit case in event that no suitable location found
-                    if (i > 40) {
+                    if (i > 80) {
                         break;
                     } else {
                         i++;
                     }
+                    
+                    int rng = std::rand() % directions.size();
 
-                    do {
-                        int rng = std::rand() % 8;
+                    destination = validDest(*it, directions[rng]);
 
-                        if (rng == 0) {
-                            destination = validDest(*it, "no");
-                        } else if (rng == 1) {
-                            destination = validDest(*it, "so");
-                        } else if (rng == 2) {
-                            destination = validDest(*it, "ea");
-                        } else if (rng == 3) {
-                            destination = validDest(*it, "we");
-                        } else if (rng == 4) {
-                            destination = validDest(*it, "ne");
-                        } else if (rng == 5) {
-                            destination = validDest(*it, "nw");
-                        } else if (rng == 6) {
-                            destination = validDest(*it, "se");
-                        } else if (rng == 7) {
-                            destination = validDest(*it, "sw");
-                        }
-                    } while (destination == nullptr);
+                } while (!destination || !isUnoccupied(destination)); 
 
-                    // Check in chamber (not a doorway or hallway)
-                    if (destination->getRoom() < 0) {
-                        destination = nullptr;
-                        continue;
-                    }
 
-                    // Check for occupant
-                    if (destination->getOccupant() != nullptr) {
-                        // Occupied by gold, loop again
-                        destination = nullptr;
-                        continue;
-                    }
-
-                    // Check for gold
-                    if (destination->getGold() != nullptr) {
-                        // Occupied by gold, loop again
-                        // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
-                        destination = nullptr;
-                        continue;
-                    }
-
-                    // Check for potions
-                    if (destination->getPotion() != nullptr) {
-                        // Occupied by potion, loop again
-                        // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
-                        destination = nullptr;
-                        continue;
-                    }
-
-                    // Check for exit
-                    if (destination->isExit()) {
-                        // Occupied by exit stairs, loop again
-                        destination = nullptr; 
-                        continue;
-                    }
-
-                    break;
-                }
-                
+                // Swap Merchant pointers
                 if (destination != nullptr) {
-                    // Swap Merchant pointers
                     (*it) = (*it)->move(destination);
                 }
 
@@ -699,12 +630,80 @@ std::string Board::moveEnemies() {
                 // Player is dead, game is over
                 return message += player->getOccupant()->getRace() + " was killed. Game Over!";
             }
-        } else {
-            // Too far away to attack, do a random move
+        } else if (enemyTracking && distance <= radius) {
+            // Player is within targeting distance
+
+            // Determine direction to travel
+            double x_direction = p_coord.first - e_coord.first;
+            double y_direction = p_coord.second - e_coord.second;
+            
+            // Make the move
             std::shared_ptr<WalkableTile> destination = nullptr;
+            std::vector<std::string> directions;
+
+            if (x_direction > 0) {
+                if (y_direction > 0) {
+                    // pos x, pos y = se/ea/so
+                    directions.push_back("se");
+                    directions.push_back("ea");
+                    directions.push_back("so");
+
+                } else if (y_direction == 0) {
+                    // pos x, zero y = ea/ne/se
+                    directions.push_back("ea");
+                    directions.push_back("ne");
+                    directions.push_back("se");
+                } else if (y_direction < 0) {
+                    // pos x, neg y = ne/ea/ne
+                    directions.push_back("ne");
+                    directions.push_back("ea");
+                    directions.push_back("ne");
+                }
+
+            } else if (x_direction == 0) {
+                if (y_direction > 0) {
+                    // zero x, pos y = so/se/sw
+                    directions.push_back("so");
+                    directions.push_back("se");
+                    directions.push_back("sw");
+                } else if (y_direction == 0) {
+                    // zero x, zero y == enemy = player -> do nothing
+                    directions.push_back("no");
+                    directions.push_back("ea");
+                    directions.push_back("so");
+                    directions.push_back("we");
+                    directions.push_back("ne");
+                    directions.push_back("nw");
+                    directions.push_back("se");
+                    directions.push_back("sw");
+                } else if (y_direction < 0) {
+                    // zero x, neg y = no/ne/nw
+                    directions.push_back("no");
+                    directions.push_back("ne");
+                    directions.push_back("nw");
+                }
+            } else if (x_direction < 0) {
+                if (y_direction > 0) {
+                    // neg x, pos y = sw/we/so
+                    directions.push_back("sw");
+                    directions.push_back("we");
+                    directions.push_back("so");
+                } else if (y_direction == 0) {
+                    // neg x, zero y = we/nw/sw
+                    directions.push_back("we");
+                    directions.push_back("nw");
+                    directions.push_back("sw");
+                } else if (y_direction < 0) {
+                    // neg x, neg y = nw/we/no
+                    directions.push_back("nw");
+                    directions.push_back("we");
+                    directions.push_back("no");
+                }
+            }
+
             int i = 0;
 
-            while(true) {
+            do {
                 // Exit case in event that no suitable location found
                 if (i > 80) {
                     break;
@@ -712,64 +711,43 @@ std::string Board::moveEnemies() {
                     i++;
                 }
 
-                do {
-                    int rng = std::rand() % 8;
-
-                    if (rng == 0) {
-                        destination = validDest(*it, "no");
-                    } else if (rng == 1) {
-                        destination = validDest(*it, "so");
-                    } else if (rng == 2) {
-                        destination = validDest(*it, "ea");
-                    } else if (rng == 3) {
-                        destination = validDest(*it, "we");
-                    } else if (rng == 4) {
-                        destination = validDest(*it, "ne");
-                    } else if (rng == 5) {
-                        destination = validDest(*it, "nw");
-                    } else if (rng == 6) {
-                        destination = validDest(*it, "se");
-                    } else if (rng == 7) {
-                        destination = validDest(*it, "sw");
-                    }
-                } while (destination == nullptr); 
-
-                // Check in chamber (not a doorway or hallway)
-                if (destination->getRoom() < 0) {
-                    destination = nullptr;
-                    continue;
-                }
-
-                // Check for occupant
-                if (destination->getOccupant() != nullptr) {
-                    // Occupied by gold, loop again
-                    destination = nullptr;
-                    continue;
-                }
-
-                // Check for gold
-                if (destination->getGold() != nullptr) {
-                    // Occupied by gold, loop again
-                    // DLC EXTENSION LOCATION: Change this behaviour if we want to make gold walk-overable
-                    destination = nullptr;
-                    continue;
-                }
-
-                // Check for potions
-                if (destination->getPotion() != nullptr) {
-                    // Occupied by potion, loop again
-                    // DLC EXTENSION LOCATION: Change this behaviour if we want to make potions walk-overable
-                    destination = nullptr;
-                    continue;
-                }
-
-                // Check for exit
-                if (destination->isExit()) {
-                    // Occupied by exit stairs, loop again
-                    destination = nullptr; 
-                    continue;
-                }
+                int rng = std::rand() % directions.size();
+                destination = validDest(*it, directions[rng]);
+            } while (!destination || !isUnoccupied(destination)); 
+            
+            // Swap Enemy pointers
+            if (destination != nullptr) {
+                (*it) = (*it)->move(destination);
             }
+
+        } else {
+            // Too far away to attack, do a random move
+            std::shared_ptr<WalkableTile> destination = nullptr;
+            std::vector<std::string> directions;
+            directions.push_back("no");
+            directions.push_back("ea");
+            directions.push_back("so");
+            directions.push_back("we");
+            directions.push_back("ne");
+            directions.push_back("nw");
+            directions.push_back("se");
+            directions.push_back("sw");
+            int i = 0;
+
+            do {
+                // Exit case in event that no suitable location found
+                if (i > 80) {
+                    break;
+                } else {
+                    i++;
+                }
+                
+                int rng = std::rand() % directions.size();
+
+                destination = validDest(*it, directions[rng]);
+
+            } while (!destination || !isUnoccupied(destination)); 
+
 
             // Swap Enemy pointers
             if (destination != nullptr) {
@@ -956,27 +934,31 @@ void Board::generateFloor() {
             std::shared_ptr<WalkableTile> destination = nullptr;
 
             // Generate direction around DragonHoard
+            std::vector<std::string> directions;
+            directions.push_back("no");
+            directions.push_back("ea");
+            directions.push_back("so");
+            directions.push_back("we");
+            directions.push_back("ne");
+            directions.push_back("nw");
+            directions.push_back("se");
+            directions.push_back("sw");
+            int i = 0;
+
             do {
+                // Exit case in event that no suitable location found
+                if (i > 80) {
+                    break;
+                } else {
+                    i++;
+                }
+                
                 int rng = std::rand() % 8;
 
-                if (rng == 0) {
-                    destination = validDest(chambers[chamber][tile], "no");
-                } else if (rng == 1) {
-                    destination = validDest(chambers[chamber][tile], "so");
-                } else if (rng == 2) {
-                    destination = validDest(chambers[chamber][tile], "ea");
-                } else if (rng == 3) {
-                    destination = validDest(chambers[chamber][tile], "we");
-                } else if (rng == 4) {
-                    destination = validDest(chambers[chamber][tile], "ne");
-                } else if (rng == 5) {
-                    destination = validDest(chambers[chamber][tile], "nw");
-                } else if (rng == 6) {
-                    destination = validDest(chambers[chamber][tile], "se");
-                } else if (rng == 7) {
-                    destination = validDest(chambers[chamber][tile], "sw");
-                }
-            } while (!destination || destination->getPotion() || destination->getGold() || destination->isExit() || destination->getOccupant());
+                destination = validDest(chambers[chamber][tile], directions[rng]);
+
+            } while (!destination || !isUnoccupied(destination)); 
+
 
             // Place dragon at location and store in DragonHoard
             destination->setOccupant(std::dynamic_pointer_cast<DragonHoard>(temp)->getDragon());
