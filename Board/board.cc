@@ -713,7 +713,7 @@ std::string Board::moveEnemies() {
 
                 int rng = std::rand() % directions.size();
                 destination = validDest(*it, directions[rng]);
-            } while (!destination || !isUnoccupied(destination)); 
+            } while (!destination || !isUnoccupied(destination) || destination->getRoom() != -1); 
             
             // Swap Enemy pointers
             if (destination != nullptr) {

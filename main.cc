@@ -152,14 +152,14 @@ int main(int argc, char* argv[]) {
                 }
 
                 if (in == "e") {
-                    radius = 2;
-                    std::cout << "Enemy Tracking Difficulty: Easy (radius 2)" << std::endl;
+                    radius = 1;
+                    std::cout << "Enemy Tracking Difficulty: Easy (radius 1)" << std::endl;
                 } else if (in == "m") {
-                    radius = 4;
-                    std::cout << "Enemy Tracking Difficulty: Medium (radius 4)" << std::endl;
+                    radius = 2;
+                    std::cout << "Enemy Tracking Difficulty: Medium (radius 2)" << std::endl;
                 } else if (in == "h") {
-                    radius = 6;
-                    std::cout << "Enemy Tracking Difficulty: Hard (radius 6)" << std::endl;
+                    radius = 4;
+                    std::cout << "Enemy Tracking Difficulty: Hard (radius 4)" << std::endl;
                 }
 
             }
@@ -259,9 +259,9 @@ int main(int argc, char* argv[]) {
                 message = "Enemies Frozen: ";
                 
                 if (isFrozen) {
-                    message += "Enabled";
+                    message += "Enabled ";
                  } else {
-                    message += "Disabled";
+                    message += "Disabled ";
                  }
 
             } else if (cmd == "r") {
