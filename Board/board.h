@@ -16,6 +16,7 @@ class Orc;
 class Merchant;
 class Dragon;
 class Halfling;
+
 class Potion;
 
 class Player;
@@ -28,6 +29,7 @@ class Goblin;
 class Potion;
 class Gold;
 class DragonHoard;
+
 
 class Board {
     private:
@@ -54,6 +56,7 @@ class Board {
         void tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
         bool isUnoccupied(std::shared_ptr<WalkableTile> target);
         void changeFloor();
+        template <class T, class X> std::shared_ptr<T> generatePiece(std::vector<std::shared_ptr<X>>& factories);
 
     public:
         Board(
