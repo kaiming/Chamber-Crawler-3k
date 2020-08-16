@@ -259,9 +259,9 @@ int main(int argc, char* argv[]) {
                 message = "Enemies Frozen: ";
                 
                 if (isFrozen) {
-                    message += "Enabled";
+                    message += "Enabled ";
                  } else {
-                    message += "Disabled";
+                    message += "Disabled ";
                  }
 
             } else if (cmd == "r") {
