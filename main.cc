@@ -204,6 +204,7 @@ int main(int argc, char* argv[]) {
             race = "s";
         }
 
+        std::cout << "Race selected: " + race << std::endl;
 /*
     int seed = -1;
         bool enemyTracking = false;
