@@ -432,7 +432,7 @@ std::string Board::movePlayer(std::string direction) {
     directions.push_back("se");
     directions.push_back("sw");
 
-    for (int i = 0; i < directions.size(); i++) {
+    for (int i = 0; i < static_cast<int>(directions.size()); i++) {
         // Check if the direction is a WalkableTile and has a potion
         target = validDest(player, directions[i]);
         if (target && target->getPotion()) {
