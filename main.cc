@@ -178,6 +178,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Enter here: ";
 
         std::getline(std::cin, race);
+        std::getline(std::cin, race);
+
 
 
         while (race != "" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
