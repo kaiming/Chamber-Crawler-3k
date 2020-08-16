@@ -116,8 +116,6 @@ int main(int argc, char* argv[]) {
                 // Move player in given direction
                 message = b.movePlayer(cmd);
 
-                td.drawFloor(std::cout, b, message);
-
                 if (message == "Dungeon cleared. You win!") {
                     // Game Won by Player
                     winner = 1;
@@ -129,12 +127,10 @@ int main(int argc, char* argv[]) {
                 // Use potion in given direction
                 message = b.usePotion(cmd.substr(cmd.length() - 2));
 
-                td.drawFloor(std::cout, b, message);
             } else if (static_cast<int>(cmd.length()) == 4 && cmd[0] == 'a') {
                 // Attack enemy in the given direction
                 message = b.attackEnemy(cmd.substr(cmd.length() - 2));
 
-                td.drawFloor(std::cout, b, message);
             } else if (cmd == "f") {
                 // Freeze enemies
                 bool isFrozen = b.toggleFreeze();
@@ -147,7 +143,6 @@ int main(int argc, char* argv[]) {
                     message += "Disabled";
                  }
 
-                td.drawFloor(std::cout, b, message);
             } else if (cmd == "r") {
                 // Restart game
                 std::cout << "Resetting the game..." << std::endl;
@@ -167,11 +162,13 @@ int main(int argc, char* argv[]) {
             }
 
             // Move Enemies
-            message = b.moveEnemies();
+            e_message = b.moveEnemies();
 
-            if (message.length() == 0) {
-                message = "Enemies moved.";
+            if (e_message.length() == 0) {
+                e_message = "Enemies moved.";
             }
+
+            message +=e_message;
 
             td.drawFloor(std::cout, b, message);
 
