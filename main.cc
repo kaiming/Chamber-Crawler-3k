@@ -283,7 +283,7 @@ int main(int argc, char* argv[]) {
             }
 
             // Move Enemies
-            e_message = b.moveEnemies();
+            std::string e_message = b.moveEnemies();
 
             if (e_message.length() == 0) {
                 e_message = "Enemies moved.";
