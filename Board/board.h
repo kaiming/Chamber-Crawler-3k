@@ -37,6 +37,8 @@ class Board {
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies;
         std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards;
         std::string race;
+        bool enemyTracking;
+        int radius;
         int defaultAtk, defaultDef;
 
         std::shared_ptr<WalkableTile> player;
@@ -50,6 +52,7 @@ class Board {
         std::shared_ptr<WalkableTile> validDest(std::shared_ptr<WalkableTile> centre, std::string direction); 
         void assignChambers();
         void tileDFS(int x, int y, int floorNum, std::vector<std::shared_ptr<WalkableTile>>& chamber);
+        bool isUnoccupied(std::shared_ptr<WalkableTile> target);
         void changeFloor();
 
     public:
@@ -59,7 +62,10 @@ class Board {
             std::vector<std::shared_ptr<WalkableTile>> playerSpawns = {},
             std::vector<std::vector<std::shared_ptr<WalkableTile>>> enemies = {},
             std::vector<std::vector<std::shared_ptr<WalkableTile>>> dragonHoards = {},
-            std::string race = ""
+            std::string race = "",
+            int seed = -1,
+            bool enemyTracking = false,
+            int radius = -1
         );
         
         std::string getRace() const;
