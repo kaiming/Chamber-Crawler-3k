@@ -525,6 +525,7 @@ std::string Board::attackEnemy(std::string direction) {
                     do {
                         // Exit case in event that no suitable location found
                         if (i > 80) {
+                            destination = nullptr;
                             break;
                         } else {
                             i++;
@@ -617,6 +618,7 @@ std::string Board::moveEnemies() {
                 do {
                     // Exit case in event that no suitable location found
                     if (i > 80) {
+                        destination = nullptr;
                         break;
                     } else {
                         i++;
@@ -737,6 +739,7 @@ std::string Board::moveEnemies() {
             do {
                 // Exit case in event that no suitable location found
                 if (i > 80) {
+                    destination = nullptr;
                     break;
                 } else {
                     i++;
@@ -744,7 +747,7 @@ std::string Board::moveEnemies() {
 
                 int rng = std::rand() % directions.size();
                 destination = validDest(*it, directions[rng]);
-            } while (!destination || !isUnoccupied(destination) || destination->getRoom() != -1); 
+            } while (!destination || !isUnoccupied(destination) || destination->getRoom() > -1); 
             
             // Swap Enemy pointers
             if (destination != nullptr) {
