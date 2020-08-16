@@ -177,9 +177,9 @@ int main(int argc, char* argv[]) {
         std::cout << "Choose your character: Shade 's' (default), Drow 'd', Vampire 'v', Goblin 'g', Troll 't'" << std::endl;
         std::cout << "Enter here: ";
 
-        std::cin >> race;
+        std::getline(std::cin, race);
 
-        while (race != "" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
+        while (race != "\n" && race != "s" && race != "d" && race != "v" && race != "g" && race != "t") {
             std::cerr << "Invalid race" << std::endl;
             std::cout << "Enter here: ";
 
