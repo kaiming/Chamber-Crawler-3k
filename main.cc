@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
             try { 
                 infile.open("./default.txt");
             } catch (...) {
-               std::cerr << "Error reading in file" << std::endl;
+               std::cerr << "Error reading in default file" << std::endl;
                infile.close();
                return 1;
             }
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
                 infile.open(fileName);
             } catch (...) {
-                std::cerr << "Error reading in file" << std::endl;
+                std::cerr << "Error reading in given file" << std::endl;
                 infile.close();
                 return 1;
             }
