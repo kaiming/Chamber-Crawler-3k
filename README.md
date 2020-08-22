@@ -6,7 +6,7 @@ Welcome to ChamberCrawler3000, an exciting rendition of the classic Rougue singl
 Created by: Kaiming Qiu, Allen Lu
 
 
-Definitions ----------------------------------------------------------------------------
+Definitions
 -
 
 Definition 1: A character is a person/animal/thing in the game of CC3k. This can be either the player character (PC), who is controlled by the player of the game, or non-playable characters, who are strictly enemies in CC3k.
@@ -43,7 +43,7 @@ Definition 10: A 1 block radius denotes the 8 cells adjacent to the character or
 ---------------------------------------------------------------------------------------
 
 
-Player Characters ---------------------------------------------------------------------
+Player Characters
 -
 
 Shade: HP - 125 | ATK - 25 | DEF - 25 | Special - None
@@ -60,7 +60,7 @@ Goblin: HP - 110 | ATK  15 | DEF - 20 | Special - Steals 5 gold from every slain
 -----------------------------------------------------------------------------------------
 
 
-Enemy Characters ------------------------------------------------------------------------
+Enemy Characters
 -
 
 Human: HP - 140 | ATK - 20 | DEF - 20 | Special - Drops 2 normal piles of gold
@@ -81,7 +81,7 @@ Halfling: HP - 100 | ATK - 15 | DEF - 20 | Special - 50% chance to cuase Player 
 ---------------------------------------------------------------------------------------
 
 
-Potions -------------------------------------------------------------------------------
+Potions
 -
 
 Restore health (RH): restore up to 10 HP (cannot exceed maximum prescribed by race)
@@ -100,7 +100,7 @@ Wound Def (WD): decrease Def by 5
 --------------------------------------------------------------------------------------
 
 
-Gold ---------------------------------------------------------------------------------
+Gold
 -
 
 Small: Value 1
