@@ -6,8 +6,8 @@ Welcome to ChamberCrawler3000, an exciting rendition of the classic Rougue singl
 Created by: Kaiming Qiu, Allen Lu
 
 
-Definitions -------------------------------------------------------------------------------
-
+Definitions ----------------------------------------------------------------------------
+-
 
 Definition 1: A character is a person/animal/thing in the game of CC3k. This can be either the player character (PC), who is controlled by the player of the game, or non-playable characters, who are strictly enemies in CC3k.
 
@@ -40,11 +40,11 @@ be generated and placed on the board.
 Definition 10: A 1 block radius denotes the 8 cells adjacent to the character or item. If the character is near an edge or a corner, there are fewer adjacent cells.
 
 
------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
 
 
-Player Characters -----------------------------------------------------------------------
-
+Player Characters ---------------------------------------------------------------------
+-
 
 Shade: HP - 125 | ATK - 25 | DEF - 25 | Special - None
 
@@ -61,7 +61,64 @@ Goblin: HP - 110 | ATK  15 | DEF - 20 | Special - Steals 5 gold from every slain
 
 
 Enemy Characters ------------------------------------------------------------------------
+-
+
+Human: HP - 140 | ATK - 20 | DEF - 20 | Special - Drops 2 normal piles of gold
+
+Dwarf: HP - 100 | ATK - 20 | DEF - 30 | Special - Deals 5 extra damage to vampires
+
+Elf: HP - 140 | ATK - 30 | DEF - 10 | Special - Gets two attacks to every race except Drow
+
+Orc: HP - 180 | ATK - 30 | DEF - 25 | Special - Does 50% more damage to Goblins
+
+Merchant: HP - 30 | ATK - 70 | DEF - 5 | Special - Neutral until attacked
+
+Dragon: HP - 150 | ATK - 20 | DEF - 20 | Special - Always guards a trasure hoard
+
+Halfling: HP - 100 | ATK - 15 | DEF - 20 | Special - 50% chance to cuase Player to miss an attack
 
 
+---------------------------------------------------------------------------------------
 
+
+Potions -------------------------------------------------------------------------------
+-
+
+Restore health (RH): restore up to 10 HP (cannot exceed maximum prescribed by race)
+
+Boost Atk (BA): increase ATK by 5
+
+Boost Def (BD): increase Def by 5
+
+Poison health (PH): lose up to 10 HP (cannot fall below 0 HP)
+
+Wound Atk (WA): decrease Atk by 5
+
+Wound Def (WD): decrease Def by 5
+
+
+--------------------------------------------------------------------------------------
+
+
+Gold ---------------------------------------------------------------------------------
+-
+
+Small: Value 1
+
+Normal: Value 2
+
+Merchant Hoard: Value 4
+
+Dragon Hoard: Value 6
+
+
+-------------------------------------------------------------------------------------
+
+
+Please refer to demo.pdf for further instructions and a gameplay walkthrough.
+-
+
+
+Enjoy!
+-
 
