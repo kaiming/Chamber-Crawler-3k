@@ -1,6 +1,6 @@
 # ChamberCrawler3000
 
-Welcome to ChamberCrawler3000, an exciting rendition of the classic Rougue single-player game.
+Welcome to ChamberCrawler3000, an exciting rendition of the classic Rogue single-player game.
 
 
 Created by: Kaiming Qiu, Allen Lu
